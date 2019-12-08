@@ -20,12 +20,7 @@ mysql -e "FLUSH PRIVILEGES;"                                                    
 
 # Create WordPress Database and users for each web server
 mysql -e "CREATE DATABASE IF NOT EXISTS ${database_name} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-for ((i=${nginx_ip_start};i<=${nginx_ip_end};i++)); do
-    mysql -e "GRANT ALL ON ${database_name}.* TO '${database_username}'@'${range_ip_base}${i}' IDENTIFIED BY '${database_user_password}';"
-done
-for ((i=${apache_ip_start};i<=${apache_ip_end};i++)); do
-    mysql -e "GRANT ALL ON ${database_name}.* TO '${database_username}'@'${range_ip_base}${i}' IDENTIFIED BY '${database_user_password}';"
-done
+mysql -e "GRANT ALL ON ${database_name}.* TO '${database_username}'@'${nginx_ip}' IDENTIFIED BY '${database_user_password}';"
 mysql -e "FLUSH PRIVILEGES;"
 
 # Restart mariadb to bind with 0.0.0.0
