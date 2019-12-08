@@ -11,19 +11,23 @@
 
 # Input rules
 #IPv4
-iptables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ctstate ESTABLISHED -j ACCEPT                                # Established FTP,HTTP,HTTPS
-iptables -A INPUT -i ${bridgeif_guest_name} -p tcp -s ${mariadb_hostname} --sport mysql -m conntrack --ctstate ESTABLISHED -j ACCEPT      # Allow Established connections to database
-iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport ${1} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                          # Allow New connections to website
+iptables -A INPUT -i ${bridgeif_guest_name} -p tcp -s ${mariadb_hostname} --sport mysql -m conntrack --ctstate ESTABLISHED -j ACCEPT    # Allow Established connections to database
+iptables -A INPUT -i ${bridgeif_guest_name} -p tcp -s ${squid_hostname} --sport 3128 -m conntrack --ctstate ESTABLISHED -j ACCEPT       # Allow Established from proxy
+iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport ${1} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                        # Allow New connections to website only from load balancer
+iptables -A INPUT -p tcp -s ${nginx_hostname} -d ${nginx_hostname} --dport ${1} -m conntrack --ctstate ESTABLISHED -j ACCEPT            # Loopback rule to access website locally without proxy
+iptables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ctstate ESTABLISHED -j DROP                                # Prevent Internet browsing without proxy
 # IPv6
-ip6tables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ctstate ESTABLISHED -j ACCEPT # Established FTP,HTTP,HTTPS
+ip6tables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ctstate ESTABLISHED -j DROP                               # Prevent Internet browsing without proxy
 
 # Output rules
 # IPv4
-iptables -A OUTPUT -p tcp -m multiport --dports ftp,http,https -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                           # Allow trafic to http, https, and ftp
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp -d ${mariadb_hostname} --dport mysql -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow new connections to the database
-iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport ${1} -m conntrack --ctstate ESTABLISHED -j ACCEPT                             # Allow Established connections from website
+iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp -d ${squid_hostname} --dport 3128 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT    # Allow new connections to the proxy
+iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport ${1} -m conntrack --ctstate ESTABLISHED -j ACCEPT                             # Allow Established connections from website to load balancer only
+iptables -A OUTPUT -p tcp -s ${nginx_hostname} -d ${nginx_hostname} --dport ${1} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT         # Loopback rule to access website locally without proxy
+iptables -A OUTPUT -p tcp -m multiport --dports ftp,http,https -m conntrack --ctstate NEW,ESTABLISHED -j DROP                             # Prevent Internet browsing without proxy
 # IPv6
-ip6tables -A OUTPUT -p tcp -m multiport --dports ftp,http,https -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow trafic to http, https, and ftp
+ip6tables -A OUTPUT -p tcp -m multiport --dports ftp,http,https -m conntrack --ctstate NEW,ESTABLISHED -j DROP                            # Prevent Internet browsing without proxy
 
 # Save new custom rules for this machine
 iptables-save > /etc/iptables/rules.v4
