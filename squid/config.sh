@@ -9,7 +9,16 @@
 
 # Getting an array of all the IP addresses
 declare -a IP_ADDR
-IP_ADDR=( "${squid_ip}" "${mariadb_ip}" "${nginx_ip}" )
+IP_ADDR=( "${squid_ip}" "${haproxy_ip}" "${mariadb_ip}" )
+for ((i=${glusterfs_ip_start};i<=${glusterfs_ip_end};i++)); do
+    IP_ADDR+=( "${range_ip_base}${i}" )
+done
+for ((i=${nginx_ip_start};i<=${nginx_ip_end};i++)); do
+    IP_ADDR+=( "${range_ip_base}${i}" )
+done
+for ((i=${apache_ip_start};i<=${apache_ip_end};i++)); do
+    IP_ADDR+=( "${range_ip_base}${i}" )
+done
 
 # Remove default file
 rm /etc/squid/squid.conf
