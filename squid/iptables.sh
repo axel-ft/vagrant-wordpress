@@ -13,8 +13,11 @@
 # IPv4
 iptables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ctstate ESTABLISHED -j ACCEPT                              # Established FTP,HTTP,HTTPS
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -s ${squid_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT   # Proxy authorized hosts
+iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -s ${haproxy_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Proxy authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -s ${mariadb_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Proxy authorized hosts
-iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -s ${nginx_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT   # Proxy authorized hosts
+iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -m iprange --src-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT  # Proxy authorized hosts
+iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -m iprange --src-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT          # Proxy authorized hosts
+iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -m iprange --src-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT        # Proxy authorized hosts
 # IPv6
 ip6tables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ctstate ESTABLISHED -j ACCEPT # Established FTP,HTTP,HTTPS
 
@@ -22,8 +25,11 @@ ip6tables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ct
 # IPv4
 iptables -A OUTPUT -p tcp -m multiport --dports ftp,http,https -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                      # Allow trafic to http, https, and ftp
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -d ${squid_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Proxy authorized hosts
+iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -d ${haproxy_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT # Proxy authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -d ${mariadb_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT # Proxy authorized hosts
-iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -d ${nginx_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Proxy authorized hosts
+iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -m iprange --dst-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT # Proxy authorized hosts
+iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -m iprange --dst-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT         # Proxy authorized hosts
+iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -m iprange --dst-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT       # Proxy authorized hosts
 # IPv6
 ip6tables -A OUTPUT -p tcp -m multiport --dports ftp,http,https -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow trafic to http, https, and ftp
 
