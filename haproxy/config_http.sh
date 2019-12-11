@@ -16,12 +16,16 @@ echo -e "\toption log-separate-errors" >> /etc/haproxy/haproxy.cfg
 # Appending the frontend, backend and stats config
 cat << HAPROXY >> /etc/haproxy/haproxy.cfg
 
-frontend wp-front
+frontend http-in
         bind *:80
+        acl wp-front hdr(host) -i opensource.axelfloquet.fr
+        acl kibana-front hdr(host) -i kibana.opensource.axelfloquet.fr
         reqadd X-Forwarded-Proto:\\ http
         mode http
         option http-server-close
         option forwardfor
+        use_backend wp-back if wp-front
+        use_backend kibana-back if kibana-front
         default_backend wp-back
   
 backend wp-back    
@@ -42,6 +46,13 @@ for ((i=${apache_ip_start};i<=${apache_ip_end};i++)); do
 done
 
 cat << HAPROXY >> /etc/haproxy/haproxy.cfg
+        http-request set-header X-Forwarded-Port %[dst_port]
+        http-request add-header X-Forwarded-Proto http
+
+backend kibana-back
+        mode http
+        option forwardfor
+        server kibana wp-log:5601 check
         http-request set-header X-Forwarded-Port %[dst_port]
         http-request add-header X-Forwarded-Proto http
   

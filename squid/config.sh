@@ -9,7 +9,7 @@
 
 # Getting an array of all the IP addresses
 declare -a IP_ADDR
-IP_ADDR=( "${squid_ip}" "${haproxy_ip}" "${mariadb_ip}" )
+IP_ADDR=( "${squid_ip}" "${haproxy_ip}" "${mariadb_ip}" "${rsyslog_ip}" )
 for ((i=${glusterfs_ip_start};i<=${glusterfs_ip_end};i++)); do
     IP_ADDR+=( "${range_ip_base}${i}" )
 done
@@ -40,6 +40,7 @@ http_access allow localhost manager
 http_access deny manager
 http_access deny all
 http_port 0.0.0.0:3128
+access_log syslog:local2.* squid
 coredump_dir /var/spool/squid
 refresh_pattern ^ftp:           1440    20%     10080
 refresh_pattern ^gopher:        1440    0%      1440

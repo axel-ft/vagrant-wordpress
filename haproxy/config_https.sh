@@ -8,8 +8,9 @@
 ################################################################################################################
 
 # HAProxy needs a single file containing the certificate and the private key, which are separated in the Let's Encrypt files
-# Creating this file now if it doesn't exist
-if [ ! -f ${cert_root}/haproxy.pem ]; then cat ${cert_root}/fullchain.pem ${cert_root}/privkey.pem > ${cert_root}/haproxy.pem; fi;
+# Creating this file now if it doesn't exist (one for WordPress and one for Kibana)
+if [ ! -f ${cert_root}/wordpress.pem ]; then cat ${cert_root}/fullchain.pem ${cert_root}/privkey.pem > ${cert_root}/wordpress.pem; fi;
+if [ ! -f ${cert_root}/kibana.pem ]; then cat ${cert_root}/fullchain.pem ${cert_root}/privkey.pem > ${cert_root}/kibana.pem; fi;
 
 # Exit if conf is already provisioned to prevent doubling the file content
 if [ -f /etc/haproxy/haproxy.lock ]; then echo "!!!!! Configuration file has already been provisioned. Aborting this script to prevent double data in file !!!!!"; exit 0; fi;
@@ -23,9 +24,9 @@ sed -i.bak "s/ssl-default-bind-options no-sslv3/ssl-default-bind-options no-sslv
 # Appending the frontend, backend and stats config
 cat << HAPROXY >> /etc/haproxy/haproxy.cfg
 
-frontend wp-front
+frontend http-in
         bind *:80
-        bind *:443 ssl crt ${cert_root}/haproxy.pem no-sslv3 alpn h2,http/1.1
+        bind *:443 ssl crt ${cert_root}/wordpress.pem crt ${cert_root}/kibana.pem no-sslv3 alpn h2,http/1.1
         reqadd X-Forwarded-Proto:\\ https
         reqadd X-Forwarded-Port:\\ 443
         rspadd  Strict-Transport-Security:\\ max-age=15768000
@@ -33,6 +34,8 @@ frontend wp-front
         mode http
         option http-server-close
         option forwardfor
+        use_backend wp-back if { ssl_fc_sni ${domain_name} }
+        use_backend kibana-back if { ssl_fc_sni ${kibana_domain_name} }
         default_backend wp-back
   
 backend wp-back    
@@ -53,6 +56,13 @@ for ((i=${apache_ip_start};i<=${apache_ip_end};i++)); do
 done
 
 cat << HAPROXY >> /etc/haproxy/haproxy.cfg
+        http-request set-header X-Forwarded-Port %[dst_port]
+        http-request add-header X-Forwarded-Proto https if { ssl_fc }
+
+backend kibana-back
+        mode http
+        option forwardfor
+        server kibana wp-log:5601 check
         http-request set-header X-Forwarded-Port %[dst_port]
         http-request add-header X-Forwarded-Proto https if { ssl_fc }
   
