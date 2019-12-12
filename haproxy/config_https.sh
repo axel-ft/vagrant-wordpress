@@ -62,7 +62,7 @@ cat << HAPROXY >> /etc/haproxy/haproxy.cfg
 backend kibana-back
         mode http
         option forwardfor
-        server kibana wp-log:5601 check
+        server kibana ${elk_hostname}:5601 check
         http-request set-header X-Forwarded-Port %[dst_port]
         http-request add-header X-Forwarded-Proto https if { ssl_fc }
   

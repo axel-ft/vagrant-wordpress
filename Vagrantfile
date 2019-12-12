@@ -66,8 +66,11 @@ Vagrant.configure("2") do |config|
     :web_root                => "/var/www/html",                    # This is the folder used to mount the website files volume with GlusterFS
 
     # Centralized log server
-    :rsyslog_hostname        => "wp-log",                           # Hostname for the centralized log server
-    :rsyslog_ip              => "192.168.43.18",                    # IP for the centralized log server
+    :rsyslog_hostname        => "wp-log",                           # Hostname for the centralized log server (rsyslog and filebeat)
+    :rsyslog_ip              => "192.168.43.18",                    # IP for the centralized log server (rsyslog and filebeat)
+    :elk_hostname            => "wp-elk",                           # Hostname for the centralized log server (ELK stack)
+    :elk_ip                  => "192.168.43.19",                    # IP for the centralized log server (ELK stack)
+    :kibana_domain_name      => "kibana.opensource.axelfloquet.fr", # Domain name for kibana, set in HAProxy
 
     # WordPress configuration
     :website_prefix          => "os1_",                             # Sets the prefix used for all the tables in the database
@@ -231,27 +234,46 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  # Defining here the centralized log server with rsyslog and ELK
+  # Defining here the centralized log server ELK
+  config.vm.define vm_params[:elk_hostname] do |elk|
+    elk.vm.hostname = vm_params[:elk_hostname]
+    elk.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:elk_ip], netmask: vm_params[:netmask]
+
+    elk.vm.provider :virtualbox do |vb|
+      vb.cpus = 2
+      vb.memory = 2048
+    end
+
+    elk.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:elk_hostname], 11],                                                           :name => "Set hosts",                       :env => vm_params
+    elk.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 22],                                                         :name => "Set system proxy"
+    elk.vm.provision :shell, :path => "common/apt.sh",            :args => ["apt-transport-https openjdk-11-jre neovim unzip wget iptables-persistent rsyslog", 33], :name => "APT operations (General)"
+    elk.vm.provision :shell, :path => "elk/addrepo.sh",           :args => 44,                                                                                       :name => "Add Elastic repo"
+    elk.vm.provision :shell, :path => "common/apt.sh",            :args => ["elasticsearch kibana logstash", 55],                                                    :name => "APT operations (ELK)"
+    elk.vm.provision :shell, :path => "common/enableservices.sh", :args => ["elasticsearch kibana logstash netfilter-persistent", 66],                               :name => "Enable and start services"
+    elk.vm.provision :shell, :path => "common/iptables.sh",       :args => 77,                                                                                       :name => "Common firewall rules"
+    elk.vm.provision :shell, :path => "elk/iptables.sh",          :args => 88,                                                                                       :name => "ELK specific firewall rules",     :env  => vm_params
+    elk.vm.provision :shell, :path => "elk/config.sh",            :args => 100,                                                                                      :name => "ELK stack configuration",         :env  => vm_params
+  end
+
+  # Defining here the centralized log server with rsyslog
   config.vm.define vm_params[:rsyslog_hostname] do |rsyslog|
     rsyslog.vm.hostname = vm_params[:rsyslog_hostname]
     rsyslog.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:rsyslog_ip], netmask: vm_params[:netmask]
 
     rsyslog.vm.provider :virtualbox do |vb|
-      vb.cpus = 2
-      vb.memory = 2048
+      vb.cpus = 1
+      vb.memory = 1024
     end
 
-    rsyslog.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:rsyslog_hostname], 9],                                                        :name => "Set hosts",                       :env => vm_params
-    rsyslog.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 18],                                                         :name => "Set system proxy"
-    rsyslog.vm.provision :shell, :path => "common/apt.sh",            :args => ["apt-transport-https openjdk-11-jre neovim unzip wget iptables-persistent rsyslog", 27], :name => "APT operations (Rsyslog)"
-    rsyslog.vm.provision :shell, :path => "rsyslog/elk/addrepo.sh",   :args => 36,                                                                                       :name => "Add Elastic repo"
-    rsyslog.vm.provision :shell, :path => "common/apt.sh",            :args => ["elasticsearch kibana logstash filebeat", 45],                                           :name => "APT operations (ELK)"
-    rsyslog.vm.provision :shell, :path => "common/enableservices.sh", :args => ["rsyslog elasticsearch kibana logstash filebeat netfilter-persistent", 54],              :name => "Enable and start services"
-    rsyslog.vm.provision :shell, :path => "common/iptables.sh",       :args => 63,                                                                                       :name => "Common firewall rules"
-    rsyslog.vm.provision :shell, :path => "rsyslog/elk/iptables.sh",  :args => 72,                                                                                       :name => "ELK specific firewall rules",     :env  => vm_params
-    rsyslog.vm.provision :shell, :path => "rsyslog/iptables.sh",      :args => 81,                                                                                       :name => "Rsyslog specific firewall rules", :env  => vm_params
-    rsyslog.vm.provision :shell, :path => "rsyslog/config.sh",        :args => 90,                                                                                       :name => "Rsyslog configuration",           :env  => vm_params
-    rsyslog.vm.provision :shell, :path => "rsyslog/elk/config.sh",    :args => 100,                                                                                      :name => "ELK stack configuration",         :env  => vm_params
+    rsyslog.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:rsyslog_hostname], 11],                    :name => "Set hosts",                       :env => vm_params
+    rsyslog.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 22],                      :name => "Set system proxy"
+    rsyslog.vm.provision :shell, :path => "elk/addrepo.sh",           :args => 33,                                                    :name => "Add Elastic repo"
+    rsyslog.vm.provision :shell, :path => "common/apt.sh",            :args => ["neovim unzip wget iptables-persistent rsyslog", 44], :name => "APT operations (General)"
+    rsyslog.vm.provision :shell, :path => "common/apt.sh",            :args => ["filebeat", 55],                                      :name => "APT operations (Filebeat)"
+    rsyslog.vm.provision :shell, :path => "common/enableservices.sh", :args => ["rsyslog filebeat netfilter-persistent", 66],         :name => "Enable and start services"
+    rsyslog.vm.provision :shell, :path => "common/iptables.sh",       :args => 77,                                                    :name => "Common firewall rules"
+    rsyslog.vm.provision :shell, :path => "rsyslog/iptables.sh",      :args => 88,                                                    :name => "Rsyslog specific firewall rules", :env  => vm_params
+    rsyslog.vm.provision :shell, :path => "rsyslog/config.sh",        :args => 100,                                                    :name => "Rsyslog configuration",           :env  => vm_params
   end
 
   # Open browser after setting up / booting up one or several web servers
