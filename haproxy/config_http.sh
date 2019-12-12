@@ -71,6 +71,12 @@ chmod 0400 /etc/haproxy/haproxy.lock
 # Restarting HAProxy to apply changes, if configuration is correct
 haproxy -f /etc/haproxy/haproxy.cfg -c && systemctl restart haproxy
 
+# Preventing stop for log file in default rsyslog haproxy conf
+sed -i.bak -e 's/^&~$//' /etc/rsyslog.d/49-haproxy.conf
+
+# Restarting rsyslog to apply changes, if configuration is correct
+rsyslogd -N1 && systemctl restart rsyslog
+
 # Display progress bar if command is in path and current progress in provisioning given
 which progressbar 2>&1>/dev/null && [ ${1} ] && progressbar ${1}
 exit 0
