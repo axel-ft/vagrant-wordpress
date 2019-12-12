@@ -26,7 +26,7 @@ iptables -A INPUT -i ${bridgeif_guest_name} -p udp --sport 514 -s ${rsyslog_host
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp $inrule -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                         # Allow new connections to website (HTTP and HTTPS)
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp -m iprange --src-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} --dport ${1} -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Allow established from nginx web servers
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp -m iprange --src-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} --dport ${1} -m conntrack --ctstate ESTABLISHED -j ACCEPT # Allow established from apache web servers
-iptables -A INPUT -i ${bridgeif_guest_name} -p tcp -s ${rsyslog_hostname} --sport 5601 -m conntrack --ctstate ESTABLISHED -j ACCEPT # Allow connection to Kibana
+iptables -A INPUT -i ${bridgeif_guest_name} -p tcp -s ${elk_hostname} --sport 5601 -m conntrack --ctstate ESTABLISHED -j ACCEPT # Allow connection to Kibana
 iptables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ctstate ESTABLISHED -j DROP                            # Prevent Internet browsing without proxy
 # IPv6
 ip6tables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport https -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                  # Allow new connections to website (HTTP and HTTPS)
@@ -40,7 +40,7 @@ iptables -A OUTPUT -o ${bridgeif_guest_name} -p udp --dport 514 -s ${rsyslog_hos
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp $outrule -m conntrack --ctstate ESTABLISHED -j ACCEPT                                # Allow Established to website
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp -m iprange --dst-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} --dport ${1} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT   # Allow connection to web01 (HTTPS)
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp -m iprange --dst-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} --dport ${1} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow connection to web02 (HTTPS)
-iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp -d ${rsyslog_hostname} --dport 5601 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow connection to Kibana
+iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp -d ${elk_hostname} --dport 5601 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow connection to Kibana
 iptables -A OUTPUT -p tcp -m multiport --dports ftp,http,https -m conntrack --ctstate NEW,ESTABLISHED -j DROP                            # Prevent Internet browsing without proxy
 #IPv6
 ip6tables -A OUTPUT -o ${bridgeif_guest_name} -p tcp -m multiport --sports http,https -m conntrack --ctstate ESTABLISHED -j ACCEPT       # Allow Established to website

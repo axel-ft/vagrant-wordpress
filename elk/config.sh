@@ -16,8 +16,20 @@ if [ ! -f /swapfile ]; then
     echo "/swapfile                      none            swap    sw              0       0" >> /etc/fstab
 fi
 
-# Make Elastic accessible only to localhost
-sed -i.bak -e 's/^#network.host: 192.168.0.1$/network.host: localhost/' /etc/elasticsearch/elasticsearch.yml
+# Make Elastic bind on all interfaces, and other config
+cat << 'ELASTICSEARCH' > /etc/elasticsearch/elasticsearch.yml
+cluster.name: wordpress
+node.name: elastic19
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+network.host: 0.0.0.0
+#http.port: 9200
+discovery.zen.minimum_master_nodes: 1
+discovery.zen.ping.unicast.hosts: ["localhost"]
+gateway.recover_after_nodes: 1
+gateway.expected_nodes: 1
+gateway.recover_after_time: 5m
+ELASTICSEARCH
 
 # Make Kibana listen on all interfaces (iptables then restricts to localhost and HAProxy)
 sed -i.bak -e 's/^#server.host: "localhost"$/server.host: "0.0.0.0"/' /etc/kibana/kibana.yml
@@ -82,12 +94,6 @@ output {
 }
 LOGSTASH
 
-# Disable Filebeat output to Elastic (use Logstash instead)
-sed -i.bak -e 's/^output.elasticsearch:$/#output.elasticsearch:/' \
--e 's/^  hosts: \["localhost:9200"\]$/  #hosts: ["localhost:9200"]/' \
--e 's/^#output.logstash:$/output.logstash:/' \
--e 's/^  #hosts: \["localhost:5044"\]$/  hosts: ["localhost:5044"]/' /etc/filebeat/filebeat.yml
-
 # Change elasticsearch start timeout to prevent failures
 mkdir -p /etc/systemd/system/elasticsearch.service.d
 cat << 'SYSTEMD' > /etc/systemd/system/elasticsearch.service.d/override.conf
@@ -100,18 +106,6 @@ systemctl daemon-reload
 systemctl restart elasticsearch
 sudo -u logstash /usr/share/logstash/bin/logstash --path.settings /etc/logstash -t && systemctl restart logstash
 systemctl restart kibana
-
-# Enable filebeat system module
-filebeat modules enable system
-
-# Create elasticsearch index
-filebeat setup --index-management -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=["localhost:9200"]'
-
-# Test and restart logstash
-filebeat test config -e && systemctl restart filebeat
-
-# Delete old data in elastic if it exists with any previous template
-curl -X DELETE 'http://localhost:9200/filebeat-*' --noproxy '*'
 
 # Display progress bar if command is in path and current progress in provisioning given
 which progressbar 2>&1>/dev/null && [ ${1} ] && progressbar ${1}

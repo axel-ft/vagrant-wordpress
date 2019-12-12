@@ -12,7 +12,7 @@ mkdir -p /srv/rsyslog
 chgrp syslog /srv/rsyslog
 chmod g+w -R /srv/rsyslog
 
-NAME_LIST="${squid_hostname}, ${haproxy_hostname}, ${mariadb_hostname}, ${rsyslog_hostname}"
+NAME_LIST="${squid_hostname}, ${haproxy_hostname}, ${mariadb_hostname}, ${rsyslog_hostname}, ${elk_hostname}"
 for ((i=${glusterfs_ip_start};i<=${glusterfs_ip_end};i++)); do
     NAME_LIST+=", ${glusterfs_hostname_base}${i}"
 done
@@ -41,6 +41,33 @@ grep -qF 'template remote-logs' /etc/rsyslog.conf || sed -i -e "N;/#############
 
 # Restarting rsyslog to apply changes, if configuration is correct
 rsyslogd -N1 && systemctl restart rsyslog
+
+# Disable Filebeat output to Elastic (use Logstash instead)
+sed -i.bak -e 's/^output.elasticsearch:$/#output.elasticsearch:/' \
+-e 's/^  hosts: \["localhost:9200"\]$/  #hosts: ["localhost:9200"]/' \
+-e 's/^#output.logstash:$/output.logstash:/' \
+-e "s/^  #hosts: \[\"localhost:5044\"\]$/  hosts: [\"${elk_hostname}:5044\"]/" /etc/filebeat/filebeat.yml
+
+# Enable and configure filebeat system module
+filebeat modules enable system
+sed -i.bak -e '5,12s/^    #var.paths:$/    var.paths: ["\/srv\/rsyslog\/*\/syslog*"]/' -e '13,19s/^    #var.paths:$/    var.paths: ["\/srv\/rsyslog\/*\/auth.log*"]/' /etc/filebeat/modules.d/system.yml
+
+# Enable and configure filebeat nginx module
+filebeat modules enable nginx
+sed -i.bak -e '5,12s/^    #var.paths:$/    var.paths: ["\/srv\/rsyslog\/*\/nginx_wp_access.log*"]/' -e '13,19s/^    #var.paths:$/    var.paths: ["\/srv\/rsyslog\/*\/nginx_wp_error.log*"]/' /etc/filebeat/modules.d/nginx.yml
+
+# Enable and configure filebeat apache module
+filebeat modules enable apache
+sed -i.bak -e '5,12s/^    #var.paths:$/    var.paths: ["\/srv\/rsyslog\/*\/apache_wp_access.log*"]/' -e '13,19s/^    #var.paths:$/    var.paths: ["\/srv\/rsyslog\/*\/apache_wp_error.log*"]/' /etc/filebeat/modules.d/apache.yml
+
+# Create elasticsearch index
+filebeat setup --index-management -E output.logstash.enabled=false -E "output.elasticsearch.hosts=[\"${elk_hostname}:9200\"]" -E output.elasticsearch.proxy_disable
+
+# Test and restart logstash
+filebeat test config -e && systemctl restart filebeat
+
+# Delete old data in elastic if it exists with any previous template
+curl -X DELETE "http://${elk_hostname}:9200/filebeat-*" --noproxy '*' 1> /dev/null
 
 # Display progress bar if command is in path and current progress in provisioning given
 which progressbar 2>&1>/dev/null && [ ${1} ] && progressbar ${1}

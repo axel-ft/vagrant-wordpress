@@ -24,6 +24,7 @@ for ((i=${apache_ip_start};i<=${apache_ip_end};i++)); do
     grep -qxF "${range_ip_base}${i}$(printf '\t')${apache_hostname_base}$(printf "%02d" ${i})"    /etc/hosts || echo -e "${range_ip_base}${i}\\t${apache_hostname_base}$(printf "%02d" ${i})"    >> /etc/hosts
 done
 grep -qxF "${rsyslog_ip}$(printf '\t')${rsyslog_hostname}" /etc/hosts || echo -e "${rsyslog_ip}\\t${rsyslog_hostname}" >> /etc/hosts
+grep -qxF "${elk_ip}$(printf '\t')${elk_hostname}" /etc/hosts || echo -e "${elk_ip}\\t${elk_hostname}" >> /etc/hosts
 
 # Display progress bar if command is in path and current progress in provisioning given
 which progressbar 2>&1>/dev/null && [ ${2} ] && progressbar ${2}
