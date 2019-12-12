@@ -42,6 +42,7 @@ grep -qF 'template remote-logs' /etc/rsyslog.conf || sed -i -e "N;/#############
 # Restarting rsyslog to apply changes, if configuration is correct
 rsyslogd -N1 && systemctl restart rsyslog
 
+
 # Disable Filebeat output to Elastic (use Logstash instead)
 sed -i.bak -e 's/^output.elasticsearch:$/#output.elasticsearch:/' \
 -e 's/^  hosts: \["localhost:9200"\]$/  #hosts: ["localhost:9200"]/' \
@@ -59,6 +60,10 @@ sed -i.bak -e '5,12s/^    #var.paths:$/    var.paths: ["\/srv\/rsyslog\/*\/nginx
 # Enable and configure filebeat apache module
 filebeat modules enable apache
 sed -i.bak -e '5,12s/^    #var.paths:$/    var.paths: ["\/srv\/rsyslog\/*\/apache_wp_access.log*"]/' -e '13,19s/^    #var.paths:$/    var.paths: ["\/srv\/rsyslog\/*\/apache_wp_error.log*"]/' /etc/filebeat/modules.d/apache.yml
+
+# Enable and configure filebeat haproxy module
+filebeat modules enable haproxy
+sed -i.bak -e 's/^    #var.input:$/    var.input: file/' -e 's/^    #var.paths:$/    var.paths: ["\/srv\/rsyslog\/*\/haproxy.log*"]/' /etc/filebeat/modules.d/haproxy.yml
 
 # Create elasticsearch index
 filebeat setup --index-management -E output.logstash.enabled=false -E "output.elasticsearch.hosts=[\"${elk_hostname}:9200\"]" -E output.elasticsearch.proxy_disable

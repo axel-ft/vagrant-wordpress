@@ -46,7 +46,7 @@ LOGSTASH
 # Define Logstash filter
 cat << 'LOGSTASH' > /etc/logstash/conf.d/10-syslog-filter.conf
 filter {
-  if [fileset][module] == "system" {
+  if [event][module] == "system" {
     if [fileset][name] == "auth" {
       grok {
         match => { "message" => ["%{SYSLOGTIMESTAMP:[system][auth][timestamp]} %{SYSLOGHOST:[system][auth][hostname]} sshd(?:\[%{POSINT:[system][auth][pid]}\])?: %{DATA:[system][auth][ssh][event]} %{DATA:[system][auth][ssh][method]} for (invalid user )?%{DATA:[system][auth][user]} from %{IPORHOST:[system][auth][ssh][ip]} port %{NUMBER:[system][auth][ssh][port]} ssh2(: %{GREEDYDATA:[system][auth][ssh][signature]})?",
@@ -77,6 +77,64 @@ filter {
       }
       date {
         match => [ "[system][syslog][timestamp]", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
+      }
+    }
+  }
+}
+LOGSTASH
+
+# Define HAProxy filter
+cat << LOGSTASH > /etc/logstash/conf.d/11-haproxy-filter.conf
+filter {
+  if [event][module] == "haproxy" {
+    if [fileset][name] == "log" {
+      grok {
+        match => { "message" => "%{COMBINEDAPACHELOG}" }
+        remove_field => "message"
+      }
+    }
+  }
+}
+LOGSTASH
+
+# Define Nginx filter
+cat << LOGSTASH > /etc/logstash/conf.d/12-nginx-filter.conf
+filter {
+  if [event][module] == "nginx" {
+    if [fileset][name] == "access" {
+      grok {
+        match => { "message" => ["%{IPORHOST:[nginx][access][remote_ip]} - %{DATA:[nginx][access][user_name]} \[%{HTTPDATE:[nginx][access][time]}\] \"%{WORD:[nginx][access][method]} %{DATA:[nginx][access][url]} HTTP/%{NUMBER:[nginx][access][http_version]}\" %{NUMBER:[nginx][access][response_code]} %{NUMBER:[nginx][access][body_sent][bytes]} \"%{DATA:[nginx][access][referrer]}\" \"%{DATA:[nginx][access][agent]}\""] }
+        remove_field => "message"
+      }
+      mutate {
+        add_field => { "read_timestamp" => "%{@timestamp}" }
+      }
+      date {
+        match => [ "[nginx][access][time]", "dd/MMM/YYYY:H:m:s Z" ]
+        remove_field => "[nginx][access][time]"
+      }
+      useragent {
+        source => "[nginx][access][agent]"
+        target => "[nginx][access][user_agent]"
+        remove_field => "[nginx][access][agent]"
+      }
+      geoip {
+        source => "[nginx][access][remote_ip]"
+        target => "[nginx][access][geoip]"
+      }
+    }
+  }
+}
+LOGSTASH
+
+# Define Apache filter
+cat << LOGSTASH > /etc/logstash/conf.d/13-apache-filter.conf
+filter {
+  if [event][module] == "apache" {
+    if [fileset][name] == "access" {
+      grok {
+        match => { "message" => "%{COMBINEDAPACHELOG}" }
+        remove_field => "message"
       }
     }
   }
