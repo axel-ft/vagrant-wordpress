@@ -78,6 +78,9 @@ HAPROXY
 echo 'DO NOT TOUCH!\\nKeep this file here to avoid redeploying the config for HAProxy in the same file, doubling the data as the text is appended' > /etc/haproxy/haproxy.lock
 chmod 0400 /etc/haproxy/haproxy.lock
 
+# Preventing stop for log file in default rsyslog haproxy conf
+sed -i.bak -e 's/^&~$//' /etc/rsyslog.d/49-haproxy.conf
+
 # Restarting HAProxy to apply changes, if configuration is correct
 haproxy -f /etc/haproxy/haproxy.cfg -c && systemctl restart haproxy
 
