@@ -216,11 +216,12 @@ With the increasing amount of machines in this environment, managing all the gen
 - Kibana : it is the package used to visualize the data. It looks into the `filebeat-*` index pattern to look for the data, which can be displayed in a simple table at first. But the goal of the Kibana web application is to create visualization to view a single data, and combine them into dashboards to view multiple piece of data at once.
 
 There is near to nothing to configure for these two machines. The only parameter to add to hostname and IP is the domain name used to access the Kibana website. It is configured in HAProxy and is used to redirect to the correct backend, so the name must be resolved, either locally with the hosts file, either by a DNS server.
+When Kibana is opened for the first time, it asks for an index pattern creation, which is simply `filebeat-*`. This has to be done just once to allow Kibana to find the data.
 
 There are some visualizes and dashboards included with this repo in the elk folder. It is a single `ndjson` file which can be imported directly in Kabana in the `Management > Kibana > Saved Objects` section.
 These one only show some basic information on HAProxy and the web servers and works only if the *hostnames have not been modified*.
 
-Logs in the Kibana dashboard mainly contains HAProxy, Squid, Nginx, Apache, some MariaDB messages and the auth facility (containing itself many command lines as sudo, su, or useradd)at this point of the ocnfiguration.
+Logs in the Kibana dashboard mainly contains HAProxy, Squid, Nginx, Apache, some MariaDB messages and the auth facility (containing itself many command lines as sudo, su, or useradd)at this point of the configuration.
 
 ## Conclusion
 
