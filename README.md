@@ -6,14 +6,15 @@ This project can be used to deploy a complete Wordpress install in less than an 
 
 |  Qty  | Scalable |                 Type                 |  Package  |  Hostname  |        IP        |  CPU  |  RAM  |
 | :---: | :------: | :----------------------------------: | :-------: | :--------: | :--------------: | :---: | :---: |
-|   1   |    ❌     |                Proxy                 |   squid   |  wp-proxy  |  192.168.43.10   |   2   |  2GB  |
-|   1   |    ❌     |   Load balancer and reverse proxy    |  haproxy  |   wp-lb    |  192.168.43.11   |   2   |  2GB  |
-|   1   |    ❌     |      Database (WordPress data)       |  mariadb  |   wp-db    |  192.168.43.12   |   1   | 1.5GB |
-|   2   |    ✔     |    File storage (WordPress files)    | glusterfs | wp-fileXX  | 192.168.43.13-14 |   1   | 1.5GB |
-|   2   |    ✔     |          Nginx web servers           |   nginx   | wp-web-nXX | 192.168.43.15-16 |   1   | 1.5GB |
-|   1   |    ✔     |          Apache web servers          |  apache2  | wp-web-aXX |  192.168.43.17   |   1   | 1.5GB |
+|   1   |    ❌     |                Proxy                 |   squid   |  wp-proxy  |  192.168.43.10   |   2   | 1.5GB |
+|   1   |    ❌     |   Load balancer and reverse proxy    |  haproxy  |   wp-lb    |  192.168.43.11   |   2   | 1.5GB |
+|   1   |    ❌     |      Database (WordPress data)       |  mariadb  |   wp-db    |  192.168.43.12   |   1   |  1GB  |
+|   2   |    ✔     |    File storage (WordPress files)    | glusterfs | wp-fileXX  | 192.168.43.13-14 |   1   |  1GB  |
+|   2   |    ✔     |          Nginx web servers           |   nginx   | wp-web-nXX | 192.168.43.15-16 |   1   |  1GB  |
+|   1   |    ✔     |          Apache web servers          |  apache2  | wp-web-aXX |  192.168.43.17   |   1   |  1GB  |
 |   1   |    ❌     |        Centralized log server        |  rsyslog  |   wp-log   |  192.168.43.18   |   1   |  1GB  |
 |   1   |    ❌     | Elasticsearch Logstash Kibana server | ELK stack |   wp-elk   |  192.168.43.19   |   2   |  2GB  |
+|   1   |    ❌     |        SSH Bastion (Cockpit)         |  cockpit  |   wp-ssh   |  192.168.43.20   |   1   |  1GB  |
 
 > - ELK stands for Elasticsearch, Logstash, Kibana. They are the three main products of Elastic used to automate the log analysis.
 > - **`XX`** in the hostname is replaced by the last two digits of the IP address.
@@ -95,6 +96,8 @@ All these parameters are found at the begining of the `Vagrantfile` or in the `.
 |      elk_hostname       | String  |              wp-elk              |        Hostname for ELK server         |                               Unique                               |
 |         elk_ip          | String  |          192.168.43.19           |          IP of the ELK server          |                               Unique                               |
 |   kibana_domain_name    | String  | kibana.opensource.axelfloquet.fr | Domain name for kibana used in HAProxy |       Valid and resolved (in hosts or DNS) domain name or IP       |
+|    cockpit_hostname     | String  |              wp-ssh              |      Hostname for the SSH bastion      |                               Unique                               |
+|       cockpit_ip        | String  |          192.168.43.20           |         IP for the SSH bastion         |                               Unique                               |
 |     website_prefix      | String  |               os1_               |         Prefix for table names         |                  Short and no special characters                   |
 |      website_name       | String  |           Open Source            |          Title of the website          |      Can be omitted for GUI install - No special constraints       |
 |    website_username     | String  |              admin               |  Username of the admin WordPress user  |      Can be omitted for GUI install - No special constraints       |

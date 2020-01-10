@@ -72,6 +72,10 @@ Vagrant.configure("2") do |config|
     :elk_ip                  => "192.168.43.19",                    # IP for the centralized log server (ELK stack)
     :kibana_domain_name      => "kibana.opensource.axelfloquet.fr", # Domain name for kibana, set in HAProxy
 
+    # Cockpit configuration
+    :cockpit_hostname        => "wp-ssh",                           # Hostname for the SSH bastion with Cockpit
+    :cockpit_ip              => "192.168.43.20",                    # IP for the SSH bastion server
+
     # WordPress configuration
     :website_prefix          => "os1_",                             # Sets the prefix used for all the tables in the database
     # Leave all the parameters below empty for GUI install.
@@ -99,7 +103,7 @@ Vagrant.configure("2") do |config|
 
     squid.vm.provider :virtualbox do |vb|
       vb.cpus = 2
-      vb.memory = 2048
+      vb.memory = 1536
     end
 
     squid.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:squid_hostname], 12],                 :name => "Set hosts",                     :env => vm_params
@@ -119,7 +123,7 @@ Vagrant.configure("2") do |config|
 
     haproxy.vm.provider :virtualbox do |vb|
       vb.cpus = 2
-      vb.memory = 2048
+      vb.memory = 1536
     end
 
     haproxy.vm.provision :shell, :path => "common/sethosts.sh",         :args => [vm_params[:haproxy_hostname], 12],                      :name => "Set hosts",                       :env => vm_params
@@ -149,7 +153,7 @@ Vagrant.configure("2") do |config|
 
     mariadb.vm.provider :virtualbox do |vb|
       vb.cpus = 1
-      vb.memory = 1536
+      vb.memory = 1024
     end
 
     mariadb.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:mariadb_hostname], 12],                                                  :name => "Set hosts",                       :env => vm_params
@@ -170,7 +174,7 @@ Vagrant.configure("2") do |config|
 
       glusterfs.vm.provider :virtualbox do |vb|
         vb.cpus = 1
-        vb.memory = 1536
+        vb.memory = 1024
       end
 
       configure_cluster = (i == vm_params[:glusterfs_ip_end]) ? "--configure-cluster" : ""
@@ -194,7 +198,7 @@ Vagrant.configure("2") do |config|
 
       nginx.vm.provider :virtualbox do |vb|
         vb.cpus = 1
-        vb.memory = 1536
+        vb.memory = 1024
       end
 
       nginx.vm.provision :shell, :path => "common/sethosts.sh",       :args => ["#{vm_params[:nginx_hostname_base]}#{i}\topensource.axelfloquet.fr", 10], :name => "Set hosts",                                    :env => vm_params
@@ -218,7 +222,7 @@ Vagrant.configure("2") do |config|
 
       apache.vm.provider :virtualbox do |vb|
         vb.cpus = 1
-        vb.memory = 1536
+        vb.memory = 1024
       end
 
       apache.vm.provision :shell, :path => "common/sethosts.sh",        :args => ["#{vm_params[:apache_hostname_base]}#{i}\topensource.axelfloquet.fr", 10], :name => "Set hosts",                                    :env => vm_params
@@ -273,7 +277,26 @@ Vagrant.configure("2") do |config|
     rsyslog.vm.provision :shell, :path => "common/enableservices.sh", :args => ["rsyslog filebeat netfilter-persistent", 66],         :name => "Enable and start services"
     rsyslog.vm.provision :shell, :path => "common/iptables.sh",       :args => 77,                                                    :name => "Common firewall rules"
     rsyslog.vm.provision :shell, :path => "rsyslog/iptables.sh",      :args => 88,                                                    :name => "Rsyslog specific firewall rules", :env  => vm_params
-    rsyslog.vm.provision :shell, :path => "rsyslog/config.sh",        :args => 100,                                                    :name => "Rsyslog configuration",           :env  => vm_params
+    rsyslog.vm.provision :shell, :path => "rsyslog/config.sh",        :args => 100,                                                   :name => "Rsyslog configuration",           :env  => vm_params
+  end
+
+  # Defining here the ssh bastion with cockpit
+  config.vm.define vm_params[:cockpit_hostname] do |cockpit|
+    cockpit.vm.hostname = vm_params[:cockpit_hostname]
+    cockpit.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:cockpit_ip], netmask: vm_params[:netmask]
+
+    cockpit.vm.provider :virtualbox do |vb|
+      vb.cpus = 1
+      vb.memory = 1024
+    end
+
+    cockpit.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:cockpit_hostname], 11],            :name => "Set hosts",                       :env => vm_params
+    cockpit.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 22],              :name => "Set system proxy"
+    cockpit.vm.provision :shell, :path => "common/apt.sh",            :args => ["neovim unzip wget iptables-persistent", 44], :name => "APT operations (General)"
+    cockpit.vm.provision :shell, :path => "common/enableservices.sh", :args => ["netfilter-persistent", 66],                  :name => "Enable and start services"
+    cockpit.vm.provision :shell, :path => "common/iptables.sh",       :args => 77,                                            :name => "Common firewall rules"
+    cockpit.vm.provision :shell, :path => "cockpit/iptables.sh",      :args => 88,                                            :name => "Cockpit specific firewall rules", :env  => vm_params
+    cockpit.vm.provision :shell, :path => "cockpit/config.sh",        :args => 100,                                           :name => "Cockpit configuration",           :env  => vm_params
   end
 
   # Open browser after setting up / booting up one or several web servers
