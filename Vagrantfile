@@ -80,6 +80,11 @@ Vagrant.configure("2") do |config|
     :website_password        => ENV['WP_ADMIN_PASSWORD'],           # Sets the admin password. Make sure to use a strong password
     :website_email           => "contact@opensource.fr",            # Sets the email address linked to the admin account
     :noindex                 => 0                                   # Defines if the website should be indexed by the search engines. 0 = do not index website. 1 = show website in search resulsts.
+
+    # Centreon server
+    :centreon_hostname       => "wp-centreon",
+    :centreon_ip             => "192.168.43.21",
+    :centreon_root           => "/"
   }
 
   # Used to detect if browser has already been opened
