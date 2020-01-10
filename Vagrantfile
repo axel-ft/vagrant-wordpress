@@ -281,6 +281,20 @@ Vagrant.configure("2") do |config|
     rsyslog.vm.provision :shell, :path => "rsyslog/config.sh",        :args => 100,                                                    :name => "Rsyslog configuration",           :env  => vm_params
   end
 
+  config.vm.define vm_params[:centreon_hostname] do |cent|
+    cent.vm.hostname = vm_params[:centreon_hostname]
+    cent.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:centreon_ip], netmask: vm_params[:netmask]
+
+    cent.log.vm.provider :virtualbox do |vb|
+      vb.cpus = 1
+      vb.memory = 1024
+    end
+
+    cent.vm.provision :shell, :path => "common/sethosts.sh",          :args => [vm_params[:centreon_hostname], 11]                    :name => "Set hosts",
+    cent.vm.provision :shell, :path => "common/setproxy.sh",          :args => [vm_params[:squid_hostname], 22],                       :name => "Set system proxy"
+    cent.vm.provision :shell, :path => "common/apt.sh",               :args => ["build-essential cmake pkg-config libperl-dev libssh2-1-dev libgcrypt-dev libcgsi-gsoap-dev zlib1g-dev libssl-dev libxerces-c-dev libgnutls28-dev libssl-dev libkrb5-dev libldap2-dev libsnmp-dev gawk libwrap0-dev libmcrypt-dev smbclient fping gettext dnsutils libmodule-build-perl libmodule-install-perl libnet-snmp-perl libxml-libxml-perl libjson-perl libwww-perl libxml-xpath-perl libnet-telnet-perl libnet-ntp-perl libnet-dns-perl libdbi-perl libdbd-mysql-perl libdbd-pg-perl libdatetime-perl librrd-dev libqt4-dev libqt4-sql-mysql libgnutls28-dev lsb-release liblua5.2-dev liburi-encode-perl libdate-manip-perl snmp snmpd snmptrapd libnet-snmp-perl libsnmp-perl snmp-mibs-downloader", 44], :name => "APT operations (General)"
+    cent.vm.provision :shell, :path => "centreon/"
+    
   # Open browser after setting up / booting up one or several web servers
   config.trigger.after [:up, :provision, :reload, :resume], only_on: [/#{vm_params[:nginx_hostname_base]}\d{1,3}/, /#{vm_params[:apache_hostname_base]}\d{1,3}/] do |trigger|
     trigger.ruby do |env,machine|
