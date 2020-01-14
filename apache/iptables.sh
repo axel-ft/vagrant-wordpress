@@ -11,11 +11,11 @@
 
 # Input rules
 # IPv4
-iptables -A INPUT -i ${bridgeif_guest_name} -p tcp -s ${squid_hostname} --sport 3128  -m conntrack --ctstate ESTABLISHED -j ACCEPT               # Allow Established connections to the proxy
-iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --sport 514 -s ${rsyslog_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT               # Established TCP Rsyslog
-iptables -A INPUT -i ${bridgeif_guest_name} -p udp --sport 514 -s ${rsyslog_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT               # Established UDP Rsyslog
-iptables -A INPUT -i ${bridgeif_guest_name} -p tcp -s ${mariadb_hostname} --sport mysql -m conntrack --ctstate ESTABLISHED -j ACCEPT             # Allow Established connections to database
-iptables -A INPUT -i ${bridgeif_guest_name} -p tcp -s ${haproxy_hostname} --dport ${2} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT          # Allow New connections to website only from load balancer
+iptables -A INPUT -i ${guest_interface_name} -p tcp -s ${squid_hostname} --sport 3128  -m conntrack --ctstate ESTABLISHED -j ACCEPT               # Allow Established connections to the proxy
+iptables -A INPUT -i ${guest_interface_name} -p tcp --sport 514 -s ${rsyslog_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT               # Established TCP Rsyslog
+iptables -A INPUT -i ${guest_interface_name} -p udp --sport 514 -s ${rsyslog_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT               # Established UDP Rsyslog
+iptables -A INPUT -i ${guest_interface_name} -p tcp -s ${mariadb_hostname} --sport mysql -m conntrack --ctstate ESTABLISHED -j ACCEPT             # Allow Established connections to database
+iptables -A INPUT -i ${guest_interface_name} -p tcp -s ${haproxy_hostname} --dport ${2} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT          # Allow New connections to website only from load balancer
 iptables -A INPUT -p tcp -s ${apache_hostname_base}${1} -d ${apache_hostname_base}${1} --sport ${2} -m conntrack --ctstate ESTABLISHED -j ACCEPT # Loopback rule to access website locally without proxy
 iptables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ctstate ESTABLISHED -j DROP                                         # Prevent Internet browsing without proxy
 # IPv6
@@ -23,11 +23,11 @@ ip6tables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ct
 
 # Output rules
 # IPv4
-iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp -d ${mariadb_hostname} --dport mysql -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT             # Allow new connections to the database
-iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --dport 514 -s ${rsyslog_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT               # Allow new TCP Rsyslog
-iptables -A OUTPUT -o ${bridgeif_guest_name} -p udp --dport 514 -s ${rsyslog_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT               # Allow new UDP Rsyslog
-iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp -d ${squid_hostname} --dport 3128 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                # Allow new connections to the proxy
-iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp -d ${haproxy_hostname} --sport ${2} -m conntrack --ctstate ESTABLISHED -j ACCEPT                  # Allow Established connections from website to load balancer only
+iptables -A OUTPUT -o ${guest_interface_name} -p tcp -d ${mariadb_hostname} --dport mysql -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT             # Allow new connections to the database
+iptables -A OUTPUT -o ${guest_interface_name} -p tcp --dport 514 -s ${rsyslog_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT               # Allow new TCP Rsyslog
+iptables -A OUTPUT -o ${guest_interface_name} -p udp --dport 514 -s ${rsyslog_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT               # Allow new UDP Rsyslog
+iptables -A OUTPUT -o ${guest_interface_name} -p tcp -d ${squid_hostname} --dport 3128 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                # Allow new connections to the proxy
+iptables -A OUTPUT -o ${guest_interface_name} -p tcp -d ${haproxy_hostname} --sport ${2} -m conntrack --ctstate ESTABLISHED -j ACCEPT                  # Allow Established connections from website to load balancer only
 iptables -A OUTPUT -p tcp -s ${apache_hostname_base}${1} -d ${apache_hostname_base}${1} --dport ${2} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Loopback rule to access website locally without proxy
 iptables -A OUTPUT -p tcp -m multiport --dports ftp,http,https -m conntrack --ctstate NEW,ESTABLISHED -j DROP                                         # Prevent Internet browsing without proxy
 # IPv6

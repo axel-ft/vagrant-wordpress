@@ -9,8 +9,7 @@
 
 Vagrant.configure("2") do |config|
   # Checking, and maybe installing vagrant-env plugin if it is not present to retrieve passwords from .env file
-  puts "Installing missing plugin vagrant-env..."
-  config.vagrant.plugins = "vagrant-env"
+  config.vagrant.plugins = ["vagrant-env", "vagrant-vmware-esxi"]
 
   # Check updates and use use Ubuntu 18.04 image from Hashicorp
   config.vm.box = "hashicorp/bionic64"
@@ -18,30 +17,35 @@ Vagrant.configure("2") do |config|
 
   # Use the .env file to load passwords
   config.env.enable
-  config.vagrant.sensitive = [ENV['HAPROXY_STATS_PASSWORD'], ENV['DB_ROOT_PASSWORD'], ENV['DB_USER_PASSWORD'], ENV['WP_ADMIN_PASSWORD']]
+  config.vagrant.sensitive = [ENV['ESXI_USER_PASSWORD'], ENV['HAPROXY_STATS_PASSWORD'], ENV['DB_ROOT_PASSWORD'], ENV['DB_USER_PASSWORD'], ENV['WP_ADMIN_PASSWORD']]
 
   # Define all variables here in a flat hash (nested hash cannot be used easily in provision)
   # All params are transmitted to scripts with environment variables
   vm_params = {
+    # ESXI Configuration
+    :esxi_hostname           => "192.168.0.9",
+    :esxi_hostport           => 22,
+    :esxi_username           => "root",
+    :esxi_password           => ENV['ESXI_USER_PASSWORD'],
+
     # Network configuration
-    :range_ip_base           => "192.168.43.",                      # Cannot be wider than a 255.255.255.0 network (scripts won't work)
+    :range_ip_base           => "10.10.0.",                         # Cannot be wider than a 255.255.255.0 network (scripts won't work)
     :netmask                 => "255.255.255.0",                    # Cannot be wider that a 255.255.255.0 network (scripts won't work)
-    :bridgeif                => "Intel(R) Wireless-AC 9560 160MHz", # Name of the interface to bridge. Command "VBoxManage list bridgedifs" is used to obtain the correct name
-    :bridgeif_guest_name     => "eth1",                             # Name of the bridged interface in the guest. Mostly used for firewall configuration
+    :guest_interface_name     => "eth1",                            # Name of the bridged interface in the guest. Mostly used for firewall configuration
 
     # Proxy
     :squid_hostname          => "wp-proxy",                         # Hostname for the squid proxy server
-    :squid_ip                => "192.168.43.10",                    # IP for the squid proxy server. Must be the first of the project.
+    :squid_ip                => "10.10.0.10",                       # IP for the squid proxy server. Must be the first of the project.
 
     # Reverse proxy and load balancer
     :haproxy_hostname        => "wp-lb",                            # Hostname for the load balancer server
-    :haproxy_ip              => "192.168.43.11",                    # IP for the load balancer server
+    :haproxy_ip              => "10.20.0.10",                       # IP for the load balancer server
     :haproxy_stats_user      => "admin",                            # Username to access the stats of HAProxy on the 1936 port (not open to eth0 nor eth1 by default)
     :haproxy_stats_password  => ENV['HAPROXY_STATS_PASSWORD'],      # Password to access the stats of HAProxy on the 1936 port (not open to eth0 nor eth1 by default)
 
     # Database
     :mariadb_hostname        => "wp-db",                            # Hostname for the database server
-    :mariadb_ip              => "192.168.43.12",                    # IP for the database server
+    :mariadb_ip              => "10.10.0.11",                       # IP for the database server
     :database_name           => "wordpress",                        # Defines the WordPress database name. It will only be used for the WordPress website. It uses utf8mb4 charset to support all types of characters including emojis.
     :database_username       => "wordpressuser",                    # Defines the WordPress database user. It will be only allowed to connect from web servers and have all privileges on the WordPress website database.
     :database_root_password  => ENV['DB_ROOT_PASSWORD'],            # Defines the root password for the mariadb database, which have all privileges on all the databases on the server. Root is only allowed to log in locally.
@@ -49,17 +53,17 @@ Vagrant.configure("2") do |config|
 
     # File servers
     :glusterfs_hostname_base => "wp-file",                          # Sets the base of hostname for the file servers with GlusterFS, sequence number will be added
-    :glusterfs_ip_start      => 13,                                 # Sets start of range of GlusterFS servers (for example, range 13 to 14 will give 2 servers with the default : 192.168.43.13 and 192.168.43.14)
-    :glusterfs_ip_end        => 14,                                 # Sets end of range of GlusterFS servers. It will be used to configure the storage cluster. It must also be at least equal to the start of the range (1 VM)
+    :glusterfs_ip_start      => 12,                                 # Sets start of range of GlusterFS servers (for example, range 13 to 14 will give 2 servers with the default : 192.168.43.13 and 192.168.43.14)
+    :glusterfs_ip_end        => 13,                                 # Sets end of range of GlusterFS servers. It will be used to configure the storage cluster. It must also be at least equal to the start of the range (1 VM)
     :glusterfs_root          => "/data",                            # Defines the root of the GlusterFS volumes on the file servers. Folder will be created at config time for 2 bricks by server.
     
     # Web servers
     :nginx_hostname_base     => "wp-web-n",                         # Sets the base of hostname for the nginx web servers, sequence number will be added
-    :nginx_ip_start          => 15,                                 # Sets start of range of nginx servers. It must be the first IP of the web servers (for GlusterFS rules)
-    :nginx_ip_end            => 16,                                 # Sets end of range of nginx servers. It must be at least equal to the start of the range (1 VM)
+    :nginx_ip_start          => 14,                                 # Sets start of range of nginx servers. It must be the first IP of the web servers (for GlusterFS rules)
+    :nginx_ip_end            => 15,                                 # Sets end of range of nginx servers. It must be at least equal to the start of the range (1 VM)
     :apache_hostname_base    => "wp-web-a",                         # Sets the base of hostname for the apache web servers, sequence number will be added
-    :apache_ip_start         => 17,                                 # Sets start of range of apache servers (for example, range 17 to 17 will only provision one server with 192.168.43.17)
-    :apache_ip_end           => 17,                                 # Sets end of range of apache servers. It must be at least equal to the start of the range (1 VM). Must also be the last IP of the project
+    :apache_ip_start         => 16,                                 # Sets start of range of apache servers (for example, range 17 to 17 will only provision one server with 192.168.43.17)
+    :apache_ip_end           => 16,                                 # Sets end of range of apache servers. It must be at least equal to the start of the range (1 VM). Must also be the last IP of the project
     :https_enabled           => true,                               # Uses HTTPS to serve website. A valid certificate is required in cert folder. Can be disabled if no cert present.
     :domain_name             => "opensource.axelfloquet.fr",        # Name of the domain used for the website. Must match the name of the certificate to prevent warnings in browser. Must be set in /etc/hosts or %WINDIR%\System32\drivers\etc\hosts to redirect to correct IP (the HAProxy machine)
     :cert_root               => "/vagrant/cert",                    # Should not be modified. Path of the cert within the guest OS. It is used to configure the vhosts to use HTTPS. For simplicity, it is kept in a shared folder with the host and the other machines.
@@ -67,9 +71,9 @@ Vagrant.configure("2") do |config|
 
     # Centralized log server
     :rsyslog_hostname        => "wp-log",                           # Hostname for the centralized log server (rsyslog and filebeat)
-    :rsyslog_ip              => "192.168.43.18",                    # IP for the centralized log server (rsyslog and filebeat)
+    :rsyslog_ip              => "10.10.0.17",                       # IP for the centralized log server (rsyslog and filebeat)
     :elk_hostname            => "wp-elk",                           # Hostname for the centralized log server (ELK stack)
-    :elk_ip                  => "192.168.43.19",                    # IP for the centralized log server (ELK stack)
+    :elk_ip                  => "10.10.0.18",                       # IP for the centralized log server (ELK stack)
     :kibana_domain_name      => "kibana.opensource.axelfloquet.fr", # Domain name for kibana, set in HAProxy
 
     # WordPress configuration
@@ -89,19 +93,27 @@ Vagrant.configure("2") do |config|
   proto = (vm_params[:https_enabled]) ? "https" : "http"
   puts "### #{proto} will be used ###"
 
+  config.vm.synced_folder('.', '/vagrant', type: 'rsync')
+
   # Save the progressbar.sh script in path
   config.vm.provision :shell, :inline => "cp -f /vagrant/common/progressbar.sh /usr/local/bin/progressbar", :name => "Install progressbar script in path"
 
   # Defining here the proxy VM with squid
   config.vm.define vm_params[:squid_hostname], :primary => true do |squid|
     squid.vm.hostname = vm_params[:squid_hostname]
-    squid.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:squid_ip], netmask: vm_params[:netmask]
+    squid.vm.network :private_network, ip: vm_params[:squid_ip], netmask: vm_params[:netmask]
 
-    squid.vm.provider :virtualbox do |vb|
-      vb.cpus = 2
-      vb.memory = 2048
+    squid.vm.provider :vmware_esxi do |esxi|
+      esxi.esxi_hostname = vm_params[:esxi_hostname]
+      esxi.esxi_username = vm_params[:esxi_username]
+      esxi.esxi_password = vm_params[:esxi_password]
+      esxi.esxi_hostport = vm_params[:esxi_hostport]
+      esxi.esxi_virtual_network = ['Vagrant Management','LAN']
+      esxi.guest_numvcpus = 2
+      esxi.guest_memsize = 2048
     end
 
+    squid.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
     squid.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:squid_hostname], 12],                 :name => "Set hosts",                     :env => vm_params
     squid.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],               :name => "Set centralized log server",    :env => vm_params
     squid.vm.provision :shell, :path => "common/apt.sh",            :args => ["neovim iptables-persistent squid rsyslog", 37], :name => "APT operations"
@@ -115,13 +127,19 @@ Vagrant.configure("2") do |config|
   # Defining here the load balancer server with HAProxy
   config.vm.define vm_params[:haproxy_hostname] do |haproxy|
     haproxy.vm.hostname = vm_params[:haproxy_hostname]
-    haproxy.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:haproxy_ip], netmask: vm_params[:netmask]
+    haproxy.vm.network :public_network, ip: vm_params[:haproxy_ip], netmask: vm_params[:netmask]
 
-    haproxy.vm.provider :virtualbox do |vb|
-      vb.cpus = 2
-      vb.memory = 2048
+    haproxy.vm.provider :vmware_esxi do |esxi|
+      esxi.esxi_hostname = vm_params[:esxi_hostname]
+      esxi.esxi_username = vm_params[:esxi_username]
+      esxi.esxi_password = vm_params[:esxi_password]
+      esxi.esxi_hostport = vm_params[:esxi_hostport]
+      esxi.esxi_virtual_network = ['Vagrant Management','DMZ']
+      esxi.guest_numvcpus = 2
+      esxi.guest_memsize = 2048
     end
 
+    haproxy.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.20.0.254"
     haproxy.vm.provision :shell, :path => "common/sethosts.sh",         :args => [vm_params[:haproxy_hostname], 12],                      :name => "Set hosts",                       :env => vm_params
     haproxy.vm.provision :shell, :path => "common/setrsyslog.sh",       :args => [vm_params[:rsyslog_hostname], 25],                      :name => "Set centralized log server",    :env => vm_params
     haproxy.vm.provision :shell, :path => "common/setproxy.sh",         :args => [vm_params[:squid_hostname], 37],                        :name => "Set system proxy"
@@ -145,13 +163,19 @@ Vagrant.configure("2") do |config|
   # Defining here the database server with mariadb
   config.vm.define vm_params[:mariadb_hostname] do |mariadb|
     mariadb.vm.hostname = vm_params[:mariadb_hostname]
-    mariadb.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:mariadb_ip], netmask: vm_params[:netmask]
+    mariadb.vm.network :public_network, ip: vm_params[:mariadb_ip], netmask: vm_params[:netmask]
 
-    mariadb.vm.provider :virtualbox do |vb|
-      vb.cpus = 1
-      vb.memory = 1536
+    mariadb.vm.provider :vmware_esxi do |esxi|
+      esxi.esxi_hostname = vm_params[:esxi_hostname]
+      esxi.esxi_username = vm_params[:esxi_username]
+      esxi.esxi_password = vm_params[:esxi_password]
+      esxi.esxi_hostport = vm_params[:esxi_hostport]
+      esxi.esxi_virtual_network = ['Vagrant Management','LAN']
+      esxi.guest_numvcpus = 1
+      esxi.guest_memsize = 1536
     end
 
+    mariadb.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
     mariadb.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:mariadb_hostname], 12],                                                  :name => "Set hosts",                       :env => vm_params
     mariadb.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                                  :name => "Set centralized log server",      :env => vm_params
     mariadb.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                                    :name => "Set system proxy"
@@ -166,15 +190,21 @@ Vagrant.configure("2") do |config|
   (vm_params[:glusterfs_ip_start]..vm_params[:glusterfs_ip_end]).each do |i|
     config.vm.define "#{vm_params[:glusterfs_hostname_base]}#{i}" do |glusterfs|
       glusterfs.vm.hostname = "#{vm_params[:glusterfs_hostname_base]}#{i}"
-      glusterfs.vm.network :public_network, bridge: vm_params[:bridgedif], ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
+      glusterfs.vm.network :public_network, ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
 
-      glusterfs.vm.provider :virtualbox do |vb|
-        vb.cpus = 1
-        vb.memory = 1536
+      glusterfs.vm.provider :vmware_esxi do |esxi|
+        esxi.esxi_hostname = vm_params[:esxi_hostname]
+        esxi.esxi_username = vm_params[:esxi_username]
+        esxi.esxi_password = vm_params[:esxi_password]
+        esxi.esxi_hostport = vm_params[:esxi_hostport]
+      esxi.esxi_virtual_network = ['Vagrant Management','LAN']
+      esxi.guest_numvcpus = 1
+        esxi.guest_memsize = 1536
       end
 
       configure_cluster = (i == vm_params[:glusterfs_ip_end]) ? "--configure-cluster" : ""
-
+      
+      glusterfs.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
       glusterfs.vm.provision :shell, :path => "common/sethosts.sh",       :args => ["#{vm_params[:gluster_hostname_base]}#{i}", 12],                       :name => "Set hosts",                         :env => vm_params
       glusterfs.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                     :name => "Set centralized log server",        :env => vm_params
       glusterfs.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                       :name => "Set system proxy"
@@ -190,13 +220,19 @@ Vagrant.configure("2") do |config|
   (vm_params[:nginx_ip_start]..vm_params[:nginx_ip_end]).each do |i|
     config.vm.define "#{vm_params[:nginx_hostname_base]}#{i}" do |nginx|
       nginx.vm.hostname = "#{vm_params[:nginx_hostname_base]}#{i}"
-      nginx.vm.network :public_network, bridge: vm_params[:bridgedif], ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
+      nginx.vm.network :public_network, ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
 
-      nginx.vm.provider :virtualbox do |vb|
-        vb.cpus = 1
-        vb.memory = 1536
+      nginx.vm.provider :vmware_esxi do |esxi|
+        esxi.esxi_hostname = vm_params[:esxi_hostname]
+        esxi.esxi_username = vm_params[:esxi_username]
+        esxi.esxi_password = vm_params[:esxi_password]
+        esxi.esxi_hostport = vm_params[:esxi_hostport]
+      esxi.esxi_virtual_network = ['Vagrant Management','LAN']
+      esxi.guest_numvcpus = 1
+        esxi.guest_memsize = 1536
       end
 
+      nginx.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
       nginx.vm.provision :shell, :path => "common/sethosts.sh",       :args => ["#{vm_params[:nginx_hostname_base]}#{i}\topensource.axelfloquet.fr", 10], :name => "Set hosts",                                    :env => vm_params
       nginx.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 20],                                        :name => "Set centralized log server",                   :env => vm_params
       nginx.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 30],                                          :name => "Set system proxy"
@@ -214,13 +250,19 @@ Vagrant.configure("2") do |config|
   (vm_params[:apache_ip_start]..vm_params[:apache_ip_end]).each do |i|
     config.vm.define "#{vm_params[:apache_hostname_base]}#{i}" do |apache|
       apache.vm.hostname = "#{vm_params[:apache_hostname_base]}#{i}"
-      apache.vm.network :public_network, bridge: vm_params[:bridgedif], ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
+      apache.vm.network :public_network, ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
 
-      apache.vm.provider :virtualbox do |vb|
-        vb.cpus = 1
-        vb.memory = 1536
+      apache.vm.provider :vmware_esxi do |esxi|
+        esxi.esxi_hostname = vm_params[:esxi_hostname]
+        esxi.esxi_username = vm_params[:esxi_username]
+        esxi.esxi_password = vm_params[:esxi_password]
+        esxi.esxi_hostport = vm_params[:esxi_hostport]
+      esxi.esxi_virtual_network = ['Vagrant Management','LAN']
+      esxi.guest_numvcpus = 1
+        esxi.guest_memsize = 1536
       end
 
+      apache.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
       apache.vm.provision :shell, :path => "common/sethosts.sh",        :args => ["#{vm_params[:apache_hostname_base]}#{i}\topensource.axelfloquet.fr", 10], :name => "Set hosts",                                    :env => vm_params
       apache.vm.provision :shell, :path => "common/setrsyslog.sh",      :args => [vm_params[:rsyslog_hostname], 20],                                         :name => "Set centralized log server",                   :env => vm_params
       apache.vm.provision :shell, :path => "common/setproxy.sh",        :args => [vm_params[:squid_hostname], 30],                                           :name => "Set system proxy"
@@ -237,13 +279,19 @@ Vagrant.configure("2") do |config|
   # Defining here the centralized log server ELK
   config.vm.define vm_params[:elk_hostname] do |elk|
     elk.vm.hostname = vm_params[:elk_hostname]
-    elk.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:elk_ip], netmask: vm_params[:netmask]
+    elk.vm.network :public_network, ip: vm_params[:elk_ip], netmask: vm_params[:netmask]
 
-    elk.vm.provider :virtualbox do |vb|
-      vb.cpus = 2
-      vb.memory = 2048
+    elk.vm.provider :vmware_esxi do |esxi|
+      esxi.esxi_hostname = vm_params[:esxi_hostname]
+      esxi.esxi_username = vm_params[:esxi_username]
+      esxi.esxi_password = vm_params[:esxi_password]
+      esxi.esxi_hostport = vm_params[:esxi_hostport]
+      esxi.esxi_virtual_network = ['Vagrant Management','LAN']
+      esxi.guest_numvcpus = 2
+      esxi.guest_memsize = 2048
     end
 
+    elk.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
     elk.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:elk_hostname], 11],                                                           :name => "Set hosts",                       :env => vm_params
     elk.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 22],                                                         :name => "Set system proxy"
     elk.vm.provision :shell, :path => "common/apt.sh",            :args => ["apt-transport-https openjdk-11-jre neovim unzip wget iptables-persistent rsyslog", 33], :name => "APT operations (General)"
@@ -258,13 +306,19 @@ Vagrant.configure("2") do |config|
   # Defining here the centralized log server with rsyslog
   config.vm.define vm_params[:rsyslog_hostname] do |rsyslog|
     rsyslog.vm.hostname = vm_params[:rsyslog_hostname]
-    rsyslog.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:rsyslog_ip], netmask: vm_params[:netmask]
+    rsyslog.vm.network :public_network, ip: vm_params[:rsyslog_ip], netmask: vm_params[:netmask]
 
-    rsyslog.vm.provider :virtualbox do |vb|
-      vb.cpus = 1
-      vb.memory = 1024
+    rsyslog.vm.provider :vmware_esxi do |esxi|
+      esxi.esxi_hostname = vm_params[:esxi_hostname]
+      esxi.esxi_username = vm_params[:esxi_username]
+      esxi.esxi_password = vm_params[:esxi_password]
+      esxi.esxi_hostport = vm_params[:esxi_hostport]
+      esxi.esxi_virtual_network = ['Vagrant Management','LAN']
+      esxi.guest_numvcpus = 1
+      esxi.guest_memsize = 1024
     end
 
+    rsyslog.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
     rsyslog.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:rsyslog_hostname], 11],                    :name => "Set hosts",                       :env => vm_params
     rsyslog.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 22],                      :name => "Set system proxy"
     rsyslog.vm.provision :shell, :path => "elk/addrepo.sh",           :args => 33,                                                    :name => "Add Elastic repo"
