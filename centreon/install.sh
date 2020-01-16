@@ -70,17 +70,17 @@ echo -e "\n##########                   ${NAME}                    ##########\n"
 echo -e "\n##########                                              ##########\n"
 echo -e "\n##################################################################\n"
 
-pushd "${CENTREON_SSH_CONNECTOR_DIR}" > /dev/null
-    cmake \
-        -DWITH_PREFIX=/usr \
-        -DWITH_PREFIX_BINARY=/usr/lib/centreon-connector  \
-        -DWITH_CENTREON_CLIB_INCLUDE_DIR=/usr/include \
-        -DWITH_TESTING=0 .
+    pushd "${CENTREON_SSH_CONNECTOR_DIR}" > /dev/null
+        cmake \
+            -DWITH_PREFIX=/usr \
+            -DWITH_PREFIX_BINARY=/usr/lib/centreon-connector  \
+            -DWITH_CENTREON_CLIB_INCLUDE_DIR=/usr/include \
+            -DWITH_TESTING=0 .
 
-    make
-    sudo make install
-    check $? "${NAME}" "build"
-popd > /dev/null
+        make
+        sudo make install
+        check $? "${NAME}" "build"
+    popd > /dev/null
 
 echo -e "\n##################################################################\n"
 echo -e "\n##########                                              ##########\n"
@@ -96,50 +96,52 @@ echo -e "\n##########                   ${NAME}                    ##########\n"
 echo -e "\n##########                                              ##########\n"
 echo -e "\n##################################################################\n"
 
-sudo groupadd -g 6001 centreon-engine
-sudo useradd -u 6001 -g centreon-engine -m -r -d /var/lib/centreon-engine \
-    -c "Centreon-engine Admin" -s /bin/bash centreon-engine
+    sudo groupadd -g 6001 centreon-engine
+    sudo useradd -u 6001 -g centreon-engine -m -r -d /var/lib/centreon-engine \
+        -c "Centreon-engine Admin" -s /bin/bash centreon-engine
 
-cd
-wget http://files.download.centreon.com/public/centreon-engine/centreon-engine-19.10.5.tar.gz
-tar xzf centreon-engine-19.10.5.tar.gz 
-cd centreon-engine-19.10.5
+    wget "${CENTREON_ENGINE}"
+    tar -xzf "${CENTREON_ENGINE_TGZ}" 
+    pushd "${CENTREON_ENGINE_DIR}" > /dev/null
+        cmake  \
+            -DWITH_CENTREON_CLIB_INCLUDE_DIR=/usr/include  \
+            -DWITH_CENTREON_CLIB_LIBRARY_DIR=/usr/lib  \
+            -DWITH_PREFIX=/usr  \
+            -DWITH_PREFIX_BIN=/usr/sbin  \
+            -DWITH_PREFIX_CONF=/etc/centreon-engine  \
+            -DWITH_USER=centreon-engine  \
+            -DWITH_GROUP=centreon-engine  \
+            -DWITH_LOGROTATE_SCRIPT=1 \
+            -DWITH_VAR_DIR=/var/log/centreon-engine  \
+            -DWITH_RW_DIR=/var/lib/centreon-engine/rw  \
+            -DWITH_STARTUP_SCRIPT=systemd  \
+            -DWITH_STARTUP_DIR=/lib/systemd/system  \
+            -DWITH_PKGCONFIG_SCRIPT=1 \
+            -DWITH_PKGCONFIG_DIR=/usr/lib/pkgconfig  \
+            -DWITH_TESTING=0  .
 
-cmake  \
-    -DWITH_CENTREON_CLIB_INCLUDE_DIR=/usr/include  \
-    -DWITH_CENTREON_CLIB_LIBRARY_DIR=/usr/lib  \
-    -DWITH_PREFIX=/usr  \
-    -DWITH_PREFIX_BIN=/usr/sbin  \
-    -DWITH_PREFIX_CONF=/etc/centreon-engine  \
-    -DWITH_USER=centreon-engine  \
-    -DWITH_GROUP=centreon-engine  \
-    -DWITH_LOGROTATE_SCRIPT=1 \
-    -DWITH_VAR_DIR=/var/log/centreon-engine  \
-    -DWITH_RW_DIR=/var/lib/centreon-engine/rw  \
-    -DWITH_STARTUP_SCRIPT=systemd  \
-    -DWITH_STARTUP_DIR=/lib/systemd/system  \
-    -DWITH_PKGCONFIG_SCRIPT=1 \
-    -DWITH_PKGCONFIG_DIR=/usr/lib/pkgconfig  \
-    -DWITH_TESTING=0  .
-    
-make
-sudo make install
+        make
+        sudo make install 
+    popd > /dev/null
+    sudo systemctl enable centengine.service
+    sudo systemctl daemon-reload
 
-sudo systemctl enable centengine.service
-sudo systemctl daemon-reload
+echo -e "\n##################################################################\n"
+echo -e "\n##########                                              ##########\n"
+echo -e "\n##########                    Done                      ##########\n"
+echo -e "\n##########                                              ##########\n"
+echo -e "\n##################################################################\n"
 
+NAME="Centreon Engine Plugins"
+echo -e "\n##################################################################\n"
+echo -e "\n##########                                              ##########\n"
+echo -e "\n##########                   ${NAME}                    ##########\n"
+echo -e "\n##########                                              ##########\n"
+echo -e "\n##################################################################\n"
 
+wget "${CENTREON_ENGINE_PLUGIN}"
 
-################################################################################
-##########                                                            ##########
-##########                  Centreon Engine Plugins                   ##########
-##########                                                            ##########
-################################################################################
-
-cd
-wget http://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz
-
-tar -xzf nagios-plugins-2.2.1.tar.gz
+tar -xzf "${CENTREON_ENGINE_PLUGIN_TGZ}"
 cd nagios-plugins-2.2.1
 
 cd
