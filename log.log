@@ -1,0 +1,815 @@
+==> wp-centreon: Running 'pre-boot' VM customizations...
+==> wp-centreon: Booting VM...
+==> wp-centreon: Waiting for machine to boot. This may take a few minutes...
+    wp-centreon: SSH address: 127.0.0.1:2200
+    wp-centreon: SSH username: vagrant
+    wp-centreon: SSH auth method: private key
+    wp-centreon: 
+    wp-centreon: Vagrant insecure key detected. Vagrant will automatically replace
+    wp-centreon: this with a newly generated keypair for better security.
+    wp-centreon: 
+    wp-centreon: Inserting generated public key within guest...
+    wp-centreon: Removing insecure key from the guest if it's present...
+    wp-centreon: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> wp-centreon: Machine booted and ready!
+==> wp-centreon: Checking for guest additions in VM...
+==> wp-centreon: Setting hostname...
+==> wp-centreon: Configuring and enabling network interfaces...
+==> wp-centreon: Configuring proxy for Apt...
+==> wp-centreon: Configuring proxy environment variables...
+==> wp-centreon: Configuring proxy for Git...
+==> wp-centreon: Mounting shared folders...
+    wp-centreon: /vagrant => /home/deadc0de/gits/vagrant-wordpress
+==> wp-centreon: Running provisioner: shell...
+    wp-centreon: Running: script: Install progressbar script in path
+==> wp-centreon: Configuring proxy for Git...
+==> wp-centreon: Running provisioner: shell...
+    wp-centreon: Running: script: Set hosts
+    wp-centreon: /tmp/vagrant-shell: line 17: ((: i=: syntax error: operand expected (error token is "=")
+    wp-centreon: /tmp/vagrant-shell: line 20: ((: i=: syntax error: operand expected (error token is "=")
+    wp-centreon: /tmp/vagrant-shell: line 23: ((: i=: syntax error: operand expected (error token is "=")
+==> wp-centreon: Configuring proxy for Git...
+==> wp-centreon: Running provisioner: shell...
+    wp-centreon: Running: script: Set system proxy
+==> wp-centreon: Configuring proxy for Git...
+==> wp-centreon: Running provisioner: shell...
+    wp-centreon: Running: script: APT operations (General)
+    wp-centreon: W
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/bionic/InRelease  Temporary failure resolving 'wp-proxy'
+    wp-centreon: W
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/bionic-updates/InRelease  Temporary failure resolving 'wp-proxy'
+    wp-centreon: W
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/bionic-backports/InRelease  Temporary failure resolving 'wp-proxy'
+    wp-centreon: W
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://security.ubuntu.com/ubuntu/dists/bionic-security/InRelease  Temporary failure resolving 'wp-proxy'
+    wp-centreon: W
+    wp-centreon: : 
+    wp-centreon: Some index files failed to download. They have been ignored, or old ones used instead.
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb1_1.13-2~ubuntu18.04_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libx11/libx11-data_1.6.4-3ubuntu0.2_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libx11/libx11-6_1.6.4-3ubuntu0.2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxext/libxext6_1.3.3-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/f/fonts-dejavu/fonts-dejavu-core_2.37-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/f/fontconfig/fontconfig-config_2.12.6-0ubuntu2_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/f/fontconfig/libfontconfig1_2.12.6-0ubuntu2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/f/fontconfig/fontconfig_2.12.6-0ubuntu2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/libj/libjpeg-turbo/libjpeg-turbo8_1.5.2-0ubuntu5.18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libj/libjpeg8-empty/libjpeg8_8c-2ubuntu8_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/l/lcms2/liblcms2-2_2.9-1ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libm/libmng/libmng2_2.0.2-0ubuntu3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/x/xorg/x11-common_7.7+19ubuntu7.1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libi/libice/libice6_1.0.9-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libs/libsm/libsm6_1.2.2-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/liba/libarchive/libarchive13_3.2.2-3.1ubuntu0.3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/s/samba/libsmbclient_4.7.6+dfsg~ubuntu-0ubuntu2.11_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/s/samba/smbclient_4.7.6+dfsg~ubuntu-0ubuntu2.11_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-8/libcc1-0_8.3.0-6ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-8/libgomp1_8.3.0-6ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-8/libitm1_8.3.0-6ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-8/libatomic1_8.3.0-6ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-7/libasan4_7.4.0-1ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-8/liblsan0_8.3.0-6ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-8/libtsan0_8.3.0-6ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-7/libubsan0_7.4.0-1ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-7/libcilkrts5_7.4.0-1ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-8/libmpx2_8.3.0-6ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-8/libquadmath0_8.3.0-6ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-7/libgcc-7-dev_7.4.0-1ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-7/gcc-7_7.4.0-1ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-defaults/gcc_7.4.0-1ubuntu2.3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-7/libstdc++-7-dev_7.4.0-1ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-7/g++-7_7.4.0-1ubuntu1~18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gcc-defaults/g++_7.4.0-1ubuntu2.3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/d/dpkg/libdpkg-perl_1.19.0.5ubuntu2.1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/d/dpkg/dpkg-dev_1.19.0.5ubuntu2.1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/b/build-essential/build-essential_12.4ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/c/cmake/cmake-data_3.10.2-1ubuntu2.18.04.1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libj/libjsoncpp/libjsoncpp1_1.7.4-3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/r/rhash/librhash0_1.3.6-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/c/cmake/cmake_3.10.2-1ubuntu2.18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/f/fping/fping_4.0-6_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libc/libcroco/libcroco3_0.6.12-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gettext/gettext_0.19.8.1-6ubuntu0.3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/g/graphite2/libgraphite2-3_1.3.11-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/h/harfbuzz/libharfbuzz0b_1.7.2-1ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/h/harfbuzz/gir1.2-harfbuzz-0.0_1.7.2-1ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/i/icu/icu-devtools_60.2-3ubuntu3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/k/krb5/libgssrpc4_1.16-2ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/k/krb5/libkdb5-9_1.16-2ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/k/krb5/libkadm5srv-mit11_1.16-2ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/k/krb5/libkadm5clnt-mit11_1.16-2ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/e/e2fsprogs/comerr-dev_2.1-1.44.1-1ubuntu1.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/k/krb5/krb5-multidev_1.16-2ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/liba/libalgorithm-c3-perl/libalgorithm-c3-perl_0.10-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxt/libxt6_1.1.5-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/n/nas/libaudio2_1.9.4-6_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libb/libb-hooks-op-check-perl/libb-hooks-op-check-perl_0.22-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libd/libdynaloader-functions-perl/libdynaloader-functions-perl_0.003-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libd/libdevel-callchecker-perl/libdevel-callchecker-perl_0.007-2build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libp/libparams-classify-perl/libparams-classify-perl_0.015-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libm/libmodule-runtime-perl/libmodule-runtime-perl_0.016-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libt/libtry-tiny-perl/libtry-tiny-perl_0.30-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libm/libmodule-implementation-perl/libmodule-implementation-perl_0.09-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libs/libsub-exporter-progressive-perl/libsub-exporter-progressive-perl_0.001013-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libv/libvariable-magic-perl/libvariable-magic-perl_0.62-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libb/libb-hooks-endofscope-perl/libb-hooks-endofscope-perl_0.21-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/p/pixman/libpixman-1-0_0.34.0-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb-render0_1.13-2~ubuntu18.04_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb-shm0_1.13-2~ubuntu18.04_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxrender/libxrender1_0.9.10-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/c/cairo/libcairo2_1.15.10-2ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libt/libtool/libltdl7_2.4.6-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-common/libglobus-common0_17.2-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-gsi-openssl-error/libglobus-gsi-openssl-error0_3.8-2build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-gsi-proxy-ssl/libglobus-gsi-proxy-ssl1_5.10-2build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-openssl-module/libglobus-openssl-module0_4.8-2build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-gsi-cert-utils/libglobus-gsi-cert-utils0_9.16-2build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-gsi-sysconfig/libglobus-gsi-sysconfig1_8.0-1build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-gsi-callback/libglobus-gsi-callback0_5.13-2build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-gsi-credential/libglobus-gsi-credential1_7.14-1build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-callout/libglobus-callout0_3.15-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-gsi-proxy-core/libglobus-gsi-proxy-core0_8.6-2build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-gssapi-gsi/libglobus-gssapi-gsi4_13.4-1build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/globus-gss-assist/libglobus-gss-assist3_11.1-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/v/voms/libvomsapi1v5_2.1.0~rc0-4_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/gsoap/libgsoap-2.8.60_2.8.60-2build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/c/cgsi-gsoap/libcgsi-gsoap1_1.3.10-5_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/g/gsoap/libgsoap-dev_2.8.60-2build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/c/cgsi-gsoap/libcgsi-gsoap-dev_1.3.10-5_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libc/libclass-c3-perl/libclass-c3-perl_0.33-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libc/libclass-data-inheritable-perl/libclass-data-inheritable-perl_0.08-2_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libc/libclass-inspector-perl/libclass-inspector-perl_1.32-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libc/libclass-method-modifiers-perl/libclass-method-modifiers-perl_2.12-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libc/libclass-singleton-perl/libclass-singleton-perl_1.5-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libp/libparams-util-perl/libparams-util-perl_1.07-3build3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libs/libsub-install-perl/libsub-install-perl_0.928-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libd/libdata-optlist-perl/libdata-optlist-perl_0.110-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libd/libdate-manip-perl/libdate-manip-perl_6.60-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libd/libdatrie/libdatrie1_0.2.10-7_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libd/libdbi-perl/libdbi-perl_1.640-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/m/mysql-defaults/mysql-common_5.8+1.0.4_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/m/mysql-5.7/libmysqlclient20_5.7.27-0ubuntu0.18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libd/libdbd-mysql-perl/libdbd-mysql-perl_4.046-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/p/postgresql-10/libpq5_10.10-0ubuntu0.18.04.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libd/libdbd-pg-perl/libdbd-pg-perl_3.7.0-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libd/libdbi/libdbi1_0.9.0-5_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libd/libdevel-stacktrace-perl/libdevel-stacktrace-perl_2.0300-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libd/libdigest-hmac-perl/libdigest-hmac-perl_1.03+dfsg-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libe/libencode-locale-perl/libencode-locale-perl_1.05-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libs/libsub-exporter-perl/libsub-exporter-perl_0.987-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libe/libeval-closure-perl/libeval-closure-perl_0.14-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libe/libexception-class-perl/libexception-class-perl_1.44-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch ht
+    wp-centreon: tp://archive.ubuntu.com/ubuntu/pool/main/libt/libtimedate-perl/libtimedate-perl_2.3000-2_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libh/libhttp-date-perl/libhttp-date-perl_6.02-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libf/libfile-listing-perl/libfile-listing-perl_6.04-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libf/libfile-remove-perl/libfile-remove-perl_1.57-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libf/libfile-sharedir-perl/libfile-sharedir-perl_1.104-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libg/libgpg-error/libgpg-error-dev_1.27-6_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/libg/libgcrypt20/libgcrypt20-dev_1.8.1-4ubuntu1.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/glib2.0/libglib2.0-bin_2.56.4-0ubuntu0.18.04.4_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/p/python3-stdlib-extensions/python3-lib2to3_3.6.8-1~18.04_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/p/python3-stdlib-extensions/python3-distutils_3.6.8-1~18.04_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/glib2.0/libglib2.0-dev-bin_2.56.4-0ubuntu0.18.04.4_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/p/pcre3/libpcre16-3_8.39-9_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/p/pcre3/libpcre32-3_8.39-9_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/p/pcre3/libpcrecpp0v5_8.39-9_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/p/pcre3/libpcre3-dev_8.39-9_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/p/pkg-config/pkg-config_0.29.1-0ubuntu2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/glib2.0/libglib2.0-dev_2.56.4-0ubuntu0.18.04.4_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/g/gmp/libgmpxx4ldbl_6.1.2+dfsg-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/g/gmp/libgmp-dev_6.1.2+dfsg-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gnutls28/libgnutls-openssl27_3.5.18-1ubuntu1.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gnutls28/libgnutlsxx28_3.5.18-1ubuntu1.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/u/unbound/libunbound2_1.6.7-1ubuntu2.2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gnutls28/libgnutls-dane0_3.5.18-1ubuntu1.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/n/nettle/nettle-dev_3.4-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libt/libtasn1-6/libtasn1-6-dev_4.13-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/p/p11-kit/libp11-kit-dev_0.23.9-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libi/libidn2/libidn2-dev_2.0.4-1.1build2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libi/libidn2/libidn2-0-dev_2.0.4-1.1build2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/g/gnutls28/libgnutls28-dev_3.5.18-1ubuntu1.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/g/graphite2/libgraphite2-dev_1.3.11-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/h/harfbuzz/libharfbuzz-icu0_1.7.2-1ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/h/harfbuzz/libharfbuzz-gobject0_1.7.2-1ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/i/icu-le-hb/libicu-le-hb0_1.0.3+git161113-4_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/i/icu/libiculx60_60.2-3ubuntu3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/i/icu-le-hb/libicu-le-hb-dev_1.0.3+git161113-4_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu-dev_60.2-3ubuntu3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/h/harfbuzz/libharfbuzz-dev_1.7.2-1ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libh/libhtml-tagset-perl/libhtml-tagset-perl_3.20-3_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libu/liburi-perl/liburi-perl_1.73-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libh/libhtml-parser-perl/libhtml-parser-perl_3.72-3build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libh/libhtml-tree-perl/libhtml-tree-perl_5.07-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libi/libio-html-perl/libio-html-perl_1.001-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libl/liblwp-mediatypes-perl/liblwp-mediatypes-perl_6.02-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libh/libhttp-message-perl/libhttp-message-perl_6.14-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libh/libhttp-cookies-perl/libhttp-cookies-perl_6.04-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libh/libhttp-negotiate-perl/libhttp-negotiate-perl_6.00-2_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libs/libsocket6-perl/libsocket6-perl_0.27-1build2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libi/libio-socket-inet6-perl/libio-socket-inet6-perl_2.72-2_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/p/perl-openssl-defaults/perl-openssl-defaults_3build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libn/libnet-ssleay-perl/libnet-ssleay-perl_1.84-1ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libi/libio-socket-ssl-perl/libio-socket-ssl-perl_2.060-3~ubuntu18.04.1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libj/libjson-perl/libjson-perl_2.97001-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/l/lua5.2/liblua5.2-0_5.2.4-1.1build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/l/lua5.2/liblua5.2-dev_5.2.4-1.1build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libn/libnet-http-perl/libnet-http-perl_6.17-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libw/libwww-robotrules-perl/libwww-robotrules-perl_6.01-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libw/libwww-perl/libwww-perl_6.31-1ubuntu0.1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libl/liblwp-protocol-https-perl/liblwp-protocol-https-perl_6.07-2_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libm/libmcrypt/libmcrypt4_2.5.8-3.3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libm/libmcrypt/libmcrypt-dev_2.5.8-3.3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libm/libmodule-build-perl/libmodule-build-perl_0.422400-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libm/libmodule-scandeps-perl/libmodule-scandeps-perl_1.24-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/liby/libyaml-tiny-perl/libyaml-tiny-perl_1.70-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libm/libmodule-install-perl/libmodule-install-perl_1.19-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libm/libmro-compat-perl/libmro-compat-perl_0.13-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libp/libpackage-stash-perl/libpackage-stash-perl_0.37-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libs/libsub-identify-perl/libsub-identify-perl_0.14-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libs/libsub-name-perl/libsub-name-perl_0.21-1build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libn/libnamespace-clean-perl/libnamespace-clean-perl_0.27-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libn/libnamespace-autoclean-perl/libnamespace-autoclean-perl_0.28-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libn/libnet-ip-perl/libnet-ip-perl_1.26-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libn/libnet-dns-perl/libnet-dns-perl_1.10-2_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libn/libnet-ntp-perl/libnet-ntp-perl_1.5-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libn/libnet-snmp-perl/libnet-snmp-perl_6.0.1-3_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libn/libnet-telnet-perl/libnet-telnet-perl_3.04-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libt/libthai/libthai-data_0.1.27-2_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libt/libthai/libthai0_0.1.27-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/p/pango1.0/libpango-1.0-0_1.40.14-1ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/p/pango1.0/libpangoft2-1.0-0_1.40.14-1ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/p/pango1.0/libpangocairo-1.0-0_1.40.14-1ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libp/libparams-validationcompiler-perl/libparams-validationcompiler-perl_0.26-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/s/systemd/libudev-dev_237-3ubuntu10.25_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/p/pciutils/libpci-dev_3.5.2-1ubuntu1.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/p/perl/libperl-dev_5.26.1-6ubuntu0.3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/qtcore4-l10n_4.8.7+dfsg-7ubuntu1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqtcore4_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-xml_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqtdbus4_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/q/qtchooser/qtchooser_64-ga1b6736-5_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/qdbus_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-dbus_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-network_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-script_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-sql_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-xmlpatterns_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/j/jbigkit/libjbig0_2.1-3.1build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/t/tiff/libtiff5_4.0.9-5ubuntu0.2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxi/libxi6_1.7.9-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqtgui4_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-declarative_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-designer_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-qt3support_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-dev-bin_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-help_4.8.7+dfsg-7ubuntu1_amd64.deb  
+    wp-centreon: Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-scripttools_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-svg_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-test_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/qt4-linguist-tools_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/qt4-qmake_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-dev_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qt4-x11/libqt4-sql-mysql_4.8.7+dfsg-7ubuntu1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libr/librole-tiny-perl/librole-tiny-perl_2.000006-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/r/rrdtool/librrd8_1.7.0-1build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/r/rrdtool/librrd-dev_1.7.0-1build1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/l/lm-sensors/libsensors4_3.4.0-4_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/n/net-snmp/libsnmp-base_5.7.3+dfsg-1.8ubuntu3.1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/n/net-snmp/libsnmp30_5.7.3+dfsg-1.8ubuntu3.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/t/tcp-wrappers/libwrap0-dev_7.6.q-27_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/l/lm-sensors/libsensors4-dev_3.4.0-4_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/n/net-snmp/libsnmp-dev_5.7.3+dfsg-1.8ubuntu3.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/universe/n/net-snmp/libsnmp-perl_5.7.3+dfsg-1.8ubuntu3.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libs/libsub-quote-perl/libsub-quote-perl_2.005000-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libs/libspecio-perl/libspecio-perl_0.42-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libs/libssh2/libssh2-1_1.8.0-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libs/libssh2/libssh2-1-dev_1.8.0-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libu/liburi-encode-perl/liburi-encode-perl_1.1.1-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/x/xerces-c/libxerces-c3.2_3.2.0+debian-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/x/xerces-c/libxerces-c-dev_3.2.0+debian-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxml-namespacesupport-perl/libxml-namespacesupport-perl_1.12-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxml-sax-base-perl/libxml-sax-base-perl_1.09-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxml-sax-perl/libxml-sax-perl_0.99+dfsg-2ubuntu1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxml-libxml-perl/libxml-libxml-perl_2.0128+dfsg-5_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libx/libxml-parser-perl/libxml-parser-perl_2.44-2build3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libx/libxml-xpath-perl/libxml-xpath-perl_1.42-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libs/libsmi/smistrip_0.4.8+dfsg2-15_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/n/net-snmp/snmp_5.7.3+dfsg-1.8ubuntu3.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/multiverse/s/snmp-mibs-downloader/snmp-mibs-downloader_1.1+nmu1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/n/net-snmp/snmpd_5.7.3+dfsg-1.8ubuntu3.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/universe/n/net-snmp/snmptrapd_5.7.3+dfsg-1.8ubuntu3.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libd/libdatetime-locale-perl/libdatetime-locale-perl_1.17-1_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libd/libdatetime-timezone-perl/libdatetime-timezone-perl_2.18-1+2018d_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libd/libdatetime-perl/libdatetime-perl_1.46-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/k/krb5/libkrb5-dev_1.16-2ubuntu0.1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/o/openldap/libldap2-dev_2.4.45+dfsg-1ubuntu1.3_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+==> wp-centreon: Configuring proxy for Git...
+==> wp-centreon: Running provisioner: shell...
+    wp-centreon: Running: /tmp/vagrant-shell20200116-1338-1fzg7nu.cfg
+==> wp-centreon: Configuring proxy for Git...
+==> wp-centreon: Running provisioner: shell...
+    wp-centreon: Running: /tmp/vagrant-shell20200116-1338-a2pwv4.sh
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                   Centreon Clib                    ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: /tmp/vagrant-shell: line 4: /tmp/centreon.cfg: No such file or directory
+    wp-centreon: /tmp/vagrant-shell: line 15: check: command not found
+    wp-centreon: /tmp/vagrant-shell: line 19: cmake: command not found
+    wp-centreon: make: *** No targets specified and no makefile found.  Stop.
+    wp-centreon: make: *** No rule to make target 'install'.  Stop.
+    wp-centreon: /tmp/vagrant-shell: line 26: check: command not found
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                    Done                      ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                   Centreon Perl Connector                     ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: /tmp/vagrant-shell: line 45: check: command not found
+    wp-centreon: /tmp/vagrant-shell: line 48: cmake: command not found
+    wp-centreon: /tmp/vagrant-shell: line 50: -DWITH_PREFIX=/usr: No such file or directory
+    wp-centreon: make: *** No targets specified and no makefile found.  Stop.
+    wp-centreon: make: *** No rule to make target 'install'.  Stop.
+    wp-centreon: /tmp/vagrant-shell: line 56: check: command not found
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                    Done                      ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                   Centreon SSH Connector                    ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: /tmp/vagrant-shell: line 75: cmake: command not found
+    wp-centreon: make: *** No targets specified and no makefile found.  Stop.
+    wp-centreon: make: *** No rule to make target 'install'.  Stop.
+    wp-centreon: /tmp/vagrant-shell: line 82: check: command not found
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                    Done                      ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                   Centreon Engine                    ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: ²²
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: tar (child): 
+    wp-centreon: : Cannot open
+    wp-centreon: : No such file or directory
+    wp-centreon: tar (child): 
+    wp-centreon: Error is not recoverable: exiting now
+    wp-centreon: tar: Child returned status 2
+    wp-centreon: tar: Error is not recoverable: exiting now
+    wp-centreon: http://: Invalid host name.
+    wp-centreon: tar (child): 
+    wp-centreon: : Cannot open
+    wp-centreon: : No such file or directory
+    wp-centreon: tar (child): 
+    wp-centreon: Error is not recoverable: exiting now
+    wp-centreon: tar: Child returned status 2
+    wp-centreon: tar: Error is not recoverable: exiting now
+    wp-centreon: /tmp/vagrant-shell: line 111: cmake: command not found
+    wp-centreon: make: *** No targets specified and no makefile found.  Stop.
+    wp-centreon: make: *** No rule to make target 'install'.  Stop.
+    wp-centreon: Failed to enable unit: Unit file centengine.service does not exist.
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                    Done                      ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                   Centreon Engine Plugins                    ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: http://: Invalid host name.
+    wp-centreon: tar (child): 
+    wp-centreon: : Cannot open
+    wp-centreon: : No such file or directory
+    wp-centreon: tar (child): 
+    wp-centreon: Error is not recoverable: exiting now
+    wp-centreon: tar: Child returned status 2
+    wp-centreon: tar: Error is not recoverable: exiting now
+    wp-centreon: /tmp/vagrant-shell: line 149: cd: nagios-plugins-2.2.1: No such file or directory
+    wp-centreon: /tmp/vagrant-shell: line 152: cmake: command not found
+    wp-centreon: make: *** No targets specified and no makefile found.  Stop.
+    wp-centreon: make: *** No rule to make target 'install'.  Stop.
+    wp-centreon: Failed to enable unit: Unit file centengine.service does not exist.
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                    Done                      ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                   Centreon Engine Plugins                    ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: tar (child): 
+    wp-centreon: : Cannot open
+    wp-centreon: : No such file or directory
+    wp-centreon: tar (child): 
+    wp-centreon: Error is not recoverable: exiting now
+    wp-centreon: tar: Child returned status 2
+    wp-centreon: tar: Error is not recoverable: exiting now
+    wp-centreon: tar (child): 
+    wp-centreon: : Cannot open
+    wp-centreon: : No such file or directory
+    wp-centreon: tar (child): 
+    wp-centreon: Error is not recoverable: exiting now
+    wp-centreon: tar: Child returned status 2
+    wp-centreon: tar: Error is not recoverable: exiting now
+    wp-centreon: /tmp/vagrant-shell: line 194: ./configure: No such file or directory
+    wp-centreon: make: *** No targets specified and no makefile found.  Stop.
+    wp-centreon: make: *** No rule to make target 'install'.  Stop.
+    wp-centreon: tar (child): 
+    wp-centreon: : Cannot open
+    wp-centreon: : No such file or directory
+    wp-centreon: tar (child): 
+    wp-centreon: Error is not recoverable: exiting now
+    wp-centreon: tar: Child returned status 2
+    wp-centreon: tar: Error is not recoverable: exiting now
+    wp-centreon: chmod: 
+    wp-centreon: cannot access '*'
+    wp-centreon: : No such file or directory
+    wp-centreon: mv: 
+    wp-centreon: cannot stat '*'
+    wp-centreon: : No such file or directory
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                    Done                      ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                   Centreon Broker                    ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: tar (child): 
+    wp-centreon: : Cannot open
+    wp-centreon: : No such file or directory
+    wp-centreon: tar (child): 
+    wp-centreon: Error is not recoverable: exiting now
+    wp-centreon: tar: Child returned status 2
+    wp-centreon: tar: Error is not recoverable: exiting now
+    wp-centreon: /tmp/vagrant-shell: line 230: cmake: command not found
+    wp-centreon: make: *** No targets specified and no makefile found.  Stop.
+    wp-centreon: make: *** No rule to make target 'install'.  Stop.
+    wp-centreon: Failed to enable unit: Unit file cbd.service does not exist.
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                    Done                      ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                   SNMP Protocole                    ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: /tmp/vagrant-shell: line 263: /etc/snmp/snmpd.conf: No such file or directory
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                    Done                      ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                   MIBS                    ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: /tmp/vagrant-shell: line 301: /etc/snmp/snmp.conf: No such file or directory
+    wp-centreon: Failed to restart snmpd.service: Unit snmpd.service not found.
+    wp-centreon: Failed to restart snmptrapd.service: Unit snmptrapd.service not found.
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                    Done                      ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                   Centreon UI                    ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: WARNING: 
+    wp-centreon: apt
+    wp-centreon:  
+    wp-centreon: does not have a stable CLI interface. 
+    wp-centreon: Use with caution in scripts.
+    wp-centreon: Reading package lists...
+    wp-centreon: Building dependency tree...
+    wp-centreon: Reading state information...
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Unable to locate package php7.3-sqlite3
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Couldn't find any package by glob 'php7.3-sqlite3'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Couldn't find any package by regex 'php7.3-sqlite3'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Unable to locate package php7.3-ldap
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Couldn't find any package by glob 'php7.3-ldap'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Couldn't find any package by regex 'php7.3-ldap'
+    wp-centreon: E: Unable to locate package php7.3-snmp
+    wp-centreon: E: Couldn't find any package by glob 'php7.3-snmp'
+    wp-centreon: E: Couldn't find any package by regex 'php7.3-snmp'
+    wp-centreon: sudo
+    wp-centreon: : 
+    wp-centreon: a2enmod: command not found
+    wp-centreon: sudo
+    wp-centreon: : 
+    wp-centreon: a2enconf: command not found
+    wp-centreon: sudo
+    wp-centreon: : 
+    wp-centreon: a2dismod: command not found
+    wp-centreon: Failed to restart apache2.service: Unit apache2.service not found.
+    wp-centreon: Failed to restart php7.3-fpm.service: Unit php7.3-fpm.service not found.
+    wp-centreon: tar (child): 
+    wp-centreon: : Cannot open
+    wp-centreon: : No such file or directory
+    wp-centreon: tar (child): 
+    wp-centreon: Error is not recoverable: exiting now
+    wp-centreon: /home/vagrant /home/vagrant
+    wp-centreon: tar: Child returned status 2
+    wp-centreon: tar: Error is not recoverable: exiting now
+    wp-centreon: /tmp/vagrant-shell: line 345: php: command not found
+    wp-centreon: sudo
+    wp-centreon: : 
+    wp-centreon: php: command not found
+    wp-centreon: /tmp/vagrant-shell: line 347: composer: command not found
+    wp-centreon: Reading package lists...
+    wp-centreon: Building dependency tree...
+    wp-centreon: Reading state information...
+    wp-centreon: The following additional packages will be installed:
+    wp-centreon:   libc-ares2 libhttp-parser2.7.1 nodejs-doc
+    wp-centreon: The following NEW packages will be installed:
+    wp-centreon:   libc-ares2 libhttp-parser2.7.1 nodejs nodejs-doc
+    wp-centreon: 0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+    wp-centreon: Need to get 5,606 kB of archives.
+    wp-centreon: After this operation, 24.7 MB of additional disk space will be used.
+    wp-centreon: Ign:1 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 nodejs-doc all 8.10.0~dfsg-2ubuntu0.4
+    wp-centreon: Err:2 http://archive.ubuntu.com/ubuntu bionic/main amd64 libc-ares2 amd64 1.14.0-1
+    wp-centreon:   Temporary failure resolving 'wp-proxy'
+    wp-centreon: Err:3 http://archive.ubuntu.com/ubuntu bionic/main amd64 libhttp-parser2.7.1 amd64 2.7.1-2
+    wp-centreon:   Temporary failure resolving 'wp-proxy'
+    wp-centreon: Err:4 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 nodejs amd64 8.10.0~dfsg-2ubuntu0.4
+    wp-centreon:   Temporary failure resolving 'wp-proxy'
+    wp-centreon: Err:1 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 nodejs-doc all 8.10.0~dfsg-2ubuntu0.4
+    wp-centreon:   Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/n/nodejs/nodejs-doc_8.10.0~dfsg-2ubuntu0.4_all.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/c/c-ares/libc-ares2_1.14.0-1_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/h/http-parser/libhttp-parser2.7.1_2.7.1-2_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/n/nodejs/nodejs_8.10.0~dfsg-2ubuntu0.4_amd64.deb  Temporary failure resolving 'wp-proxy'
+    wp-centreon: E
+    wp-centreon: : 
+    wp-centreon: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+    wp-centreon: sudo
+    wp-centreon: : 
+    wp-centreon: npm: command not found
+    wp-centreon: sudo
+    wp-centreon: : 
+    wp-centreon: npm: command not found
+    wp-centreon: 
+    wp-centreon: ##################################################################
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                    Done                      ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##########                                              ##########
+    wp-centreon: 
+    wp-centreon: 
+    wp-centreon: ##################################################################

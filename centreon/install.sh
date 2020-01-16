@@ -1,7 +1,52 @@
 #!/usr/bin/env bash
 
-CUR_DIR=$(cd $(dirname $0) && pwd)
-source "${CUR_DIR}/centreon.cfg"
+#!/usr/bin/env bash
+
+check() {
+	if [[ $1 -ne 0 ]]; then
+		echo "$2: $3 failed !"
+		exit 1
+	fi
+}
+
+CENTREON_CLIB="http://files.download.centreon.com/public/centreon-clib/centreon-clib-18.10.0.tar.gz"
+CENTREON_CLIB_TGZ="centreon-clib-18.10.0.tar.gz"
+CENTREON_CLIB_DIR="centreon-clib-18.10.0"
+
+CENTREON_PERL_CONNECTOR="http://files.download.centreon.com/public/centreon-connectors/centreon-connectors-18.10.0.tar.gz"
+CENTREON_PERL_CONNECTOR_TGZ="centreon-connectors-18.10.0.tar.gz"
+CENTREON_PERL_CONNECTOR_DIR="centreon-connectors-18.10.0/perl/build"
+
+CENTREON_SSH_CONNECTOR_DIR="/home/vmubuntu/centreon-connectors-18.10.0/ssh/build"
+
+CENTREON_ENGINE="http://files.download.centreon.com/public/centreon-engine/centreon-engine-18.10.0.tar.gz"
+CENTREON_ENGINE_TGZ="centreon-engine-18.10.0.tar.gz"
+CENTREON_ENGINE_DIR="centreon-engine-18.10.0"
+
+NAGIOS_PLUGIN="http://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz"
+NAGIOS_PLUGIN_TGZ="nagios-plugins-2.2.1.tar.gz"
+
+MONITORING_PLUGINS="https://www.monitoring-plugins.org/download/monitoring-plugins-2.2.tar.gz"
+MONITORING_PLUGINS_TGZ="monitoring-plugins-2.2.tar.gz"
+MONITORING_PLUGINS_DIR="monitoring-plugins-2.2"
+
+CENTREON_PLUGINS="http://files.download.centreon.com/public/centreon-plugins/centreon-plugins-20191016.tar.gz"
+CENTREON_PLUGINS_TGZ="centreon-plugins-20191016.tar.gz"
+CENTREON_PLUGINS_DIR="centreon-plugins-20191016"
+
+CENTREON_BROKER="http://files.download.centreon.com/public/centreon-broker/centreon-broker-18.10.1.tar.gz"
+CENTREON_BROKER_TGZ="centreon-broker-18.10.1.tar.gz"
+CENTREON_BROKER_DIR="centreon-broker-18.10.1"
+
+CENTREON_UI="http://files.download.centreon.com/public/centreon/centreon-web-18.10.7.tar.gz"
+CENTREON_UI_TGZ="centreon-web-18.19.7.tar.gz"
+CENTREON_UI_DIR="centreon-web-18.19.7"
+
+CENTREON_ENGINE_PLUGIN="http://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz"
+CENTREON_ENGINE_PLUGIN_TGZ="nagios-plugins-2.2.1.tar.gz"
+
+cd /tmp
+
 
 NAME="Centreon Clib"
 echo -e "\n##################################################################\n"

@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
     # Network configuration
     :range_ip_base           => "192.168.43.",                      # Cannot be wider than a 255.255.255.0 network (scripts won't work)
     :netmask                 => "255.255.255.0",                    # Cannot be wider that a 255.255.255.0 network (scripts won't work)
-    :bridgeif                => "Intel(R) Wireless-AC 9560 160MHz", # Name of the interface to bridge. Command "VBoxManage list bridgedifs" is used to obtain the correct name
+    :bridgeif                => "wlp2s0",                           # Name of the interface to bridge. Command "VBoxManage list bridgedifs" is used to obtain the correct name
     :bridgeif_guest_name     => "eth1",                             # Name of the bridged interface in the guest. Mostly used for firewall configuration
 
     # Proxy
@@ -79,7 +79,7 @@ Vagrant.configure("2") do |config|
     :website_username        => "admin",                            # Sets the website username. It will be the admin user
     :website_password        => ENV['WP_ADMIN_PASSWORD'],           # Sets the admin password. Make sure to use a strong password
     :website_email           => "contact@opensource.fr",            # Sets the email address linked to the admin account
-    :noindex                 => 0                                   # Defines if the website should be indexed by the search engines. 0 = do not index website. 1 = show website in search resulsts.
+    :noindex                 => 0,                                   # Defines if the website should be indexed by the search engines. 0 = do not index website. 1 = show website in search resulsts.
 
     # Centreon server
     :centreon_hostname       => "wp-centreon",
@@ -118,34 +118,34 @@ Vagrant.configure("2") do |config|
   end
 
   # Defining here the load balancer server with HAProxy
-  config.vm.define vm_params[:haproxy_hostname] do |haproxy|
-    haproxy.vm.hostname = vm_params[:haproxy_hostname]
-    haproxy.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:haproxy_ip], netmask: vm_params[:netmask]
+  # config.vm.define vm_params[:haproxy_hostname] do |haproxy|
+    # haproxy.vm.hostname = vm_params[:haproxy_hostname]
+    # haproxy.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:haproxy_ip], netmask: vm_params[:netmask]
 
-    haproxy.vm.provider :virtualbox do |vb|
-      vb.cpus = 2
-      vb.memory = 1536
-    end
+    # haproxy.vm.provider :virtualbox do |vb|
+      # vb.cpus = 2
+      # vb.memory = 1536
+    # end
 
-    haproxy.vm.provision :shell, :path => "common/sethosts.sh",         :args => [vm_params[:haproxy_hostname], 12],                      :name => "Set hosts",                       :env => vm_params
-    haproxy.vm.provision :shell, :path => "common/setrsyslog.sh",       :args => [vm_params[:rsyslog_hostname], 25],                      :name => "Set centralized log server",    :env => vm_params
-    haproxy.vm.provision :shell, :path => "common/setproxy.sh",         :args => [vm_params[:squid_hostname], 37],                        :name => "Set system proxy"
-    haproxy.vm.provision :shell, :path => "common/apt.sh",              :args => ["neovim wget haproxy iptables-persistent rsyslog", 50], :name => "APT operations"
-    haproxy.vm.provision :shell, :path => "common/enableservices.sh",   :args => ["haproxy netfilter-persistent", 62],                    :name => "Enable and start services"
-    haproxy.vm.provision :shell, :path => "common/iptables.sh",         :args => 75,                                                      :name => "Common firewall rules"
-    haproxy.vm.provision :shell, :path => "haproxy/iptables.sh",        :args => [proto, 87],                                             :name => "HAProxy specific firewall rules", :env  => vm_params
-    haproxy.vm.provision :shell, :path => "haproxy/config_#{proto}.sh", :args => 100,                                                     :name => "HAProxy configuration",           :env  => vm_params
+    # haproxy.vm.provision :shell, :path => "common/sethosts.sh",         :args => [vm_params[:haproxy_hostname], 12],                      :name => "Set hosts",                       :env => vm_params
+    # haproxy.vm.provision :shell, :path => "common/setrsyslog.sh",       :args => [vm_params[:rsyslog_hostname], 25],                      :name => "Set centralized log server",    :env => vm_params
+    # haproxy.vm.provision :shell, :path => "common/setproxy.sh",         :args => [vm_params[:squid_hostname], 37],                        :name => "Set system proxy"
+    # haproxy.vm.provision :shell, :path => "common/apt.sh",              :args => ["neovim wget haproxy iptables-persistent rsyslog", 50], :name => "APT operations"
+    # haproxy.vm.provision :shell, :path => "common/enableservices.sh",   :args => ["haproxy netfilter-persistent", 62],                    :name => "Enable and start services"
+    # haproxy.vm.provision :shell, :path => "common/iptables.sh",         :args => 75,                                                      :name => "Common firewall rules"
+    # haproxy.vm.provision :shell, :path => "haproxy/iptables.sh",        :args => [proto, 87],                                             :name => "HAProxy specific firewall rules", :env  => vm_params
+    # haproxy.vm.provision :shell, :path => "haproxy/config_#{proto}.sh", :args => 100,                                                     :name => "HAProxy configuration",           :env  => vm_params
 
-    haproxy.vm.post_up_message = <<-MESSAGE
-      #########################################################################################################
-      #                                                                                                       #
-      #  Your environment will be ready soon and reachable at the load balancer IP or configured domain name  #
-      #      A browser window or tab will automatically open after the first web server provisioning...       #
-      #    Do not forget to add the resolution for your domain name in hosts file if it not DNS resolved      #
-      #                                                                                                       #
-      #########################################################################################################
-    MESSAGE
-  end
+    # haproxy.vm.post_up_message = <<-MESSAGE
+      # #########################################################################################################
+      # #                                                                                                       #
+      # #  Your environment will be ready soon and reachable at the load balancer IP or configured domain name  #
+      # #      A browser window or tab will automatically open after the first web server provisioning...       #
+      # #    Do not forget to add the resolution for your domain name in hosts file if it not DNS resolved      #
+      # #                                                                                                       #
+      # #########################################################################################################
+    # MESSAGE
+  # end
   
   # Defining here the database server with mariadb
   config.vm.define vm_params[:mariadb_hostname] do |mariadb|
@@ -168,97 +168,97 @@ Vagrant.configure("2") do |config|
   end
 
   # Defining here the GlusterFS file servers for the Wordpress files (looping from start to end of range of IP addresses)
-  (vm_params[:glusterfs_ip_start]..vm_params[:glusterfs_ip_end]).each do |i|
-    config.vm.define "#{vm_params[:glusterfs_hostname_base]}#{i}" do |glusterfs|
-      glusterfs.vm.hostname = "#{vm_params[:glusterfs_hostname_base]}#{i}"
-      glusterfs.vm.network :public_network, bridge: vm_params[:bridgedif], ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
+  # (vm_params[:glusterfs_ip_start]..vm_params[:glusterfs_ip_end]).each do |i|
+    # config.vm.define "#{vm_params[:glusterfs_hostname_base]}#{i}" do |glusterfs|
+      # glusterfs.vm.hostname = "#{vm_params[:glusterfs_hostname_base]}#{i}"
+      # glusterfs.vm.network :public_network, bridge: vm_params[:bridgedif], ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
 
-      glusterfs.vm.provider :virtualbox do |vb|
-        vb.cpus = 1
-        vb.memory = 1024
-      end
+      # glusterfs.vm.provider :virtualbox do |vb|
+        # vb.cpus = 1
+        # vb.memory = 1024
+      # end
 
-      configure_cluster = (i == vm_params[:glusterfs_ip_end]) ? "--configure-cluster" : ""
+      # configure_cluster = (i == vm_params[:glusterfs_ip_end]) ? "--configure-cluster" : ""
 
-      glusterfs.vm.provision :shell, :path => "common/sethosts.sh",       :args => ["#{vm_params[:gluster_hostname_base]}#{i}", 12],                       :name => "Set hosts",                         :env => vm_params
-      glusterfs.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                     :name => "Set centralized log server",        :env => vm_params
-      glusterfs.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                       :name => "Set system proxy"
-      glusterfs.vm.provision :shell, :path => "common/apt.sh",            :args => ["neovim unzip wget iptables-persistent glusterfs-server rsyslog", 50], :name => "APT operations"
-      glusterfs.vm.provision :shell, :path => "common/enableservices.sh", :args => ["glusterd netfilter-persistent", 62],                                  :name => "Enable and start services"
-      glusterfs.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                                     :name => "Common firewall rules"
-      glusterfs.vm.provision :shell, :path => "glusterfs/iptables.sh",    :args => 87,                                                                     :name => "GlusterFS specific firewall rules", :env  => vm_params
-      glusterfs.vm.provision :shell, :path => "glusterfs/config.sh",      :args => [configure_cluster, 100],                                               :name => "GlusterFS configuration",           :env  => vm_params
-    end
-  end
+      # glusterfs.vm.provision :shell, :path => "common/sethosts.sh",       :args => ["#{vm_params[:gluster_hostname_base]}#{i}", 12],                       :name => "Set hosts",                         :env => vm_params
+      # glusterfs.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                     :name => "Set centralized log server",        :env => vm_params
+      # glusterfs.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                       :name => "Set system proxy"
+      # glusterfs.vm.provision :shell, :path => "common/apt.sh",            :args => ["neovim unzip wget iptables-persistent glusterfs-server rsyslog", 50], :name => "APT operations"
+      # glusterfs.vm.provision :shell, :path => "common/enableservices.sh", :args => ["glusterd netfilter-persistent", 62],                                  :name => "Enable and start services"
+      # glusterfs.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                                     :name => "Common firewall rules"
+      # glusterfs.vm.provision :shell, :path => "glusterfs/iptables.sh",    :args => 87,                                                                     :name => "GlusterFS specific firewall rules", :env  => vm_params
+      # glusterfs.vm.provision :shell, :path => "glusterfs/config.sh",      :args => [configure_cluster, 100],                                               :name => "GlusterFS configuration",           :env  => vm_params
+    # end
+  # end
 
   # Defining here the web servers with nginx (looping from start to end of range of IP addresses)
-  (vm_params[:nginx_ip_start]..vm_params[:nginx_ip_end]).each do |i|
-    config.vm.define "#{vm_params[:nginx_hostname_base]}#{i}" do |nginx|
-      nginx.vm.hostname = "#{vm_params[:nginx_hostname_base]}#{i}"
-      nginx.vm.network :public_network, bridge: vm_params[:bridgedif], ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
+  # (vm_params[:nginx_ip_start]..vm_params[:nginx_ip_end]).each do |i|
+    # config.vm.define "#{vm_params[:nginx_hostname_base]}#{i}" do |nginx|
+      # nginx.vm.hostname = "#{vm_params[:nginx_hostname_base]}#{i}"
+      # nginx.vm.network :public_network, bridge: vm_params[:bridgedif], ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
 
-      nginx.vm.provider :virtualbox do |vb|
-        vb.cpus = 1
-        vb.memory = 1024
-      end
+      # nginx.vm.provider :virtualbox do |vb|
+        # vb.cpus = 1
+        # vb.memory = 1024
+      # end
 
-      nginx.vm.provision :shell, :path => "common/sethosts.sh",       :args => ["#{vm_params[:nginx_hostname_base]}#{i}\topensource.axelfloquet.fr", 10], :name => "Set hosts",                                    :env => vm_params
-      nginx.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 20],                                        :name => "Set centralized log server",                   :env => vm_params
-      nginx.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 30],                                          :name => "Set system proxy"
-      nginx.vm.provision :shell, :path => "common/apt.sh",            :args => ["nginx neovim recode unzip wget php7.2-fpm php7.2-curl php7.2-gd php7.2-intl php7.2-mbstring php7.2-soap php7.2-xml php7.2-xmlrpc php7.2-zip php7.2-mysql glusterfs-client iptables-persistent rsyslog", 40], :name => "APT operations"
-      nginx.vm.provision :shell, :path => "common/enableservices.sh", :args => ["nginx php7.2-fpm netfilter-persistent", 50],                             :name => "Enable and start services"
-      nginx.vm.provision :shell, :path => "common/iptables.sh",       :args => 60,                                                                        :name => "Common firewall rules"
-      nginx.vm.provision :shell, :path => "nginx/iptables.sh",        :args => [i, proto, 70],                                                            :name => "Nginx specific firewall rules",                :env  => vm_params
-      nginx.vm.provision :shell, :path => "common/glusterfsmount.sh", :args => ["--nginx", 80],                                                           :name => "Mount GlusterFS volume",                       :env  => vm_params
-      nginx.vm.provision :shell, :path => "nginx/config_#{proto}.sh", :args => 90,                                                                        :name => "Nginx configuration",                          :env  => vm_params
-      nginx.vm.provision :shell, :path => "common/getwordpress.sh",   :args => [proto, 100],                                                              :name => "Wordpress install and database configuration", :env  => vm_params
-    end
-  end
+      # nginx.vm.provision :shell, :path => "common/sethosts.sh",       :args => ["#{vm_params[:nginx_hostname_base]}#{i}\topensource.axelfloquet.fr", 10], :name => "Set hosts",                                    :env => vm_params
+      # nginx.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 20],                                        :name => "Set centralized log server",                   :env => vm_params
+      # nginx.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 30],                                          :name => "Set system proxy"
+      # nginx.vm.provision :shell, :path => "common/apt.sh",            :args => ["nginx neovim recode unzip wget php7.2-fpm php7.2-curl php7.2-gd php7.2-intl php7.2-mbstring php7.2-soap php7.2-xml php7.2-xmlrpc php7.2-zip php7.2-mysql glusterfs-client iptables-persistent rsyslog", 40], :name => "APT operations"
+      # nginx.vm.provision :shell, :path => "common/enableservices.sh", :args => ["nginx php7.2-fpm netfilter-persistent", 50],                             :name => "Enable and start services"
+      # nginx.vm.provision :shell, :path => "common/iptables.sh",       :args => 60,                                                                        :name => "Common firewall rules"
+      # nginx.vm.provision :shell, :path => "nginx/iptables.sh",        :args => [i, proto, 70],                                                            :name => "Nginx specific firewall rules",                :env  => vm_params
+      # nginx.vm.provision :shell, :path => "common/glusterfsmount.sh", :args => ["--nginx", 80],                                                           :name => "Mount GlusterFS volume",                       :env  => vm_params
+      # nginx.vm.provision :shell, :path => "nginx/config_#{proto}.sh", :args => 90,                                                                        :name => "Nginx configuration",                          :env  => vm_params
+      # nginx.vm.provision :shell, :path => "common/getwordpress.sh",   :args => [proto, 100],                                                              :name => "Wordpress install and database configuration", :env  => vm_params
+    # end
+  # end
 
   # Defining here the web servers with apache (looping from start to end of range of IP addresses)
-  (vm_params[:apache_ip_start]..vm_params[:apache_ip_end]).each do |i|
-    config.vm.define "#{vm_params[:apache_hostname_base]}#{i}" do |apache|
-      apache.vm.hostname = "#{vm_params[:apache_hostname_base]}#{i}"
-      apache.vm.network :public_network, bridge: vm_params[:bridgedif], ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
+  # (vm_params[:apache_ip_start]..vm_params[:apache_ip_end]).each do |i|
+    # config.vm.define "#{vm_params[:apache_hostname_base]}#{i}" do |apache|
+      # apache.vm.hostname = "#{vm_params[:apache_hostname_base]}#{i}"
+      # apache.vm.network :public_network, bridge: vm_params[:bridgedif], ip: "#{vm_params[:range_ip_base]}#{i}", netmask: vm_params[:netmask]
 
-      apache.vm.provider :virtualbox do |vb|
-        vb.cpus = 1
-        vb.memory = 1024
-      end
+      # apache.vm.provider :virtualbox do |vb|
+        # vb.cpus = 1
+        # vb.memory = 1024
+      # end
 
-      apache.vm.provision :shell, :path => "common/sethosts.sh",        :args => ["#{vm_params[:apache_hostname_base]}#{i}\topensource.axelfloquet.fr", 10], :name => "Set hosts",                                    :env => vm_params
-      apache.vm.provision :shell, :path => "common/setrsyslog.sh",      :args => [vm_params[:rsyslog_hostname], 20],                                         :name => "Set centralized log server",                   :env => vm_params
-      apache.vm.provision :shell, :path => "common/setproxy.sh",        :args => [vm_params[:squid_hostname], 30],                                           :name => "Set system proxy"
-      apache.vm.provision :shell, :path => "common/apt.sh",             :args => ["apache2 neovim recode unzip wget php7.2-fpm php7.2-curl php7.2-gd php7.2-intl php7.2-mbstring php7.2-soap php7.2-xml php7.2-xmlrpc php7.2-zip php7.2-mysql glusterfs-client iptables-persistent rsyslog", 40], :name => "APT operations"
-      apache.vm.provision :shell, :path => "common/enableservices.sh",  :args => ["apache2 php7.2-fpm netfilter-persistent", 50],                            :name => "Enable and start services"
-      apache.vm.provision :shell, :path => "common/iptables.sh",        :args => 60,                                                                         :name => "Common firewall rules"
-      apache.vm.provision :shell, :path => "apache/iptables.sh",        :args => [i, proto, 70],                                                             :name => "Apache specific firewall rules",               :env  => vm_params
-      apache.vm.provision :shell, :path => "common/glusterfsmount.sh",  :args => ["--apache", 80],                                                           :name => "Mount GlusterFS volume",                       :env  => vm_params
-      apache.vm.provision :shell, :path => "apache/config_#{proto}.sh", :args => 90,                                                                         :name => "Apache configuration",                         :env  => vm_params
-      apache.vm.provision :shell, :path => "common/getwordpress.sh",    :args => [proto, 100],                                                               :name => "Wordpress install and database configuration", :env  => vm_params
-    end
-  end
+      # apache.vm.provision :shell, :path => "common/sethosts.sh",        :args => ["#{vm_params[:apache_hostname_base]}#{i}\topensource.axelfloquet.fr", 10], :name => "Set hosts",                                    :env => vm_params
+      # apache.vm.provision :shell, :path => "common/setrsyslog.sh",      :args => [vm_params[:rsyslog_hostname], 20],                                         :name => "Set centralized log server",                   :env => vm_params
+      # apache.vm.provision :shell, :path => "common/setproxy.sh",        :args => [vm_params[:squid_hostname], 30],                                           :name => "Set system proxy"
+      # apache.vm.provision :shell, :path => "common/apt.sh",             :args => ["apache2 neovim recode unzip wget php7.2-fpm php7.2-curl php7.2-gd php7.2-intl php7.2-mbstring php7.2-soap php7.2-xml php7.2-xmlrpc php7.2-zip php7.2-mysql glusterfs-client iptables-persistent rsyslog", 40], :name => "APT operations"
+      # apache.vm.provision :shell, :path => "common/enableservices.sh",  :args => ["apache2 php7.2-fpm netfilter-persistent", 50],                            :name => "Enable and start services"
+      # apache.vm.provision :shell, :path => "common/iptables.sh",        :args => 60,                                                                         :name => "Common firewall rules"
+      # apache.vm.provision :shell, :path => "apache/iptables.sh",        :args => [i, proto, 70],                                                             :name => "Apache specific firewall rules",               :env  => vm_params
+      # apache.vm.provision :shell, :path => "common/glusterfsmount.sh",  :args => ["--apache", 80],                                                           :name => "Mount GlusterFS volume",                       :env  => vm_params
+      # apache.vm.provision :shell, :path => "apache/config_#{proto}.sh", :args => 90,                                                                         :name => "Apache configuration",                         :env  => vm_params
+      # apache.vm.provision :shell, :path => "common/getwordpress.sh",    :args => [proto, 100],                                                               :name => "Wordpress install and database configuration", :env  => vm_params
+    # end
+  # end
 
   # Defining here the centralized log server ELK
-  config.vm.define vm_params[:elk_hostname] do |elk|
-    elk.vm.hostname = vm_params[:elk_hostname]
-    elk.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:elk_ip], netmask: vm_params[:netmask]
+  # config.vm.define vm_params[:elk_hostname] do |elk|
+    # elk.vm.hostname = vm_params[:elk_hostname]
+    # elk.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:elk_ip], netmask: vm_params[:netmask]
 
-    elk.vm.provider :virtualbox do |vb|
-      vb.cpus = 2
-      vb.memory = 2048
-    end
+    # elk.vm.provider :virtualbox do |vb|
+      # vb.cpus = 2
+      # vb.memory = 2048
+    # end
 
-    elk.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:elk_hostname], 11],                                                           :name => "Set hosts",                       :env => vm_params
-    elk.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 22],                                                         :name => "Set system proxy"
-    elk.vm.provision :shell, :path => "common/apt.sh",            :args => ["apt-transport-https openjdk-11-jre neovim unzip wget iptables-persistent rsyslog", 33], :name => "APT operations (General)"
-    elk.vm.provision :shell, :path => "elk/addrepo.sh",           :args => 44,                                                                                       :name => "Add Elastic repo"
-    elk.vm.provision :shell, :path => "common/apt.sh",            :args => ["elasticsearch kibana logstash", 55],                                                    :name => "APT operations (ELK)"
-    elk.vm.provision :shell, :path => "common/enableservices.sh", :args => ["elasticsearch kibana logstash netfilter-persistent", 66],                               :name => "Enable and start services"
-    elk.vm.provision :shell, :path => "common/iptables.sh",       :args => 77,                                                                                       :name => "Common firewall rules"
-    elk.vm.provision :shell, :path => "elk/iptables.sh",          :args => 88,                                                                                       :name => "ELK specific firewall rules",     :env  => vm_params
-    elk.vm.provision :shell, :path => "elk/config.sh",            :args => 100,                                                                                      :name => "ELK stack configuration",         :env  => vm_params
-  end
+    # elk.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:elk_hostname], 11],                                                           :name => "Set hosts",                       :env => vm_params
+    # elk.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 22],                                                         :name => "Set system proxy"
+    # elk.vm.provision :shell, :path => "common/apt.sh",            :args => ["apt-transport-https openjdk-11-jre neovim unzip wget iptables-persistent rsyslog", 33], :name => "APT operations (General)"
+    # elk.vm.provision :shell, :path => "elk/addrepo.sh",           :args => 44,                                                                                       :name => "Add Elastic repo"
+    # elk.vm.provision :shell, :path => "common/apt.sh",            :args => ["elasticsearch kibana logstash", 55],                                                    :name => "APT operations (ELK)"
+    # elk.vm.provision :shell, :path => "common/enableservices.sh", :args => ["elasticsearch kibana logstash netfilter-persistent", 66],                               :name => "Enable and start services"
+    # elk.vm.provision :shell, :path => "common/iptables.sh",       :args => 77,                                                                                       :name => "Common firewall rules"
+    # elk.vm.provision :shell, :path => "elk/iptables.sh",          :args => 88,                                                                                       :name => "ELK specific firewall rules",     :env  => vm_params
+    # elk.vm.provision :shell, :path => "elk/config.sh",            :args => 100,                                                                                      :name => "ELK stack configuration",         :env  => vm_params
+  # end
 
   # Defining here the centralized log server with rsyslog
   config.vm.define vm_params[:rsyslog_hostname] do |rsyslog|
@@ -285,16 +285,17 @@ Vagrant.configure("2") do |config|
     cent.vm.hostname = vm_params[:centreon_hostname]
     cent.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:centreon_ip], netmask: vm_params[:netmask]
 
-    cent.log.vm.provider :virtualbox do |vb|
+    cent.vm.provider :virtualbox do |vb|
       vb.cpus = 1
       vb.memory = 1024
     end
 
-    cent.vm.provision :shell, :path => "common/sethosts.sh",          :args => [vm_params[:centreon_hostname], 11]                    :name => "Set hosts",
-    cent.vm.provision :shell, :path => "common/setproxy.sh",          :args => [vm_params[:squid_hostname], 22],                       :name => "Set system proxy"
+    # cent.vm.provision :shell, :path => "common/sethosts.sh",          :args => [vm_params[:centreon_hostname], 11],                    :name => "Set hosts"
+    # cent.vm.provision :shell, :path => "common/setproxy.sh",          :args => [vm_params[:squid_hostname], 22],                       :name => "Set system proxy"
     cent.vm.provision :shell, :path => "common/apt.sh",               :args => ["build-essential cmake pkg-config libperl-dev libssh2-1-dev libgcrypt-dev libcgsi-gsoap-dev zlib1g-dev libssl-dev libxerces-c-dev libgnutls28-dev libssl-dev libkrb5-dev libldap2-dev libsnmp-dev gawk libwrap0-dev libmcrypt-dev smbclient fping gettext dnsutils libmodule-build-perl libmodule-install-perl libnet-snmp-perl libxml-libxml-perl libjson-perl libwww-perl libxml-xpath-perl libnet-telnet-perl libnet-ntp-perl libnet-dns-perl libdbi-perl libdbd-mysql-perl libdbd-pg-perl libdatetime-perl librrd-dev libqt4-dev libqt4-sql-mysql libgnutls28-dev lsb-release liblua5.2-dev liburi-encode-perl libdate-manip-perl snmp snmpd snmptrapd libnet-snmp-perl libsnmp-perl snmp-mibs-downloader", 44], :name => "APT operations (General)"
-    cent.vm.provision :shell, :path => "centreon/"
-    
+    cent.vm.provision :shell, :path => "centreon/install.sh"
+  end
+
   # Open browser after setting up / booting up one or several web servers
   config.trigger.after [:up, :provision, :reload, :resume], only_on: [/#{vm_params[:nginx_hostname_base]}\d{1,3}/, /#{vm_params[:apache_hostname_base]}\d{1,3}/] do |trigger|
     trigger.ruby do |env,machine|
