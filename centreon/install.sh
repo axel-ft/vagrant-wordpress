@@ -323,8 +323,6 @@ echo -e "\n##################################################################\n"
 
     sudo usermod -aG centreon centreon-broker
 
-    sudo apt install rrdtool ntp php7.3-sqlite3 php-pear sudo tofrodos bsd-mailx lsb-release mariadb-server libconfig-inifiles-perl libcrypt-des-perl libdigest-hmac-perl libdigest-sha-perl libgd-perl php7.3-ldap php7.3-snmp -y
-
     sudo a2enmod proxy_fcgi setenvif proxy rewrite
     sudo a2enconf php7.3-fpm
     sudo a2dismod php7.3
