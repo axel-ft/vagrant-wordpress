@@ -374,12 +374,12 @@ echo -e "##########                                              ##########\n"
 echo -e "##################################################################\n"
     # Configure database
     mysql -e "UPDATE mysql.user SET Password=PASSWORD('${database_root_password}') WHERE User='root';"      # Define root password
-    mysql -e "GRANT ALL PRIVILEGES on *.* to 'root'@'localhost' IDENTIFIED BY '${database_root_password}';"
     mysql -e "DELETE FROM mysql.user WHERE User='';"                                                        # Remove anonymous users
     mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"  # Remove remote access for root
     mysql -e "DROP DATABASE IF EXISTS test;"                                                                # Drop test database
     mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"                                        # Drop test database information
     mysql -e "FLUSH PRIVILEGES;"
+    mysql -e "GRANT ALL PRIVILEGES on *.* to 'root'@'localhost' IDENTIFIED BY '${database_root_password}';"
     sed -i -e 's/skip-external-locking/skip-external-locking\nopen_files_limit=32000/' /etc/mysql/mariadb.conf.d/50-server.cnf
     systemctl restart mariadb
 
