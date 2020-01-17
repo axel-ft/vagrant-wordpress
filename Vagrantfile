@@ -76,10 +76,15 @@ Vagrant.configure("2") do |config|
     :elk_ip                  => "10.10.0.18",                       # IP for the centralized log server (ELK stack)
     :kibana_domain_name      => "kibana.opensource.axelfloquet.fr", # Domain name for kibana, set in HAProxy
 
+    # Centreon server
+    :centreon_hostname       => "wp-centreon",                      # Hostname for the centreon monitoring server
+    :centreon_ip             => "10.10.0.19",                       # IP for the centreon monitoring server
+    :centreon_root           => "/",                                # Root for the centreon server
+
     # WordPress configuration
     :website_prefix          => "os1_",                             # Sets the prefix used for all the tables in the database
     # Leave all the parameters below empty for GUI install.
-    :website_name            => "Open Source Exo 4",                # Sets the website name.
+    :website_name            => "Projet Open Source",               # Sets the website name.
     :website_username        => "admin",                            # Sets the website username. It will be the admin user
     :website_password        => ENV['WP_ADMIN_PASSWORD'],           # Sets the admin password. Make sure to use a strong password
     :website_email           => "contact@opensource.fr",            # Sets the email address linked to the admin account
@@ -328,6 +333,32 @@ Vagrant.configure("2") do |config|
     rsyslog.vm.provision :shell, :path => "common/iptables.sh",       :args => 77,                                                    :name => "Common firewall rules"
     rsyslog.vm.provision :shell, :path => "rsyslog/iptables.sh",      :args => 88,                                                    :name => "Rsyslog specific firewall rules", :env  => vm_params
     rsyslog.vm.provision :shell, :path => "rsyslog/config.sh",        :args => 100,                                                    :name => "Rsyslog configuration",           :env  => vm_params
+  end
+
+  # Defining here the centreon monitoring server
+  config.vm.define vm_params[:centreon_hostname] do |centreon|
+    centreon.vm.hostname = vm_params[:centreon_hostname]
+    centreon.vm.network :public_network, ip: vm_params[:centreon_ip], netmask: vm_params[:netmask]
+
+    centreon.vm.provider :vmware_esxi do |esxi|
+      esxi.esxi_hostname = vm_params[:esxi_hostname]
+      esxi.esxi_username = vm_params[:esxi_username]
+      esxi.esxi_password = vm_params[:esxi_password]
+      esxi.esxi_hostport = vm_params[:esxi_hostport]
+      esxi.esxi_virtual_network = ['Vagrant Management','LAN']
+      esxi.guest_numvcpus = 2
+      esxi.guest_memsize = 1024
+    end
+
+    centreon.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:centreon_hostname], 11], :name => "Set hosts",                  :env => vm_params
+    centreon.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 22],  :name => "Set centralized log server", :env => vm_params
+    centreon.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 33],    :name => "Set system proxy"
+    centreon.vm.provision :shell, :path => "centreon/addrepo.sh",      :args => 44,                                  :name => "Add NodeJS repo"
+    centreon.vm.provision :shell, :path => "common/apt.sh",            :args => ["build-essential cmake libperl-dev libssh2-1-dev libgcrypt11-dev libcgsi-gsoap-dev zlib1g-dev libssl-dev libxerces-c-dev libgnutls28-dev libssl-dev libkrb5-dev libldap2-dev libsnmp-dev gawk libwrap0-dev libmcrypt-dev smbclient fping gettext dnsutils libmysqlclient-dev libxml-libxml-perl libjson-perl libwww-perl libxml-xpath-perl libnet-telnet-perl libnet-ntp-perl libnet-dns-perl libdbi-perl libdbd-mysql-perl libdbd-pg-perl libdatetime-perl liburi-encode-perl libdate-manip-perl git-core snmp snmpd snmptrapd libnet-snmp-perl libsnmp-perl librrd-dev libqt4-dev libqt4-sql-mysql libgnutls28-dev lsb-release liblua5.2-dev snmp-mibs-downloader apt-transport-https lsb-release ca-certificates php7.2 php7.2-opcache libapache2-mod-php7.2 php7.2-mysql php7.2-curl php7.2-json php7.2-gd php7.2-intl php7.2-mbstring php7.2-xml php7.2-zip php7.2-fpm php7.2-readline php7.2-sqlite3 php-pear sudo tofrodos bsd-mailx lsb-release mariadb-server rrdtool librrds-perl libconfig-inifiles-perl libcrypt-des-perl libdigest-hmac-perl libdigest-sha-perl libgd-perl php7.2-ldap php7.2-snmp php-db php-date nodejs", 55], :name => "APT operations"
+    #centreon.vm.provision :shell, :path => "common/iptables.sh",       :args => 66,
+    #centreon.vm.provision :shell, :path => "centreon/iptables.sh",     :args => 77,
+    centreon.vm.provision :shell, :path => "centreon/config.sh",       :args => 88,                                  :name => "Centreon configuration",     :env => vm_params
+    centreon.vm.provision :shell, :path => "common/enableservices.sh", :args => ["centengine cbd", 100],             :name => "Enable and start services"
   end
 
   # Open browser after setting up / booting up one or several web servers
