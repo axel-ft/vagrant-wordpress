@@ -380,7 +380,14 @@ echo -e "##################################################################\n"
     mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"                                        # Drop test database information
     mysql -e "FLUSH PRIVILEGES;"
     mysql -e "GRANT ALL PRIVILEGES on *.* to 'root'@'localhost' IDENTIFIED BY '${database_root_password}';"
+    sed -i -e 's/LimitNOFILE=16364/LimitNOFILE=32000/' /etc/systemd/system/multi-user.target.wants/mariadb.service
+    cat << SYSTEMD > /etc/systemd/system/mariadb.service.d/override.conf
+[Service]
+
+LimitNOFILE=32000
+SYSTEMD
     sed -i -e 's/skip-external-locking/skip-external-locking\nopen_files_limit=32000/' /etc/mysql/mariadb.conf.d/50-server.cnf
+    systemctl daemon-reload
     systemctl restart mariadb
 
     # Configure PHP and Apache
