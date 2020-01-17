@@ -15,6 +15,7 @@ iptables -A INPUT -i ${guest_interface_name} -p tcp -s ${squid_hostname} --sport
 iptables -A INPUT -i ${guest_interface_name} -p tcp -s ${haproxy_hostname} --dport 5601 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow New connections to kibana only from load balancer
 iptables -A INPUT -i ${guest_interface_name} -p tcp -s ${rsyslog_hostname} --dport 5044 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow New connections to logstash only from rsyslog machine
 iptables -A INPUT -i ${guest_interface_name} -p tcp -s ${rsyslog_hostname} --dport 9200 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow New connections to elasticsearch only from rsyslog machine
+iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 22 -s ${cockpit_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp -s ${elk_hostname} -d ${elk_hostname} --dport 5601 -m conntrack --ctstate ESTABLISHED -j ACCEPT                # Loopback rule to access kibana locally without proxy
 iptables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ctstate ESTABLISHED -j DROP                                # Prevent Internet browsing without proxy
 # IPv6
@@ -26,6 +27,7 @@ iptables -A OUTPUT -o ${guest_interface_name} -p tcp -d ${squid_hostname} --dpor
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp -d ${haproxy_hostname} --sport 5601 -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Allow Established connections from kibana to load balancer only
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp -d ${rsyslog_hostname} --sport 5044 -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Allow Established connections to logstash only from rsyslog machine
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp -d ${rsyslog_hostname} --sport 9200 -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Allow Established connections to elasticsearch only from rsyslog machine
+iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 22 -s ${cockpit_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp -s ${elk_hostname} -d ${elk_hostname} --dport 5601 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT          # Loopback rule to access kibana locally without proxy
 iptables -A OUTPUT -p tcp -m multiport --dports ftp,http,https -m conntrack --ctstate NEW,ESTABLISHED -j DROP                          # Prevent Internet browsing without proxy
 # IPv6
