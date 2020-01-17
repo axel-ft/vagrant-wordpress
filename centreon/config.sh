@@ -380,7 +380,9 @@ echo -e "##################################################################\n"
     mysql -e "DROP DATABASE IF EXISTS test;"                                                                # Drop test database
     mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"                                        # Drop test database information
     mysql -e "FLUSH PRIVILEGES;"
+    sed -i -e 's/LimitNOFILE=16364/LimitNOFILE=32000/' /etc/systemd/system/multi-user.target.wants/mariadb.service
     sed -i -e 's/skip-external-locking/skip-external-locking\nopen_files_limit=32000/' /etc/mysql/mariadb.conf.d/50-server.cnf
+    systemctl daemon-reload
     systemctl restart mariadb
 
     # Configure PHP and Apache
