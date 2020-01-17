@@ -81,7 +81,7 @@ Vagrant.configure("2") do |config|
     :cockpit_ip             => "192.168.43.21",                     # IP for the SSH bastion server with cockpit
 
     # OpenVPN server
-    :cockpit_hostname       => "wp-vpn",                        # Hostname for the OpenVPN server allowing remote access
+    :cockpit_hostname       => "wp-vpn",                            # Hostname for the OpenVPN server allowing remote access
     :cockpit_ip             => "192.168.43.22",                     # IP for the SSH OpenVPN server allowing remote access
 
     # WordPress configuration
