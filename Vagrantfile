@@ -288,7 +288,7 @@ Vagrant.configure("2") do |config|
     centreon.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:centreon_ip], netmask: vm_params[:netmask]
 
     centreon.vm.provider :virtualbox do |vb|
-      vb.cpus = 1
+      vb.cpus = 2
       vb.memory = 1024
     end
 
