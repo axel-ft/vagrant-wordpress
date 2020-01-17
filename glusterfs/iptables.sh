@@ -14,6 +14,7 @@
 iptables -A INPUT -i ${guest_interface_name} -p tcp -s ${squid_hostname} --sport 3128 -m conntrack --ctstate ESTABLISHED -j ACCEPT                                                                                         # Allow Established from proxy
 iptables -A INPUT -i ${guest_interface_name} -p tcp --sport 514 -s ${rsyslog_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT                                                                                        # Established TCP Rsyslog
 iptables -A INPUT -i ${guest_interface_name} -p udp --sport 514 -s ${rsyslog_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT                                                                                        # Established UDP Rsyslog
+iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 22 -s ${cockpit_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 24007:24008 -m iprange --src-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT  # GlusterFS authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 49152:49153 -m iprange --src-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT  # GlusterFS authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 24007:24008 -m iprange --src-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT          # GlusterFS authorized hosts
@@ -27,8 +28,9 @@ ip6tables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ct
 # Output rules
 # IPv4
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp -d ${squid_hostname} --dport 3128 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                                                                                    # Allow new connections to the proxy
-iptables -A OUTPUT -o ${guest_interface_name} -p tcp --dport 514 -s ${rsyslog_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                                                                                   # Allow new TCP Rsyslog
-iptables -A OUTPUT -o ${guest_interface_name} -p udp --dport 514 -s ${rsyslog_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                                                                                   # Allow new UDP Rsyslog
+iptables -A OUTPUT -o ${guest_interface_name} -p tcp --dport 514 -d ${rsyslog_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                                                                                   # Allow new TCP Rsyslog
+iptables -A OUTPUT -o ${guest_interface_name} -p udp --dport 514 -d ${rsyslog_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                                                                                   # Allow new UDP Rsyslog
+iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 22 -d ${cockpit_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 24007:24008 -m iprange --dst-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT     # GlusterFS authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 49152:49153 -m iprange --dst-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT     # GlusterFS authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 24007:24008 -m iprange --dst-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT             # GlusterFS authorized hosts

@@ -26,6 +26,7 @@ done
 grep -qxF "${rsyslog_ip}$(printf '\t')${rsyslog_hostname}" /etc/hosts || echo -e "${rsyslog_ip}\\t${rsyslog_hostname}" >> /etc/hosts
 grep -qxF "${elk_ip}$(printf '\t')${elk_hostname}" /etc/hosts || echo -e "${elk_ip}\\t${elk_hostname}" >> /etc/hosts
 grep -qxF "${centreon_ip}$(printf '\t')${centreon_hostname}" /etc/hosts || echo -e "${centreon_ip}\\t${centreon_hostname}" >> /etc/hosts
+grep -qxF "${cockpit_ip}$(printf '\t')${cockpit_hostname}" /etc/hosts || echo -e "${cockpit_ip}\\t${cockpit_hostname}" >> /etc/hosts
 
 # Display progress bar if command is in path and current progress in provisioning given
 which progressbar 2>&1>/dev/null && [ ${2} ] && progressbar ${2}
