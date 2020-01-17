@@ -25,7 +25,8 @@ CENTREON_SSH_CONNECTOR_DIR="centreon-connector-18.10.0/ssh/build"
 
 CENTREON_ENGINE="http://files.download.centreon.com/public/centreon-engine/centreon-engine-18.10.0.tar.gz"
 CENTREON_ENGINE_TGZ="centreon-engine-18.10.0.tar.gz"
-CENTREON_ENGINE_DIR="centreon-engine-18.10.0"
+CENTREON_ENGINE_DIR="centreon-engine-18.10.0/build"
+/tmp/centreon-engine-18.10.0/centreon-engine-18.10.0
 
 NAGIOS_PLUGIN="http://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz"
 NAGIOS_PLUGIN_TGZ="nagios-plugins-2.2.1.tar.gz"
@@ -59,7 +60,7 @@ echo -e "\n##########                   ${NAME}                    ##########\n"
 echo -e "\n##########                                              ##########\n"
 echo -e "\n##################################################################\n"
 
-    wget -q "${CENTREON_CLIB}" && \
+    wget --progress=bar:force "${CENTREON_CLIB}" && \
     tar -xzf "${CENTREON_CLIB_TGZ}"
     check $? "${NAME}" "download"
 
@@ -89,7 +90,7 @@ echo -e "\n##########                   ${NAME}                    ##########\n"
 echo -e "\n##########                                              ##########\n"
 echo -e "\n##################################################################\n"
 
-    wget -q "${CENTREON_PERL_CONNECTOR}" && \
+    wget --progress=bar:force "${CENTREON_PERL_CONNECTOR}" && \
     tar -xzf "${CENTREON_PERL_CONNECTOR_TGZ}"
     check $? "${NAME}" "download"
 
@@ -149,11 +150,7 @@ echo -e "\n##################################################################\n"
     sudo useradd -u 6001 -g centreon-engine -m -r -d /var/lib/centreon-engine \
         -c "Centreon-engine Admin" -s /bin/bash centreon-engine
 
-    wget -q "${CENTREON_ENGINE}"
-    tar -xzf "${CENTREON_ENGINE_TGZ}" 
-    pushd "${CENTREON_ENGINE_DIR}" > /dev/null
-
-    wget "${CENTREON_ENGINE}"
+    wget --progress=bar:force "${CENTREON_ENGINE}"
     tar -xzf "${CENTREON_ENGINE_TGZ}" 
     pushd "${CENTREON_ENGINE_DIR}" > /dev/null
         cmake  \
@@ -192,7 +189,7 @@ echo -e "\n##########                   ${NAME}                    ##########\n"
 echo -e "\n##########                                              ##########\n"
 echo -e "\n##################################################################\n"
 
-wget "${CENTREON_ENGINE_PLUGIN}"
+wget --progress=bar:force "${CENTREON_ENGINE_PLUGIN}"
 
 tar -xzf "${CENTREON_ENGINE_PLUGIN_TGZ}"
 cd nagios-plugins-2.2.1
@@ -233,10 +230,10 @@ echo -e "\n##########                   ${NAME}                    ##########\n"
 echo -e "\n##########                                              ##########\n"
 echo -e "\n##################################################################\n"
 
-    wget -q "${NAGIOS_PLUGIN}"
+    wget --progress=bar:force "${NAGIOS_PLUGIN}"
     tar -xzf "${NAGIOS_PLUGIN_TGZ}"
 
-    wget -q --no-check-certificate "${MONITORING_PLUGINS}"
+    wget --progress=bar:force --no-check-certificate "${MONITORING_PLUGINS}"
 
     tar -xzf "${MONITORING_PLUGINS_TGZ}"
     pushd "${MONITORING_PLUGINS_DIR}" > /dev/null
@@ -245,7 +242,7 @@ echo -e "\n##################################################################\n"
     sudo make install
     popd > /dev/null
 
-    wget -q "${CENTREON_PLUGINS}"
+    wget --progress=bar:force "${CENTREON_PLUGINS}"
     tar -xzf "${CENTREON_PLUGINS_TGZ}" 
     pushd "${CENTREON_PLUGINS_DIR}" > /dev/null
         chmod +x *
@@ -272,7 +269,7 @@ echo -e "\n##################################################################\n"
     sudo usermod -aG centreon-broker centreon-engine
 
 
-    wget -q "${CENTREON_BROKER}"
+    wget --progress=bar:force "${CENTREON_BROKER}"
     tar -xzf "${CENTREON_BROKER_TGZ}"
     pushd "${CENTREON_BROKER_DIR}" > /dev/null
     cmake \
@@ -386,7 +383,7 @@ echo -e "\n##################################################################\n"
 # date.timezone = Europe/Paris
 
 
-    wget -q "${CENTREON_UI}"
+    wget --progress=bar:force "${CENTREON_UI}"
     tar -xzf "${CENTREON_UI_TGZ}"
     pushd "${CENTREON_UI_DIR}"
         php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
