@@ -295,11 +295,11 @@ Vagrant.configure("2") do |config|
     centreon.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:centreon_hostname], 12], :name => "Set hosts",                  :env => vm_params
     centreon.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],  :name => "Set centralized log server", :env => vm_params
     centreon.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],    :name => "Set system proxy"
-    centreon.vm.provision :shell, :path => "common/apt.sh",            :args => ["build-essential cmake pkg-config libperl-dev libssh2-1-dev libgcrypt-dev libcgsi-gsoap-dev zlib1g-dev libssl-dev libxerces-c-dev libgnutls28-dev libssl-dev libkrb5-dev libldap2-dev libsnmp-dev gawk libwrap0-dev libmcrypt-dev smbclient fping gettext dnsutils libmodule-build-perl libmodule-install-perl libnet-snmp-perl libxml-libxml-perl libjson-perl libwww-perl libxml-xpath-perl libnet-telnet-perl libnet-ntp-perl libnet-dns-perl libdbi-perl libdbd-mysql-perl libdbd-pg-perl libdatetime-perl librrd-dev libqt4-dev libqt4-sql-mysql libgnutls28-dev lsb-release liblua5.2-dev liburi-encode-perl libdate-manip-perl snmp snmpd snmptrapd libnet-snmp-perl libsnmp-perl snmp-mibs-downloader", 50], :name => "APT operations"
-    centreon.vm.provision :shell, :path => "common/enableservices.sh", :args => ["centengine cdb", 62],              :name => "Enable and start services"
-    #centreon.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,
-    #centreon.vm.provision :shell, :path => "centreon/iptables.sh",     :args => 87,
-    centreon.vm.provision :shell, :path => "centreon/config.sh",       :args => 100,                                 :name => "Centreon configuration"  
+    centreon.vm.provision :shell, :path => "common/apt.sh",            :args => ["build-essential cmake pkg-config libperl-dev libssh2-1-dev libgcrypt-dev libcgsi-gsoap-dev zlib1g-dev libssl-dev libxerces-c-dev libgnutls28-dev libssl-dev libkrb5-dev libldap2-dev libsnmp-dev gawk libwrap0-dev libmcrypt-dev smbclient fping gettext dnsutils libmodule-build-perl libmodule-install-perl libnet-snmp-perl libxml-libxml-perl libjson-perl libwww-perl libxml-xpath-perl libnet-telnet-perl libnet-ntp-perl libnet-dns-perl libdbi-perl libdbd-mysql-perl libdbd-pg-perl libdatetime-perl librrd-dev libqt4-dev libqt4-sql-mysql libgnutls28-dev lsb-release liblua5.2-dev liburi-encode-perl libdate-manip-perl snmp snmpd snmptrapd libnet-snmp-perl libsnmp-perl snmp-mibs-downloader apache2 php7.2", 50], :name => "APT operations"
+    #centreon.vm.provision :shell, :path => "common/iptables.sh",       :args => 62,
+    #centreon.vm.provision :shell, :path => "centreon/iptables.sh",     :args => 75,
+    centreon.vm.provision :shell, :path => "centreon/config.sh",       :args => 87,                                  :name => "Centreon configuration"  
+    centreon.vm.provision :shell, :path => "common/enableservices.sh", :args => ["centengine cdb", 100],             :name => "Enable and start services"
   end
 
   # Open browser after setting up / booting up one or several web servers

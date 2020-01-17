@@ -41,7 +41,7 @@ CENTREON_PLUGINS_DIR="centreon-plugins-20191016"
 
 CENTREON_BROKER="http://files.download.centreon.com/public/centreon-broker/centreon-broker-18.10.1.tar.gz"
 CENTREON_BROKER_TGZ="centreon-broker-18.10.1.tar.gz"
-CENTREON_BROKER_DIR="centreon-broker-18.10.1"
+CENTREON_BROKER_DIR="centreon-broker-18.10.1/build"
 
 CENTREON_UI="http://files.download.centreon.com/public/centreon/centreon-web-18.10.7.tar.gz"
 CENTREON_UI_TGZ="centreon-web-18.19.7.tar.gz"
@@ -189,11 +189,9 @@ echo -e "\n##########                   ${NAME}                    ##########\n"
 echo -e "\n##########                                              ##########\n"
 echo -e "\n##################################################################\n"
 
-wget --progress=bar:force "${CENTREON_ENGINE_PLUGIN}"
-
-tar -xzf "${CENTREON_ENGINE_PLUGIN_TGZ}"
-cd nagios-plugins-2.2.1
-
+    wget --progress=bar:force "${CENTREON_ENGINE_PLUGIN}"
+    tar -xzf "${CENTREON_ENGINE_PLUGIN_TGZ}"
+    pushd nagios-plugins-2.2.1 > /dev/null
         cmake  \
             -DWITH_CENTREON_CLIB_INCLUDE_DIR=/usr/include  \
             -DWITH_CENTREON_CLIB_LIBRARY_DIR=/usr/lib  \
@@ -370,9 +368,9 @@ echo -e "\n##################################################################\n"
     sudo usermod -aG centreon centreon-broker
 
     sudo a2enmod proxy_fcgi setenvif proxy rewrite
-    sudo a2enconf php7.3-fpm
-    sudo a2dismod php7.3
-    sudo systemctl restart apache2 php7.3-fpm
+    sudo a2enconf php7.2-fpm
+    sudo a2dismod php7.2
+    sudo systemctl restart apache2 php7.2-fpm
 
 # Nouveauté avec la version 19.10.x, il faut obligatoirement configurer le paramètre date.timezone pour le php-fpm. Pour cela, éditez le fichier de configuration pour apache. Attention, bien respectez la casse et ne pas mettre d'espace.
 # sudo vi /etc/php/7.3/fpm/php.ini
