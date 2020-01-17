@@ -18,6 +18,7 @@ iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 514 -s ${mariadb_host
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 514 -m iprange --src-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT  # Rsyslog authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 514 -m iprange --src-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT          # Rsyslog authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 514 -m iprange --src-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT        # Rsyslog authorized hosts
+iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 514 -s ${centreon_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Rsyslog authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 514 -s ${elk_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT     # Rsyslog authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p udp --dport 514 -s ${squid_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT   # Rsyslog authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p udp --dport 514 -s ${haproxy_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Rsyslog authorized hosts
@@ -25,6 +26,7 @@ iptables -A INPUT -i ${bridgeif_guest_name} -p udp --dport 514 -s ${mariadb_host
 iptables -A INPUT -i ${bridgeif_guest_name} -p udp --dport 514 -m iprange --src-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT  # Rsyslog authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p udp --dport 514 -m iprange --src-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT          # Rsyslog authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p udp --dport 514 -m iprange --src-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT        # Rsyslog authorized hosts
+iptables -A INPUT -i ${bridgeif_guest_name} -p udp --dport 514 -s ${centreon_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Rsyslog authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p udp --dport 514 -s ${elk_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT     # Rsyslog authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --sport 5044 -s ${elk_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT        # Filebeat output to logstash
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --sport 9200 -s ${elk_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT        # Filebeat output to Elasticsearch
@@ -41,6 +43,7 @@ iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 514 -d ${mariadb_hos
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 514 -m iprange --dst-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT # Rsyslog authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 514 -m iprange --dst-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT         # Rsyslog authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 514 -m iprange --dst-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT       # Rsyslog authorized hosts
+iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 514 -d ${centreon_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Rsyslog authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 514 -d ${elk_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT        # Rsyslog authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p udp --sport 514 -d ${squid_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT      # Rsyslog authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p udp --sport 514 -d ${haproxy_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT    # Rsyslog authorized hosts
@@ -48,6 +51,7 @@ iptables -A OUTPUT -o ${bridgeif_guest_name} -p udp --sport 514 -d ${mariadb_hos
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p udp --sport 514 -m iprange --dst-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT # Rsyslog authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p udp --sport 514 -m iprange --dst-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT         # Rsyslog authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p udp --sport 514 -m iprange --dst-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT       # Rsyslog authorized hosts
+iptables -A OUTPUT -o ${bridgeif_guest_name} -p udp --sport 514 -d ${centreon_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Rsyslog authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p udp --sport 514 -d ${elk_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT        # Rsyslog authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --dport 5044 -d ${elk_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT   # Filebeat output to logstash
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --dport 9200 -d ${elk_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT   # Filebeat output to Elasticsearch
