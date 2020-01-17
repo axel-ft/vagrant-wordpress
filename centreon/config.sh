@@ -372,13 +372,27 @@ echo -e "##########                                              ##########\n"
 echo -e "##########                   ${NAME}                    ##########\n"
 echo -e "##########                                              ##########\n"
 echo -e "##################################################################\n"
+    # Configure database
+    mysql -e "UPDATE mysql.user SET Password=PASSWORD('${database_root_password}') WHERE User='root';"      # Define root password
+    mysql -e "GRANT ALL PRIVILEGES on *.* to 'root'@'localhost' IDENTIFIED BY '${database_root_password}';"
+    mysql -e "DELETE FROM mysql.user WHERE User='';"                                                        # Remove anonymous users
+    mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"  # Remove remote access for root
+    mysql -e "DROP DATABASE IF EXISTS test;"                                                                # Drop test database
+    mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"                                        # Drop test database information
+    mysql -e "FLUSH PRIVILEGES;"
+    sed -i -e 's/skip-external-locking/skip-external-locking\nopen_files_limit=32000/' /etc/mysql/mariadb.conf.d/50-server.cnf
+    systemctl restart mariadb
+
+    # Configure PHP and Apache
     sed -i -e 's/;date.timezone =/date.timezone = Europe\/Paris/' /etc/php/7.2/apache2/php.ini
+    sed -i -e 's/;date.timezone =/date.timezone = Europe\/Paris/' /etc/php/7.2/fpm/php.ini
 
     sudo a2enmod proxy_fcgi setenvif proxy rewrite
     sudo a2enconf php7.2-fpm
     sudo a2dismod php7.2
     sudo systemctl restart apache2 php7.2-fpm
 
+    # Install Centreon website
     pushd "${CENTREON_UI_DIR}"
         cat > /usr/local/src/centreon_engine.tmpl << EOF
 # Centreon template
@@ -464,10 +478,19 @@ PHP_FPM_RELOAD=1
 DIR_PHP_FPM_CONF="/etc/php/7.2/fpm/pool.d/"
 EOF
         ./install.sh -i -f /usr/local/src/centreon_engine.tmpl
-        mkdir /usr/share/centreon/vendor
-        cp -r /usr/local/src/centreon-web-18.10.0/vendor/* /usr/share/centreon/vendor/
+        mkdir -p /usr/share/centreon/vendor
+        mkdir -p /usr/{share,lib64}/centreon-engine
+        mkdir -p /var/log/centreon-broker
+        chown centreon-broker:centreon-broker  /var/log/centreon-broker
+        chmod 775 /var/{log,lib}/centreon-broker
+        cp -r /usr/local/src/centreon-web-18.10.7/vendor/* /usr/share/centreon/vendor/
         sed -i -e 's/_CENTREON_PATH_PLACEHOLDER_/centreon/g' /usr/share/centreon/www/index.html
+        sed -i -e 's/#!@PHP_BIN@/#!\/usr\/bin\/php/' /usr/share/centreon/bin/centreon
+        sudo a2enconf centreon
+        sudo systemctl reload apache2
     popd > /dev/null
+
+# File is not in lib64 as suggested when installing on web : /usr/lib/centreon-broker/cbmod.so
 
 echo -e "##################################################################\n"
 echo -e "##########                                              ##########\n"
