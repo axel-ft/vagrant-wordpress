@@ -123,14 +123,14 @@ Vagrant.configure("2") do |config|
     end
 
     squid.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
-    squid.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:squid_hostname], 12],                 :name => "Set hosts",                     :env => vm_params
-    squid.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],               :name => "Set centralized log server",    :env => vm_params
-    squid.vm.provision :shell, :path => "common/apt.sh",            :args => ["neovim iptables-persistent squid rsyslog", 37], :name => "APT operations"
-    squid.vm.provision :shell, :path => "common/enableservices.sh", :args => ["squid netfilter-persistent", 50],               :name => "Enable and start services"
-    squid.vm.provision :shell, :path => "common/iptables.sh",       :args => 62,                                               :name => "Common firewall rules"
-    squid.vm.provision :shell, :path => "squid/iptables.sh",        :args => 75,                                               :name => "Squid specific firewall rules", :env  => vm_params
-    squid.vm.provision :shell, :path => "squid/config.sh",          :args => 87,                                               :name => "Squid configuration",           :env  => vm_params
-    squid.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 100],                :name => "Set system proxy"
+    squid.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:squid_hostname], 12],                         :name => "Set hosts",                     :env => vm_params
+    squid.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                       :name => "Set centralized log server",    :env => vm_params
+    squid.vm.provision :shell, :path => "common/apt.sh",            :args => ["cockpit neovim iptables-persistent squid rsyslog", 37], :name => "APT operations"
+    squid.vm.provision :shell, :path => "common/enableservices.sh", :args => ["squid netfilter-persistent", 50],                       :name => "Enable and start services"
+    squid.vm.provision :shell, :path => "common/iptables.sh",       :args => 62,                                                       :name => "Common firewall rules"
+    squid.vm.provision :shell, :path => "squid/iptables.sh",        :args => 75,                                                       :name => "Squid specific firewall rules", :env  => vm_params
+    squid.vm.provision :shell, :path => "squid/config.sh",          :args => 87,                                                       :name => "Squid configuration",           :env  => vm_params
+    squid.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 100],                        :name => "Set system proxy"
   end
 
   # Defining here the load balancer server with HAProxy
@@ -149,14 +149,14 @@ Vagrant.configure("2") do |config|
     end
 
     haproxy.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.20.0.254"
-    haproxy.vm.provision :shell, :path => "common/sethosts.sh",         :args => [vm_params[:haproxy_hostname], 12],                      :name => "Set hosts",                       :env => vm_params
-    haproxy.vm.provision :shell, :path => "common/setrsyslog.sh",       :args => [vm_params[:rsyslog_hostname], 25],                      :name => "Set centralized log server",    :env => vm_params
-    haproxy.vm.provision :shell, :path => "common/setproxy.sh",         :args => [vm_params[:squid_hostname], 37],                        :name => "Set system proxy"
-    haproxy.vm.provision :shell, :path => "common/apt.sh",              :args => ["neovim wget haproxy iptables-persistent rsyslog", 50], :name => "APT operations"
-    haproxy.vm.provision :shell, :path => "common/enableservices.sh",   :args => ["haproxy netfilter-persistent", 62],                    :name => "Enable and start services"
-    haproxy.vm.provision :shell, :path => "common/iptables.sh",         :args => 75,                                                      :name => "Common firewall rules"
-    haproxy.vm.provision :shell, :path => "haproxy/iptables.sh",        :args => [proto, 87],                                             :name => "HAProxy specific firewall rules", :env  => vm_params
-    haproxy.vm.provision :shell, :path => "haproxy/config_#{proto}.sh", :args => 100,                                                     :name => "HAProxy configuration",           :env  => vm_params
+    haproxy.vm.provision :shell, :path => "common/sethosts.sh",         :args => [vm_params[:haproxy_hostname], 12],                              :name => "Set hosts",                       :env => vm_params
+    haproxy.vm.provision :shell, :path => "common/setrsyslog.sh",       :args => [vm_params[:rsyslog_hostname], 25],                              :name => "Set centralized log server",    :env => vm_params
+    haproxy.vm.provision :shell, :path => "common/setproxy.sh",         :args => [vm_params[:squid_hostname], 37],                                :name => "Set system proxy"
+    haproxy.vm.provision :shell, :path => "common/apt.sh",              :args => ["cockpit neovim wget haproxy iptables-persistent rsyslog", 50], :name => "APT operations"
+    haproxy.vm.provision :shell, :path => "common/enableservices.sh",   :args => ["haproxy netfilter-persistent", 62],                            :name => "Enable and start services"
+    haproxy.vm.provision :shell, :path => "common/iptables.sh",         :args => 75,                                                              :name => "Common firewall rules"
+    haproxy.vm.provision :shell, :path => "haproxy/iptables.sh",        :args => [proto, 87],                                                     :name => "HAProxy specific firewall rules", :env  => vm_params
+    haproxy.vm.provision :shell, :path => "haproxy/config_#{proto}.sh", :args => 100,                                                             :name => "HAProxy configuration",           :env  => vm_params
 
     haproxy.vm.post_up_message = <<-MESSAGE
       #########################################################################################################
@@ -185,14 +185,14 @@ Vagrant.configure("2") do |config|
     end
 
     mariadb.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
-    mariadb.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:mariadb_hostname], 12],                                                  :name => "Set hosts",                       :env => vm_params
-    mariadb.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                                  :name => "Set centralized log server",      :env => vm_params
-    mariadb.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                                    :name => "Set system proxy"
-    mariadb.vm.provision :shell, :path => "common/apt.sh",            :args => ["neovim unzip wget mariadb-server mariadb-client iptables-persistent rsyslog", 50], :name => "APT operations"
-    mariadb.vm.provision :shell, :path => "common/enableservices.sh", :args => ["mariadb netfilter-persistent", 62],                                                :name => "Enable and start services"
-    mariadb.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                                                  :name => "Common firewall rules"
-    mariadb.vm.provision :shell, :path => "mariadb/iptables.sh",      :args => 87,                                                                                  :name => "MariaDB specific firewall rules", :env  => vm_params
-    mariadb.vm.provision :shell, :path => "mariadb/config.sh",        :args => 100,                                                                                 :name => "MariaDB configuration",           :env  => vm_params
+    mariadb.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:mariadb_hostname], 12],                                                          :name => "Set hosts",                       :env => vm_params
+    mariadb.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                                          :name => "Set centralized log server",      :env => vm_params
+    mariadb.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                                            :name => "Set system proxy"
+    mariadb.vm.provision :shell, :path => "common/apt.sh",            :args => ["cockpit neovim unzip wget mariadb-server mariadb-client iptables-persistent rsyslog", 50], :name => "APT operations"
+    mariadb.vm.provision :shell, :path => "common/enableservices.sh", :args => ["mariadb netfilter-persistent", 62],                                                        :name => "Enable and start services"
+    mariadb.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                                                          :name => "Common firewall rules"
+    mariadb.vm.provision :shell, :path => "mariadb/iptables.sh",      :args => 87,                                                                                          :name => "MariaDB specific firewall rules", :env  => vm_params
+    mariadb.vm.provision :shell, :path => "mariadb/config.sh",        :args => 100,                                                                                         :name => "MariaDB configuration",           :env  => vm_params
   end
 
   # Defining here the GlusterFS file servers for the Wordpress files (looping from start to end of range of IP addresses)
@@ -214,14 +214,14 @@ Vagrant.configure("2") do |config|
       configure_cluster = (i == vm_params[:glusterfs_ip_end]) ? "--configure-cluster" : ""
       
       glusterfs.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
-      glusterfs.vm.provision :shell, :path => "common/sethosts.sh",       :args => ["#{vm_params[:gluster_hostname_base]}#{i}", 12],                       :name => "Set hosts",                         :env => vm_params
-      glusterfs.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                     :name => "Set centralized log server",        :env => vm_params
-      glusterfs.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                       :name => "Set system proxy"
-      glusterfs.vm.provision :shell, :path => "common/apt.sh",            :args => ["neovim unzip wget iptables-persistent glusterfs-server rsyslog", 50], :name => "APT operations"
-      glusterfs.vm.provision :shell, :path => "common/enableservices.sh", :args => ["glusterd netfilter-persistent", 62],                                  :name => "Enable and start services"
-      glusterfs.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                                     :name => "Common firewall rules"
-      glusterfs.vm.provision :shell, :path => "glusterfs/iptables.sh",    :args => 87,                                                                     :name => "GlusterFS specific firewall rules", :env  => vm_params
-      glusterfs.vm.provision :shell, :path => "glusterfs/config.sh",      :args => [configure_cluster, 100],                                               :name => "GlusterFS configuration",           :env  => vm_params
+      glusterfs.vm.provision :shell, :path => "common/sethosts.sh",       :args => ["#{vm_params[:gluster_hostname_base]}#{i}", 12],                               :name => "Set hosts",                         :env => vm_params
+      glusterfs.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                             :name => "Set centralized log server",        :env => vm_params
+      glusterfs.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                               :name => "Set system proxy"
+      glusterfs.vm.provision :shell, :path => "common/apt.sh",            :args => ["cockpit neovim unzip wget iptables-persistent glusterfs-server rsyslog", 50], :name => "APT operations"
+      glusterfs.vm.provision :shell, :path => "common/enableservices.sh", :args => ["glusterd netfilter-persistent", 62],                                          :name => "Enable and start services"
+      glusterfs.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                                             :name => "Common firewall rules"
+      glusterfs.vm.provision :shell, :path => "glusterfs/iptables.sh",    :args => 87,                                                                             :name => "GlusterFS specific firewall rules", :env  => vm_params
+      glusterfs.vm.provision :shell, :path => "glusterfs/config.sh",      :args => [configure_cluster, 100],                                                       :name => "GlusterFS configuration",           :env  => vm_params
     end
   end
 
@@ -245,7 +245,7 @@ Vagrant.configure("2") do |config|
       nginx.vm.provision :shell, :path => "common/sethosts.sh",       :args => ["#{vm_params[:nginx_hostname_base]}#{i}\topensource.axelfloquet.fr", 10], :name => "Set hosts",                                    :env => vm_params
       nginx.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 20],                                        :name => "Set centralized log server",                   :env => vm_params
       nginx.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 30],                                          :name => "Set system proxy"
-      nginx.vm.provision :shell, :path => "common/apt.sh",            :args => ["nginx neovim recode unzip wget php7.2-fpm php7.2-curl php7.2-gd php7.2-intl php7.2-mbstring php7.2-soap php7.2-xml php7.2-xmlrpc php7.2-zip php7.2-mysql glusterfs-client iptables-persistent rsyslog", 40], :name => "APT operations"
+      nginx.vm.provision :shell, :path => "common/apt.sh",            :args => ["cockpit nginx neovim recode unzip wget php7.2-fpm php7.2-curl php7.2-gd php7.2-intl php7.2-mbstring php7.2-soap php7.2-xml php7.2-xmlrpc php7.2-zip php7.2-mysql glusterfs-client iptables-persistent rsyslog", 40], :name => "APT operations"
       nginx.vm.provision :shell, :path => "common/enableservices.sh", :args => ["nginx php7.2-fpm netfilter-persistent", 50],                             :name => "Enable and start services"
       nginx.vm.provision :shell, :path => "common/iptables.sh",       :args => 60,                                                                        :name => "Common firewall rules"
       nginx.vm.provision :shell, :path => "nginx/iptables.sh",        :args => [i, proto, 70],                                                            :name => "Nginx specific firewall rules",                :env  => vm_params
@@ -275,7 +275,7 @@ Vagrant.configure("2") do |config|
       apache.vm.provision :shell, :path => "common/sethosts.sh",        :args => ["#{vm_params[:apache_hostname_base]}#{i}\topensource.axelfloquet.fr", 10], :name => "Set hosts",                                    :env => vm_params
       apache.vm.provision :shell, :path => "common/setrsyslog.sh",      :args => [vm_params[:rsyslog_hostname], 20],                                         :name => "Set centralized log server",                   :env => vm_params
       apache.vm.provision :shell, :path => "common/setproxy.sh",        :args => [vm_params[:squid_hostname], 30],                                           :name => "Set system proxy"
-      apache.vm.provision :shell, :path => "common/apt.sh",             :args => ["apache2 neovim recode unzip wget php7.2-fpm php7.2-curl php7.2-gd php7.2-intl php7.2-mbstring php7.2-soap php7.2-xml php7.2-xmlrpc php7.2-zip php7.2-mysql glusterfs-client iptables-persistent rsyslog", 40], :name => "APT operations"
+      apache.vm.provision :shell, :path => "common/apt.sh",             :args => ["cockpit apache2 neovim recode unzip wget php7.2-fpm php7.2-curl php7.2-gd php7.2-intl php7.2-mbstring php7.2-soap php7.2-xml php7.2-xmlrpc php7.2-zip php7.2-mysql glusterfs-client iptables-persistent rsyslog", 40], :name => "APT operations"
       apache.vm.provision :shell, :path => "common/enableservices.sh",  :args => ["apache2 php7.2-fpm netfilter-persistent", 50],                            :name => "Enable and start services"
       apache.vm.provision :shell, :path => "common/iptables.sh",        :args => 60,                                                                         :name => "Common firewall rules"
       apache.vm.provision :shell, :path => "apache/iptables.sh",        :args => [i, proto, 70],                                                             :name => "Apache specific firewall rules",               :env  => vm_params
@@ -301,15 +301,15 @@ Vagrant.configure("2") do |config|
     end
 
     elk.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
-    elk.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:elk_hostname], 11],                                                           :name => "Set hosts",                       :env => vm_params
-    elk.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 22],                                                         :name => "Set system proxy"
-    elk.vm.provision :shell, :path => "common/apt.sh",            :args => ["apt-transport-https openjdk-11-jre neovim unzip wget iptables-persistent rsyslog", 33], :name => "APT operations (General)"
-    elk.vm.provision :shell, :path => "elk/addrepo.sh",           :args => 44,                                                                                       :name => "Add Elastic repo"
-    elk.vm.provision :shell, :path => "common/apt.sh",            :args => ["elasticsearch kibana logstash", 55],                                                    :name => "APT operations (ELK)"
-    elk.vm.provision :shell, :path => "common/enableservices.sh", :args => ["elasticsearch kibana logstash netfilter-persistent", 66],                               :name => "Enable and start services"
-    elk.vm.provision :shell, :path => "common/iptables.sh",       :args => 77,                                                                                       :name => "Common firewall rules"
-    elk.vm.provision :shell, :path => "elk/iptables.sh",          :args => 88,                                                                                       :name => "ELK specific firewall rules",     :env  => vm_params
-    elk.vm.provision :shell, :path => "elk/config.sh",            :args => 100,                                                                                      :name => "ELK stack configuration",         :env  => vm_params
+    elk.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:elk_hostname], 11],                                                                   :name => "Set hosts",                       :env => vm_params
+    elk.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 22],                                                                 :name => "Set system proxy"
+    elk.vm.provision :shell, :path => "common/apt.sh",            :args => ["cockpit apt-transport-https openjdk-11-jre neovim unzip wget iptables-persistent rsyslog", 33], :name => "APT operations (General)"
+    elk.vm.provision :shell, :path => "elk/addrepo.sh",           :args => 44,                                                                                               :name => "Add Elastic repo"
+    elk.vm.provision :shell, :path => "common/apt.sh",            :args => ["elasticsearch kibana logstash", 55],                                                            :name => "APT operations (ELK)"
+    elk.vm.provision :shell, :path => "common/enableservices.sh", :args => ["elasticsearch kibana logstash netfilter-persistent", 66],                                       :name => "Enable and start services"
+    elk.vm.provision :shell, :path => "common/iptables.sh",       :args => 77,                                                                                               :name => "Common firewall rules"
+    elk.vm.provision :shell, :path => "elk/iptables.sh",          :args => 88,                                                                                               :name => "ELK specific firewall rules",     :env  => vm_params
+    elk.vm.provision :shell, :path => "elk/config.sh",            :args => 100,                                                                                              :name => "ELK stack configuration",         :env  => vm_params
   end
 
   # Defining here the centralized log server with rsyslog
@@ -328,15 +328,15 @@ Vagrant.configure("2") do |config|
     end
 
     rsyslog.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
-    rsyslog.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:rsyslog_hostname], 11],                    :name => "Set hosts",                       :env => vm_params
-    rsyslog.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 22],                      :name => "Set system proxy"
-    rsyslog.vm.provision :shell, :path => "elk/addrepo.sh",           :args => 33,                                                    :name => "Add Elastic repo"
-    rsyslog.vm.provision :shell, :path => "common/apt.sh",            :args => ["neovim unzip wget iptables-persistent rsyslog", 44], :name => "APT operations (General)"
-    rsyslog.vm.provision :shell, :path => "common/apt.sh",            :args => ["filebeat", 55],                                      :name => "APT operations (Filebeat)"
-    rsyslog.vm.provision :shell, :path => "common/enableservices.sh", :args => ["rsyslog filebeat netfilter-persistent", 66],         :name => "Enable and start services"
-    rsyslog.vm.provision :shell, :path => "common/iptables.sh",       :args => 77,                                                    :name => "Common firewall rules"
-    rsyslog.vm.provision :shell, :path => "rsyslog/iptables.sh",      :args => 88,                                                    :name => "Rsyslog specific firewall rules", :env  => vm_params
-    rsyslog.vm.provision :shell, :path => "rsyslog/config.sh",        :args => 100,                                                    :name => "Rsyslog configuration",           :env  => vm_params
+    rsyslog.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:rsyslog_hostname], 11],                            :name => "Set hosts",                       :env => vm_params
+    rsyslog.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 22],                              :name => "Set system proxy"
+    rsyslog.vm.provision :shell, :path => "elk/addrepo.sh",           :args => 33,                                                            :name => "Add Elastic repo"
+    rsyslog.vm.provision :shell, :path => "common/apt.sh",            :args => ["cockpit neovim unzip wget iptables-persistent rsyslog", 44], :name => "APT operations (General)"
+    rsyslog.vm.provision :shell, :path => "common/apt.sh",            :args => ["filebeat", 55],                                              :name => "APT operations (Filebeat)"
+    rsyslog.vm.provision :shell, :path => "common/enableservices.sh", :args => ["rsyslog filebeat netfilter-persistent", 66],                 :name => "Enable and start services"
+    rsyslog.vm.provision :shell, :path => "common/iptables.sh",       :args => 77,                                                            :name => "Common firewall rules"
+    rsyslog.vm.provision :shell, :path => "rsyslog/iptables.sh",      :args => 88,                                                            :name => "Rsyslog specific firewall rules", :env  => vm_params
+    rsyslog.vm.provision :shell, :path => "rsyslog/config.sh",        :args => 100,                                                           :name => "Rsyslog configuration",           :env  => vm_params
   end
 
   # Defining here the centreon monitoring server
@@ -359,7 +359,7 @@ Vagrant.configure("2") do |config|
     centreon.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 22],  :name => "Set centralized log server", :env => vm_params
     centreon.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 33],    :name => "Set system proxy"
     centreon.vm.provision :shell, :path => "centreon/addrepo.sh",      :args => 44,                                  :name => "Add NodeJS repo"
-    centreon.vm.provision :shell, :path => "common/apt.sh",            :args => ["build-essential cmake libperl-dev libssh2-1-dev libgcrypt11-dev libcgsi-gsoap-dev zlib1g-dev libssl-dev libxerces-c-dev libgnutls28-dev libssl-dev libkrb5-dev libldap2-dev libsnmp-dev gawk libwrap0-dev libmcrypt-dev smbclient fping gettext dnsutils libmysqlclient-dev libxml-libxml-perl libjson-perl libwww-perl libxml-xpath-perl libnet-telnet-perl libnet-ntp-perl libnet-dns-perl libdbi-perl libdbd-mysql-perl libdbd-pg-perl libdatetime-perl liburi-encode-perl libdate-manip-perl git-core snmp snmpd snmptrapd libnet-snmp-perl libsnmp-perl librrd-dev libqt4-dev libqt4-sql-mysql libgnutls28-dev lsb-release liblua5.2-dev snmp-mibs-downloader apt-transport-https lsb-release ca-certificates php7.2 php7.2-opcache apache2 libapache2-mod-php7.2 php7.2-mysql php7.2-curl php7.2-json php7.2-gd php7.2-intl php7.2-mbstring php7.2-xml php7.2-zip php7.2-fpm php7.2-readline php7.2-sqlite3 php-pear sudo tofrodos bsd-mailx lsb-release mariadb-server rrdtool librrds-perl libconfig-inifiles-perl libcrypt-des-perl libdigest-hmac-perl libdigest-sha-perl libgd-perl php7.2-ldap php7.2-snmp php-db php-date nodejs", 55], :name => "APT operations"
+    centreon.vm.provision :shell, :path => "common/apt.sh",            :args => ["cockpit build-essential cmake libperl-dev libssh2-1-dev libgcrypt11-dev libcgsi-gsoap-dev zlib1g-dev libssl-dev libxerces-c-dev libgnutls28-dev libssl-dev libkrb5-dev libldap2-dev libsnmp-dev gawk libwrap0-dev libmcrypt-dev smbclient fping gettext dnsutils libmysqlclient-dev libxml-libxml-perl libjson-perl libwww-perl libxml-xpath-perl libnet-telnet-perl libnet-ntp-perl libnet-dns-perl libdbi-perl libdbd-mysql-perl libdbd-pg-perl libdatetime-perl liburi-encode-perl libdate-manip-perl git-core snmp snmpd snmptrapd libnet-snmp-perl libsnmp-perl librrd-dev libqt4-dev libqt4-sql-mysql libgnutls28-dev lsb-release liblua5.2-dev snmp-mibs-downloader apt-transport-https lsb-release ca-certificates php7.2 php7.2-opcache apache2 libapache2-mod-php7.2 php7.2-mysql php7.2-curl php7.2-json php7.2-gd php7.2-intl php7.2-mbstring php7.2-xml php7.2-zip php7.2-fpm php7.2-readline php7.2-sqlite3 php-pear sudo tofrodos bsd-mailx lsb-release mariadb-server rrdtool librrds-perl libconfig-inifiles-perl libcrypt-des-perl libdigest-hmac-perl libdigest-sha-perl libgd-perl php7.2-ldap php7.2-snmp php-db php-date nodejs", 55], :name => "APT operations"
     #centreon.vm.provision :shell, :path => "common/iptables.sh",       :args => 66,
     #centreon.vm.provision :shell, :path => "centreon/iptables.sh",     :args => 77,
     centreon.vm.provision :shell, :path => "centreon/config.sh",       :args => 88,                                  :name => "Centreon configuration",     :env => vm_params

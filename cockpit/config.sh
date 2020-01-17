@@ -4,7 +4,7 @@
 #       /!\ Make sure to include the vm_params as environment for correct execution of this script /!\         #
 # config.sh - Cockpit configuration operations                                                                 #
 # Usage : ./config.sh [current_progress]                                                                       #
-# Author: Axel Floquet-Trillot                                                                                 #
+# Author: Thierry Abitbol                                                                                      #
 ################################################################################################################
 
 # Saving SSH host keys to known hosts
