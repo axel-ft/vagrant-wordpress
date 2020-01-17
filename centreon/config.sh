@@ -44,8 +44,8 @@ CENTREON_BROKER_TGZ="centreon-broker-18.10.1.tar.gz"
 CENTREON_BROKER_DIR="centreon-broker-18.10.1/build"
 
 CENTREON_UI="http://files.download.centreon.com/public/centreon/centreon-web-18.10.7.tar.gz"
-CENTREON_UI_TGZ="centreon-web-18.19.7.tar.gz"
-CENTREON_UI_DIR="centreon-web-18.19.7"
+CENTREON_UI_TGZ="centreon-web-18.10.7.tar.gz"
+CENTREON_UI_DIR="centreon-web-18.10.7"
 
 CENTREON_ENGINE_PLUGIN="http://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz"
 CENTREON_ENGINE_PLUGIN_TGZ="nagios-plugins-2.2.1.tar.gz"
