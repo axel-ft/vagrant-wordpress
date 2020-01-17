@@ -80,7 +80,7 @@ backend centreon-back
 backend cockpit-back
         mode http
         option forwardfor
-        server cockpit ${cockpit_hostname}:9090 check
+        server cockpit ${cockpit_hostname}:9090 check ssl verify none
         http-request set-header X-Forwarded-Port %[dst_port]
         http-request add-header X-Forwarded-Proto https if { ssl_fc }
   
