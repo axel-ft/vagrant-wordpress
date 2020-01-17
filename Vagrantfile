@@ -84,10 +84,12 @@ Vagrant.configure("2") do |config|
     # Cockpit server
     :cockpit_hostname       => "wp-cockpit",                        # Hostname for the SSH bastion server with cockpit
     :cockpit_ip             => "10.20.10.11",                       # IP for the SSH bastion server with cockpit
-    
+    :centreon_domain_name    => "centreon.opensource.axelfloquet.fr", # Domain name to access centreon through HAProxy
+
     # OpenVPN server
     :cockpit_hostname       => "wp-vpn",                            # Hostname for the OpenVPN server allowing remote access
     :cockpit_ip             => "10.20.10.12",                       # IP for the SSH OpenVPN server allowing remote access
+    :cockpit_domain_name    => "cockpit.opensource.axelfloquet.fr", # Domain name to access cockpit through HAProxy
 
     # WordPress configuration
     :website_prefix          => "os1_",                             # Sets the prefix used for all the tables in the database
