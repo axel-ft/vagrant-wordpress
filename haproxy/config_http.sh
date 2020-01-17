@@ -18,14 +18,18 @@ cat << HAPROXY >> /etc/haproxy/haproxy.cfg
 
 frontend http-in
         bind *:80
-        acl wp-front hdr(host) -i opensource.axelfloquet.fr
-        acl kibana-front hdr(host) -i kibana.opensource.axelfloquet.fr
+        acl wp-front hdr(host) -i ${domain_name}
+        acl kibana-front hdr(host) -i ${kibana_domain_name}
+        acl centreon-front hdr(host) -i ${centreon_domain_name}
+        acl cockpit-front hdr(host) -i ${cockpit_domain_name}
         reqadd X-Forwarded-Proto:\\ http
         mode http
         option http-server-close
         option forwardfor
         use_backend wp-back if wp-front
         use_backend kibana-back if kibana-front
+        use_backend centreon-back if centreon-front
+        use_backend cockpit-back if cockpit-front
         default_backend wp-back
   
 backend wp-back    
@@ -55,6 +59,20 @@ backend kibana-back
         server kibana ${elk_hostname}:5601 check
         http-request set-header X-Forwarded-Port %[dst_port]
         http-request add-header X-Forwarded-Proto http
+        
+backend centreon-back
+        mode http
+        option forwardfor
+        server centreon ${centreon_hostname}:80 check
+        http-request set-header X-Forwarded-Port %[dst_port]
+        http-request add-header X-Forwarded-Proto https if { ssl_fc }
+
+backend cockpit-back
+        mode http
+        option forwardfor
+        server cockpit ${cockpit_hostname}:9090 check
+        http-request set-header X-Forwarded-Port %[dst_port]
+        http-request add-header X-Forwarded-Proto https if { ssl_fc }
   
 listen stats
         bind *:1936
