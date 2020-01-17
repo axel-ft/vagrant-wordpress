@@ -80,6 +80,10 @@ Vagrant.configure("2") do |config|
     :cockpit_hostname       => "wp-cockpit",                        # Hostname for the SSH bastion server with cockpit
     :cockpit_ip             => "192.168.43.21",                     # IP for the SSH bastion server with cockpit
 
+    # OpenVPN server
+    :cockpit_hostname       => "wp-vpn",                        # Hostname for the OpenVPN server allowing remote access
+    :cockpit_ip             => "192.168.43.22",                     # IP for the SSH OpenVPN server allowing remote access
+
     # WordPress configuration
     :website_prefix          => "os1_",                             # Sets the prefix used for all the tables in the database
     # Leave all the parameters below empty for GUI install.
@@ -316,14 +320,34 @@ Vagrant.configure("2") do |config|
       vb.memory = 1024
     end
 
-    cockpit.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:cockpit_hostname], 12],                                    :name => "Set hosts",                       :env => vm_params
-    cockpit.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                    :name => "Set centralized log server",      :env => vm_params
-    cockpit.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                      :name => "Set system proxy"
-    cockpit.vm.provision :shell, :path => "common/apt.sh",            :args => ["cockpit neovim unzip wget cockpit iptables-persistent rsyslog", 50], :name => "APT operations"
-    cockpit.vm.provision :shell, :path => "common/enableservices.sh", :args => ["cockpit netfilter-persistent", 62],                                  :name => "Enable and start services"
-    cockpit.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                                    :name => "Common firewall rules"
-    cockpit.vm.provision :shell, :path => "cockpit/iptables.sh",      :args => 87,                                                                    :name => "Cockpit specific firewall rules", :env  => vm_params
-    cockpit.vm.provision :shell, :path => "cockpit/config.sh",        :args => 100,                                                                   :name => "Cockpit configuration",           :env  => vm_params
+    cockpit.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:cockpit_hostname], 12],                            :name => "Set hosts",                       :env => vm_params
+    cockpit.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                            :name => "Set centralized log server",      :env => vm_params
+    cockpit.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                              :name => "Set system proxy"
+    cockpit.vm.provision :shell, :path => "common/apt.sh",            :args => ["cockpit neovim unzip wget iptables-persistent rsyslog", 50], :name => "APT operations"
+    cockpit.vm.provision :shell, :path => "common/enableservices.sh", :args => ["cockpit netfilter-persistent", 62],                          :name => "Enable and start services"
+    cockpit.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                            :name => "Common firewall rules"
+    cockpit.vm.provision :shell, :path => "cockpit/iptables.sh",      :args => 87,                                                            :name => "Cockpit specific firewall rules", :env  => vm_params
+    cockpit.vm.provision :shell, :path => "cockpit/config.sh",        :args => 100,                                                           :name => "Cockpit configuration",           :env  => vm_params
+  end
+
+  # Defining here the OpenVPN server allowing remote access
+  config.vm.define vm_params[:openvpn_hostname] do |openvpn|
+    openvpn.vm.hostname = vm_params[:cockpit_hostname]
+    openvpn.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:openvpn_ip], netmask: vm_params[:netmask]
+
+    openvpn.vm.provider :virtualbox do |vb|
+      vb.cpus = 1
+      vb.memory = 1024
+    end
+
+    openvpn.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:openvpn_hostname], 12],                                    :name => "Set hosts",                       :env => vm_params
+    openvpn.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                    :name => "Set centralized log server",      :env => vm_params
+    openvpn.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                      :name => "Set system proxy"
+    openvpn.vm.provision :shell, :path => "common/apt.sh",            :args => ["openvpn cockpit neovim unzip wget iptables-persistent rsyslog", 50], :name => "APT operations"
+    openvpn.vm.provision :shell, :path => "common/enableservices.sh", :args => ["netfilter-persistent", 62],                                  :name => "Enable and start services"
+    openvpn.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                                    :name => "Common firewall rules"
+    openvpn.vm.provision :shell, :path => "openvpn/iptables.sh",      :args => 87,                                                                    :name => "OpenVPN specific firewall rules", :env  => vm_params
+    openvpn.vm.provision :shell, :path => "openvpn/config.sh",        :args => 100,                                                                   :name => "OpenVPN configuration",           :env  => vm_params
   end
 
   # Open browser after setting up / booting up one or several web servers
