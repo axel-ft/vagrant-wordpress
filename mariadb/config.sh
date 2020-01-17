@@ -11,7 +11,7 @@
 sed -i.bak -e "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
 
 # Set slow queries log
-sed -i -e 's/^log_error = \/var\/log\/mysql\/error\.log$/#log_error = \/var\/log\/mysql\/error.log/'
+sed -i -e 's/^log_error = \/var\/log\/mysql\/error\.log$/#log_error = \/var\/log\/mysql\/error.log/' \
 -e 's/^#slow_query_log_file\t= \/var\/log\/mysql\/mariadb-slow\.log$/slow_query_log\nslow_query_log_file\t= \/var\/log\/mysql\/mariadb-slow.log/' \
 -e 's/^#long_query_time = 10$/long_query_time\t= 5/' \
 -e 's/^#log_slow_rate_limit\t= 1000$/log_slow_rate_limit\t= 1000/' \

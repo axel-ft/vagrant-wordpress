@@ -7,21 +7,25 @@
 # Author: Axel Floquet-Trillot                                                                                 #
 ################################################################################################################
 
+# Saving SSH host keys to known hosts
+ssh-keyscan ${squid_ip} ${haproxy_ip} ${mariadb_ip} >> /etc/ssh/ssh_known_hosts
+
+# Adding machines to dashboard
 cat << COCKPIT > /etc/cockpit/machines.d/1-machines.json
 {
-    "PROXY - ${squid_hostname}": {
+    "${squid_ip}": {
         "address": "${squid_ip}",
         "visible": true,
         "color": "rgb(100, 200, 0)",
         "user": "vagrant"
     },
-    "REVERSE PROXY - ${haproxy_hostname}": {
+    "${haproxy_ip}": {
         "address": "${haproxy_ip}",
         "visible": true,
         "color": "rgb(100, 200, 0)",
         "user": "vagrant"
     },
-    "DB - ${mariadb_hostname}": {
+    "${mariadb_ip}": {
         "address": "${mariadb_ip}",
         "visible": true,
         "color": "rgb(100, 200, 0)",
@@ -30,8 +34,9 @@ cat << COCKPIT > /etc/cockpit/machines.d/1-machines.json
 COCKPIT
 
 for ((i=${glusterfs_ip_start};i<=${glusterfs_ip_end};i++)); do
-    cat << COCKPIT > /etc/cockpit/machines.d/1-machines.json
-    "FILE - ${glusterfs_hostname_base}$(printf "%02d" ${i})": {
+    ssh-keyscan ${range_ip_base}${i} >> /etc/ssh/ssh_known_hosts
+    cat << COCKPIT >> /etc/cockpit/machines.d/1-machines.json
+    "${range_ip_base}${i}": {
         "address": "${range_ip_base}${i}",
         "visible": true,
         "color": "rgb(100, 200, 0)",
@@ -41,8 +46,9 @@ COCKPIT
 done
 
 for ((i=${nginx_ip_start};i<=${nginx_ip_end};i++)); do
-    cat << COCKPIT > /etc/cockpit/machines.d/1-machines.json
-    "WEB (Nginx) - ${nginx_hostname_base}$(printf "%02d" ${i})": {
+    ssh-keyscan ${range_ip_base}${i} >> /etc/ssh/ssh_known_hosts
+    cat << COCKPIT >> /etc/cockpit/machines.d/1-machines.json
+    "${range_ip_base}${i}": {
         "address": "${range_ip_base}${i}",
         "visible": true,
         "color": "rgb(100, 200, 0)",
@@ -52,8 +58,9 @@ COCKPIT
 done
 
 for ((i=${apache_ip_start};i<=${apache_ip_end};i++)); do
-    cat << COCKPIT > /etc/cockpit/machines.d/1-machines.json
-    "WEB (Apache) - ${apache_hostname_base}$(printf "%02d" ${i})": {
+    ssh-keyscan ${range_ip_base}${i} >> /etc/ssh/ssh_known_hosts
+    cat << COCKPIT >> /etc/cockpit/machines.d/1-machines.json
+    "${range_ip_base}${i}": {
         "address": "${range_ip_base}${i}",
         "visible": true,
         "color": "rgb(100, 200, 0)",
@@ -62,20 +69,22 @@ for ((i=${apache_ip_start};i<=${apache_ip_end};i++)); do
 COCKPIT
 done
 
-cat << COCKPIT > /etc/cockpit/machines.d/1-machines.json
-    "LOG - ${rsyslog_hostname}": {
+ssh-keyscan ${rsyslog_ip} ${elk_ip} ${centreon_ip} >> /etc/ssh/ssh_known_hosts
+
+cat << COCKPIT >> /etc/cockpit/machines.d/1-machines.json
+    "${rsyslog_ip}": {
         "address": "${rsyslog_ip}",
         "visible": true,
         "color": "rgb(100, 200, 0)",
         "user": "vagrant"
     },
-    "LOG - ${elk_hostname}": {
+    "${elk_ip}": {
         "address": "${elk_ip}",
         "visible": true,
         "color": "rgb(100, 200, 0)",
         "user": "vagrant"
     },
-    "MONITORING - ${centreon_hostname}": {
+    "${centreon_ip}": {
         "address": "${centreon_ip}",
         "visible": true,
         "color": "rgb(100, 200, 0)",

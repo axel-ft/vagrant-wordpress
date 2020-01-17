@@ -12,6 +12,7 @@
 # Input rules
 # IPv4
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp -s ${squid_hostname} --sport 3128 -m conntrack --ctstate ESTABLISHED -j ACCEPT      # Allow Established from proxy
+iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 22 -s ${cockpit_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 514 -s ${squid_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT   # Rsyslog authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 514 -s ${haproxy_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Rsyslog authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 514 -s ${mariadb_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Rsyslog authorized hosts
@@ -39,6 +40,7 @@ ip6tables -A INPUT -p tcp -m multiport --sports ftp,http,https -m conntrack --ct
 # Output rules
 # IPv4
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp -d ${squid_hostname} --dport 3128 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow new connections to the proxy
+iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 22 -d ${cockpit_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 514 -d ${squid_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT      # Rsyslog authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 514 -d ${haproxy_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT    # Rsyslog authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 514 -d ${mariadb_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT    # Rsyslog authorized hosts
