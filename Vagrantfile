@@ -299,7 +299,7 @@ Vagrant.configure("2") do |config|
     centreon.vm.provision :shell, :path => "common/enableservices.sh", :args => ["centengine cdb", 62],              :name => "Enable and start services"
     #centreon.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,
     #centreon.vm.provision :shell, :path => "centreon/iptables.sh",     :args => 87,
-    centreon.vm.provision :shell, :path => "centreon/install.sh",      :args => 100,                                 :name => "Centreon configuration"  
+    centreon.vm.provision :shell, :path => "centreon/config.sh",       :args => 100,                                 :name => "Centreon configuration"  
   end
 
   # Open browser after setting up / booting up one or several web servers
