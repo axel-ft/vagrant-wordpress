@@ -12,7 +12,7 @@ mkdir -p /srv/rsyslog
 chgrp syslog /srv/rsyslog
 chmod g+w -R /srv/rsyslog
 
-NAME_LIST="${squid_hostname}, ${haproxy_hostname}, ${mariadb_hostname}, ${rsyslog_hostname}, ${elk_hostname}, ${centreon_hostname}, ${cockpit_ip}"
+NAME_LIST="${squid_hostname}, ${haproxy_hostname}, ${mariadb_hostname}, ${rsyslog_hostname}, ${elk_hostname}, ${centreon_hostname}, ${cockpit_ip}, ${openvpn_ip}"
 for ((i=${glusterfs_ip_start};i<=${glusterfs_ip_end};i++)); do
     NAME_LIST+=", ${glusterfs_hostname_base}${i}"
 done

@@ -22,6 +22,7 @@ iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 3128 -s ${rsyslog_ho
 iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 3128 -s ${elk_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT     # Proxy authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 3128 -s ${centreon_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Proxy authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 3128 -s ${cockpit_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Proxy authorized hosts
+iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 3128 -s ${openvpn_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Proxy authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 3128 -m iprange --src-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT  # Proxy authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 3128 -m iprange --src-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT          # Proxy authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --dport 3128 -m iprange --src-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT        # Proxy authorized hosts
@@ -41,6 +42,7 @@ iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 3128 -d ${rsyslog_h
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 3128 -d ${elk_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT        # Proxy authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 3128 -d ${centreon_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Proxy authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 3128 -d ${cockpit_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Proxy authorized hosts
+iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 3128 -d ${openvpn_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Proxy authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 3128 -m iprange --dst-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT # Proxy authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 3128 -m iprange --dst-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT         # Proxy authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --sport 3128 -m iprange --dst-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT       # Proxy authorized hosts
