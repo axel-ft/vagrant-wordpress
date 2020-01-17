@@ -77,6 +77,10 @@ Vagrant.configure("2") do |config|
     :centreon_ip             => "192.168.43.20",                    # IP for the centreon monitoring server
     :centreon_root           => "/",                                # Root for the centreon server
 
+    # Cockpit server
+    :cockpit_hostname       => "wp-cockpit",                        # Hostname for the SSH bastion server with cockpit
+    :cockpit_ip             => "192.168.43.21",                     # IP for the SSH bastion server with cockpit
+
     # WordPress configuration
     :website_prefix          => "os1_",                             # Sets the prefix used for all the tables in the database
     # Leave all the parameters below empty for GUI install.
@@ -301,6 +305,26 @@ Vagrant.configure("2") do |config|
     #centreon.vm.provision :shell, :path => "centreon/iptables.sh",     :args => 77,
     centreon.vm.provision :shell, :path => "centreon/config.sh",       :args => 88,                                  :name => "Centreon configuration",     :env => vm_params
     centreon.vm.provision :shell, :path => "common/enableservices.sh", :args => ["centengine cbd", 100],             :name => "Enable and start services"
+  end
+
+  # Defining here the SSH bastion server with cockpit
+  config.vm.define vm_params[:cockpit_hostname] do |cockpit|
+    cockpit.vm.hostname = vm_params[:cockpit_hostname]
+    cockpit.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:cockpit_ip], netmask: vm_params[:netmask]
+
+    cockpit.vm.provider :virtualbox do |vb|
+      vb.cpus = 1
+      vb.memory = 1024
+    end
+
+    cockpit.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:cockpit_hostname], 12],                            :name => "Set hosts",                       :env => vm_params
+    cockpit.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                            :name => "Set centralized log server",      :env => vm_params
+    cockpit.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                              :name => "Set system proxy"
+    cockpit.vm.provision :shell, :path => "common/apt.sh",            :args => ["neovim unzip wget cockpit iptables-persistent rsyslog", 50], :name => "APT operations"
+    cockpit.vm.provision :shell, :path => "common/enableservices.sh", :args => ["cockpit netfilter-persistent", 62],                          :name => "Enable and start services"
+    cockpit.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                            :name => "Common firewall rules"
+    cockpit.vm.provision :shell, :path => "cockpit/iptables.sh",      :args => 87,                                                            :name => "Cockpit specific firewall rules", :env  => vm_params
+    cockpit.vm.provision :shell, :path => "cockpit/config.sh",        :args => 100,                                                           :name => "Cockpit configuration",           :env  => vm_params
   end
 
   # Open browser after setting up / booting up one or several web servers

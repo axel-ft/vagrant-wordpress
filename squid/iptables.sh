@@ -20,6 +20,7 @@ iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -s ${mariadb_hos
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -s ${rsyslog_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Proxy authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -s ${elk_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT     # Proxy authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -s ${centreon_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Proxy authorized hosts
+iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -s ${cockpit_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Proxy authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -m iprange --src-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT  # Proxy authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -m iprange --src-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT          # Proxy authorized hosts
 iptables -A INPUT -i ${bridgeif_guest_name} -p tcp --dport 3128 -m iprange --src-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT        # Proxy authorized hosts
@@ -37,6 +38,7 @@ iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -d ${mariadb_ho
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -d ${rsyslog_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT    # Proxy authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -d ${elk_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT        # Proxy authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -d ${centreon_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Proxy authorized hosts
+iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -d ${cockpit_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT   # Proxy authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -m iprange --dst-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT # Proxy authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -m iprange --dst-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT         # Proxy authorized hosts
 iptables -A OUTPUT -o ${bridgeif_guest_name} -p tcp --sport 3128 -m iprange --dst-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT       # Proxy authorized hosts
