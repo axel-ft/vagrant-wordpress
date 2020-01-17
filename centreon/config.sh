@@ -15,7 +15,7 @@ check() {
 
 CENTREON_CLIB="http://files.download.centreon.com/public/centreon-clib/centreon-clib-18.10.0.tar.gz"
 CENTREON_CLIB_TGZ="centreon-clib-18.10.0.tar.gz"
-CENTREON_CLIB_DIR="centreon-clib-18.10.0"
+CENTREON_CLIB_DIR="centreon-clib-18.10.0/build"
 
 CENTREON_PERL_CONNECTOR="http://files.download.centreon.com/public/centreon-connectors/centreon-connectors-18.10.0.tar.gz"
 CENTREON_PERL_CONNECTOR_TGZ="centreon-connectors-18.10.0.tar.gz"
