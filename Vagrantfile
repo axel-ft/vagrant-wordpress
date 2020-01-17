@@ -84,7 +84,7 @@ Vagrant.configure("2") do |config|
     # WordPress configuration
     :website_prefix          => "os1_",                             # Sets the prefix used for all the tables in the database
     # Leave all the parameters below empty for GUI install.
-    :website_name            => "Open Source Exo 4",                # Sets the website name.
+    :website_name            => "Projet Open Source",               # Sets the website name.
     :website_username        => "admin",                            # Sets the website username. It will be the admin user
     :website_password        => ENV['WP_ADMIN_PASSWORD'],           # Sets the admin password. Make sure to use a strong password
     :website_email           => "contact@opensource.fr",            # Sets the email address linked to the admin account
