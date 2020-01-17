@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd /tmp && wget --progress=bar:force  https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.4/EasyRSA-3.0.4.tgz
 cd ../etc && tar xvf ../tmp/EasyRSA-3.0.4.tgz
 cd EasyRSA-3.0.4
