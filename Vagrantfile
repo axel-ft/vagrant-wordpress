@@ -401,9 +401,9 @@ Vagrant.configure("2") do |config|
   # Defining here the OpenVPN server allowing remote access
   config.vm.define vm_params[:openvpn_hostname] do |openvpn|
     openvpn.vm.hostname = vm_params[:cockpit_hostname]
-    cockpit.vm.network :public_network, ip: vm_params[:openvpn_ip], netmask: vm_params[:netmask]
+    openvpn.vm.network :public_network, ip: vm_params[:openvpn_ip], netmask: vm_params[:netmask]
 
-    cockpit.vm.provider :vmware_esxi do |esxi|
+    openvpn.vm.provider :vmware_esxi do |esxi|
       esxi.esxi_hostname = vm_params[:esxi_hostname]
       esxi.esxi_username = vm_params[:esxi_username]
       esxi.esxi_password = vm_params[:esxi_password]
