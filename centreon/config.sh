@@ -96,7 +96,7 @@ echo -e "\n##################################################################\n"
     pushd "${CENTREON_PERL_CONNECTOR_DIR}" > /dev/null
         cmake \                                                                                                           
             -DWITH_PREFIX=/usr \
-            -DWITH_PREFIX_BINARY=/usr/lib/centreon-connector  \
+            -DWITH_PREFIX_BINARY=/usr/lib/centreon-connector \
             -DWITH_CENTREON_CLIB_INCLUDE_DIR=/usr/include \
             -DWITH_TESTING=0 .
 
