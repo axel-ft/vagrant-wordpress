@@ -350,6 +350,7 @@ Vagrant.configure("2") do |config|
       esxi.guest_memsize = 1024
     end
 
+    centreon.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
     centreon.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:centreon_hostname], 11], :name => "Set hosts",                  :env => vm_params
     centreon.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 22],  :name => "Set centralized log server", :env => vm_params
     centreon.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 33],    :name => "Set system proxy"
