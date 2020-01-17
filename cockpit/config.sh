@@ -69,7 +69,7 @@ for ((i=${apache_ip_start};i<=${apache_ip_end};i++)); do
 COCKPIT
 done
 
-ssh-keyscan ${rsyslog_ip} ${elk_ip} ${centreon_ip} >> /etc/ssh/ssh_known_hosts
+ssh-keyscan ${rsyslog_ip} ${elk_ip} ${centreon_ip} ${openvpn_ip} >> /etc/ssh/ssh_known_hosts
 
 cat << COCKPIT >> /etc/cockpit/machines.d/1-machines.json
     "${rsyslog_ip}": {
@@ -86,6 +86,12 @@ cat << COCKPIT >> /etc/cockpit/machines.d/1-machines.json
     },
     "${centreon_ip}": {
         "address": "${centreon_ip}",
+        "visible": true,
+        "color": "rgb(100, 200, 0)",
+        "user": "vagrant"
+    },
+    "${openvpn_ip}": {
+        "address": "${openvpn_ip}",
         "visible": true,
         "color": "rgb(100, 200, 0)",
         "user": "vagrant"

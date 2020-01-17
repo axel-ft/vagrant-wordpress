@@ -22,6 +22,7 @@ iptables -A INPUT -i ${guest_interface_name} -p tcp --sport 22 -d ${rsyslog_host
 iptables -A INPUT -i ${guest_interface_name} -p tcp --sport 22 -d ${elk_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT        # SSH authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --sport 22 -d ${centreon_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT   # SSH authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --sport 22 -d ${cockpit_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT    # SSH authorized hosts
+iptables -A INPUT -i ${guest_interface_name} -p tcp --sport 22 -d ${openvpn_hostname} -m conntrack --ctstate ESTABLISHED -j ACCEPT    # SSH authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --sport 22 -m iprange --dst-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT # SSH authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --sport 22 -m iprange --dst-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT         # SSH authorized hosts
 iptables -A INPUT -i ${guest_interface_name} -p tcp --sport 22 -m iprange --dst-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate ESTABLISHED -j ACCEPT       # SSH authorized hosts
@@ -43,6 +44,7 @@ iptables -A OUTPUT -o ${guest_interface_name} -p tcp --dport 22 -d ${rsyslog_hos
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --dport 22 -d ${elk_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT        # SSH authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --dport 22 -d ${centreon_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT   # SSH authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --dport 22 -d ${cockpit_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT    # SSH authorized hosts
+iptables -A OUTPUT -o ${guest_interface_name} -p tcp --dport 22 -d ${openvpn_hostname} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT    # SSH authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --dport 22 -m iprange --dst-range ${range_ip_base}${glusterfs_ip_start}-${range_ip_base}${glusterfs_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # SSH authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --dport 22 -m iprange --dst-range ${range_ip_base}${nginx_ip_start}-${range_ip_base}${nginx_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT         # SSH authorized hosts
 iptables -A OUTPUT -o ${guest_interface_name} -p tcp --dport 22 -m iprange --dst-range ${range_ip_base}${apache_ip_start}-${range_ip_base}${apache_ip_end} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT       # SSH authorized hosts
