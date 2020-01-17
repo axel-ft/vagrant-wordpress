@@ -84,6 +84,10 @@ Vagrant.configure("2") do |config|
     # Cockpit server
     :cockpit_hostname       => "wp-cockpit",                        # Hostname for the SSH bastion server with cockpit
     :cockpit_ip             => "10.20.10.11",                       # IP for the SSH bastion server with cockpit
+    
+    # OpenVPN server
+    :cockpit_hostname       => "wp-vpn",                            # Hostname for the OpenVPN server allowing remote access
+    :cockpit_ip             => "10.20.10.12",                       # IP for the SSH OpenVPN server allowing remote access
 
     # WordPress configuration
     :website_prefix          => "os1_",                             # Sets the prefix used for all the tables in the database
@@ -390,6 +394,31 @@ Vagrant.configure("2") do |config|
     cockpit.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                                    :name => "Common firewall rules"
     cockpit.vm.provision :shell, :path => "cockpit/iptables.sh",      :args => 87,                                                                    :name => "Cockpit specific firewall rules", :env  => vm_params
     cockpit.vm.provision :shell, :path => "cockpit/config.sh",        :args => 100,                                                                   :name => "Cockpit configuration",           :env  => vm_params
+  end
+
+  # Defining here the OpenVPN server allowing remote access
+  config.vm.define vm_params[:openvpn_hostname] do |openvpn|
+    openvpn.vm.hostname = vm_params[:cockpit_hostname]
+    cockpit.vm.network :public_network, ip: vm_params[:openvpn_ip], netmask: vm_params[:netmask]
+
+    cockpit.vm.provider :vmware_esxi do |esxi|
+      esxi.esxi_hostname = vm_params[:esxi_hostname]
+      esxi.esxi_username = vm_params[:esxi_username]
+      esxi.esxi_password = vm_params[:esxi_password]
+      esxi.esxi_hostport = vm_params[:esxi_hostport]
+      esxi.esxi_virtual_network = ['Vagrant Management','DMZ']
+      esxi.guest_numvcpus = 1
+      esxi.guest_memsize = 1024
+    end
+
+    openvpn.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:openvpn_hostname], 12],                                    :name => "Set hosts",                       :env => vm_params
+    openvpn.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                    :name => "Set centralized log server",      :env => vm_params
+    openvpn.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                      :name => "Set system proxy"
+    openvpn.vm.provision :shell, :path => "common/apt.sh",            :args => ["openvpn cockpit neovim unzip wget iptables-persistent rsyslog", 50], :name => "APT operations"
+    openvpn.vm.provision :shell, :path => "common/enableservices.sh", :args => ["netfilter-persistent", 62],                                  :name => "Enable and start services"
+    openvpn.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                                    :name => "Common firewall rules"
+    openvpn.vm.provision :shell, :path => "openvpn/iptables.sh",      :args => 87,                                                                    :name => "OpenVPN specific firewall rules", :env  => vm_params
+    openvpn.vm.provision :shell, :path => "openvpn/config.sh",        :args => 100,                                                                   :name => "OpenVPN configuration",           :env  => vm_params
   end
 
   # Open browser after setting up / booting up one or several web servers
