@@ -1,5 +1,12 @@
 #!/bin/bash
 
+################################################################################################################
+#       /!\ Make sure to include the vm_params as environment for correct execution of this script /!\         #
+# config.sh - OpenVPN configuration operations                                                                 #
+# Usage : ./config.sh [current_progress]                                                                       #
+# Author: Maxime Brothelande                                                                                   #
+################################################################################################################
+
 cd /tmp && wget --progress=bar:force  https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.4/EasyRSA-3.0.4.tgz
 cd ../etc && tar xvf ../tmp/EasyRSA-3.0.4.tgz
 cd EasyRSA-3.0.4
@@ -112,3 +119,7 @@ SCRIPT
 chmod 700 etc/clients-configs/make_config.sh
 sudo etc/clients-configs/make_config.sh client1
 sudo etc/clients-configs/make_config.sh client2
+
+# Display progress bar if command is in path and current progress in provisioning given
+which progressbar 2>&1>/dev/null && [ ${1} ] && progressbar ${1}
+exit 0
