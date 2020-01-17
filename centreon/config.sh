@@ -21,7 +21,7 @@ CENTREON_PERL_CONNECTOR="http://files.download.centreon.com/public/centreon-conn
 CENTREON_PERL_CONNECTOR_TGZ="centreon-connectors-18.10.0.tar.gz"
 CENTREON_PERL_CONNECTOR_DIR="centreon-connector-18.10.0/perl/build"
 
-CENTREON_SSH_CONNECTOR_DIR="/home/vmubuntu/centreon-connectors-18.10.0/ssh/build"
+CENTREON_SSH_CONNECTOR_DIR="centreon-connector-18.10.0/ssh/build"
 
 CENTREON_ENGINE="http://files.download.centreon.com/public/centreon-engine/centreon-engine-18.10.0.tar.gz"
 CENTREON_ENGINE_TGZ="centreon-engine-18.10.0.tar.gz"
