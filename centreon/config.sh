@@ -381,6 +381,7 @@ echo -e "##################################################################\n"
     mysql -e "FLUSH PRIVILEGES;"
     mysql -e "GRANT ALL PRIVILEGES on *.* to 'root'@'localhost' IDENTIFIED BY '${database_root_password}';"
     sed -i -e 's/LimitNOFILE=16364/LimitNOFILE=32000/' /etc/systemd/system/multi-user.target.wants/mariadb.service
+    mkdir -p /etc/systemd/system/mariadb.service.d
     cat << SYSTEMD > /etc/systemd/system/mariadb.service.d/override.conf
 [Service]
 
