@@ -381,6 +381,7 @@ Vagrant.configure("2") do |config|
       esxi.guest_memsize = 1024
     end
 
+    cockpit.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.20.10.254"
     cockpit.vm.provision :shell, :path => "common/sethosts.sh",       :args => [vm_params[:cockpit_hostname], 12],                                    :name => "Set hosts",                       :env => vm_params
     cockpit.vm.provision :shell, :path => "common/setrsyslog.sh",     :args => [vm_params[:rsyslog_hostname], 25],                                    :name => "Set centralized log server",      :env => vm_params
     cockpit.vm.provision :shell, :path => "common/setproxy.sh",       :args => [vm_params[:squid_hostname], 37],                                      :name => "Set system proxy"
