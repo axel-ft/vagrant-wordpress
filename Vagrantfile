@@ -334,7 +334,7 @@ Vagrant.configure("2") do |config|
 
   # Defining here the OpenVPN server allowing remote access
   config.vm.define vm_params[:openvpn_hostname] do |openvpn|
-    openvpn.vm.hostname = vm_params[:cockpit_hostname]
+    openvpn.vm.hostname = vm_params[:openvpn_hostname]
     openvpn.vm.network :public_network, bridge: vm_params[:bridgedif], ip: vm_params[:openvpn_ip], netmask: vm_params[:netmask]
 
     openvpn.vm.provider :virtualbox do |vb|
