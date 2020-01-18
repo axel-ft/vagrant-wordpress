@@ -3,7 +3,7 @@
 ################################################################################################################
 #       /!\ Make sure to include the vm_params as environment for correct execution of this script /!\         #
 # config.sh - Cockpit configuration operations                                                                 #
-# Usage : ./config.sh [current_progress]                                                                       #
+# Usage : ./config.sh protocol [current_progress]                                                              #
 # Author: Thierry Abitbol                                                                                      #
 ################################################################################################################
 
@@ -99,8 +99,16 @@ cat << COCKPIT >> /etc/cockpit/machines.d/1-machines.json
 }
 COCKPIT
 
+mkdir -p /etc/systemd/system/cockpit.service.d
+cat << SYSTEMD > /etc/systemd/system/cockpit.service.d/override.conf
+[WebService]
+Origins = ${1}://${cockpit_domain_name}
+ProtocolHeader = X-Forwarded-Proto
+SYSTEMD
+
+systemctl daemon-reload
 systemctl restart cockpit
 
 # Display progress bar if command is in path and current progress in provisioning given
-which progressbar 2>&1>/dev/null && [ ${1} ] && progressbar ${1}
+which progressbar 2>&1>/dev/null && [ ${2} ] && progressbar ${2}
 exit 0

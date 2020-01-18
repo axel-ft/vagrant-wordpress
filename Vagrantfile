@@ -329,7 +329,7 @@ Vagrant.configure("2") do |config|
     cockpit.vm.provision :shell, :path => "common/enableservices.sh", :args => ["cockpit netfilter-persistent", 62],                          :name => "Enable and start services"
     cockpit.vm.provision :shell, :path => "common/iptables.sh",       :args => 75,                                                            :name => "Common firewall rules"
     cockpit.vm.provision :shell, :path => "cockpit/iptables.sh",      :args => 87,                                                            :name => "Cockpit specific firewall rules", :env  => vm_params
-    cockpit.vm.provision :shell, :path => "cockpit/config.sh",        :args => 100,                                                           :name => "Cockpit configuration",           :env  => vm_params
+    cockpit.vm.provision :shell, :path => "cockpit/config.sh",        :args => [proto, 100],                                                  :name => "Cockpit configuration",           :env  => vm_params
   end
 
   # Defining here the OpenVPN server allowing remote access
