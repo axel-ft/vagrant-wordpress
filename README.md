@@ -107,7 +107,7 @@ All these parameters are found at the begining of the `Vagrantfile` or in the `.
 |      centreon_root      | String  |                 /                  |     Root for the centreon server     |                                None                                |
 |  centreon_domain_name   | String  | centreon.opensource.axelfloquet.fr |    Domain name to access centreon    |                 Unique, with valid cert for HTTPS                  |
 |    cockpit_hostname     | String  |             wp-cockpit             |     Hostname for the SSH bastion     |                               Unique                               |
-|       cockpit_ip        | String  |            10.20.0.11,             |        IP for the SSH bastion        |                               Unique                               |
+|       cockpit_ip        | String  |             10.20.0.11             |        IP for the SSH bastion        |                               Unique                               |
 |   cockpit_domain_name   | String  | cockpit.opensource.axelfloquet.fr  |    Domain name to access cockpit     |                 Unique, with valid cert for HTTPS                  |
 |    openvpn_hostname     | String  |               wp-vpn               |   Hostname for the OpenVPN server    |                               Unique                               |
 |       openvpn_ip        | String  |             10.20.0.12             |    IP for the SSH OpenVPN server     |                               Unique                               |
