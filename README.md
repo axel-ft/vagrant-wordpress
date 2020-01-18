@@ -132,16 +132,20 @@ This project does not include a DNS server. So, in order to be able to use hostn
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
-192.168.43.10   wp-proxy
-192.168.43.11   wp-lb
-192.168.43.12   wp-db
-192.168.43.13   wp-file13
-192.168.43.14   wp-file14
-192.168.43.15   wp-web-n15
-192.168.43.16   wp-web-n16
-192.168.43.17   wp-web-a17
-192.168.43.18   wp-log
-192.168.43.19   wp-elk
+10.10.0.10   wp-proxy
+10.20.0.10   wp-lb
+10.10.0.11   wp-db
+10.10.0.12   wp-file13
+10.10.0.13   wp-file14
+10.10.0.14   wp-web-n15
+10.10.0.15   wp-web-n16
+10.10.0.16   wp-web-a17
+10.10.0.17   wp-log
+10.10.0.18   wp-elk
+10.10.0.18   wp-elk
+10.10.0.19   wp-centreon
+10.20.0.11   wp-cockpit
+10.20.0.12   wp-vpn
 ```
 
 ### APT
@@ -263,7 +267,7 @@ As with centreon, there is near to nothing to configure here except the hostname
 
 ## Remote access with OpenVPN
 
-Remote access can be useful whenever employees cannot come onsite. By this service they can connect from their home or some other place for them to work as if they were at the office. The configuration is mainly handled by script and the ovpn files for two users are ready to be gathered on the machine in the `/etc/openvpn-clients`. All the certificates and the certificate authority are created by the install script.
+Remote access can be useful whenever employees cannot come onsite. By this service they can connect from their home or some other place for them to work as if they were at the office. The configuration is mainly handled by script and the ovpn files for two users are ready to be gathered on the machine in the `/etc/clients-configs`. All the certificates and the certificate authority are created by the install script.
 
 Some parameters as the remote server may be changed to match the current VPN server, but it should be ready to use in a OpenVPN client.
 
