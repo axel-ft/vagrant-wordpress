@@ -8,7 +8,7 @@
 ################################################################################################################
 
 # Add current hostname to the 127.0.0.1 line
-sed -i -e "s/.*127.0.0.1.*localhost.*/127.0.0.1\\tlocalhost\\t${1}/" /etc/hosts
+sed -i -e "s/.*127.0.0.1.*localhost.*/127.0.0.1\\t${1}\\tlocalhost/" /etc/hosts
 
 # Add one line for each host if it does not already exists (in case of reprovisioning)
 grep -qxF "${squid_ip}$(printf '\t')${squid_hostname}"     /etc/hosts || echo -e "${squid_ip}\\t${squid_hostname}"     >> /etc/hosts
@@ -23,6 +23,11 @@ done
 for ((i=${apache_ip_start};i<=${apache_ip_end};i++)); do
     grep -qxF "${range_ip_base}${i}$(printf '\t')${apache_hostname_base}$(printf "%02d" ${i})"    /etc/hosts || echo -e "${range_ip_base}${i}\\t${apache_hostname_base}$(printf "%02d" ${i})"    >> /etc/hosts
 done
+grep -qxF "${rsyslog_ip}$(printf '\t')${rsyslog_hostname}" /etc/hosts || echo -e "${rsyslog_ip}\\t${rsyslog_hostname}" >> /etc/hosts
+grep -qxF "${elk_ip}$(printf '\t')${elk_hostname}" /etc/hosts || echo -e "${elk_ip}\\t${elk_hostname}" >> /etc/hosts
+grep -qxF "${centreon_ip}$(printf '\t')${centreon_hostname}" /etc/hosts || echo -e "${centreon_ip}\\t${centreon_hostname}" >> /etc/hosts
+grep -qxF "${cockpit_ip}$(printf '\t')${cockpit_hostname}" /etc/hosts || echo -e "${cockpit_ip}\\t${cockpit_hostname}" >> /etc/hosts
+grep -qxF "${openvpn_ip}$(printf '\t')${openvpn_hostname}" /etc/hosts || echo -e "${openvpn_ip}\\t${openvpn_hostname}" >> /etc/hosts
 
 # Display progress bar if command is in path and current progress in provisioning given
 which progressbar 2>&1>/dev/null && [ ${2} ] && progressbar ${2}

@@ -26,7 +26,9 @@ cat << APACHE > /etc/apache2/sites-available/wordpress.conf
   DocumentRoot ${web_root}
 
   ErrorLog \${APACHE_LOG_DIR}/${domain_name}-error.log
+  ErrorLog "|/usr/bin/logger -t apache_wp_error -p local6.error"
   CustomLog \${APACHE_LOG_DIR}/${domain_name}-access.log combined
+  CustomLog "|/usr/bin/logger -t apache_wp_access -p local6.info" combined
 
   SSLEngine On
   SSLCertificateFile ${cert_root}/cert.pem

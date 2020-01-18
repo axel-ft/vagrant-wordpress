@@ -24,7 +24,9 @@ server {
   index index.php;
 
   access_log /var/log/nginx/${domain_name}-access.log;
+  access_log syslog:server=${rsyslog_hostname}:514,facility=local7,tag=nginx_wp_access,severity=info;
   error_log /var/log/nginx/${domain_name}-error.log;
+  error_log syslog:server=${rsyslog_hostname}:514,facility=local7,tag=nginx_wp_error,severity=error;
 
   location = /favicon.ico {
     log_not_found off;

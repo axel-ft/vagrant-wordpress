@@ -10,6 +10,14 @@
 # Authorize external connections by binding to 0.0.0.0 instead of 127.0.0.1
 sed -i.bak -e "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
 
+# Set slow queries log
+sed -i -e 's/^log_error = \/var\/log\/mysql\/error\.log$/#log_error = \/var\/log\/mysql\/error.log/' \
+-e 's/^#slow_query_log_file\t= \/var\/log\/mysql\/mariadb-slow\.log$/slow_query_log\nslow_query_log_file\t= \/var\/log\/mysql\/mariadb-slow.log/' \
+-e 's/^#long_query_time = 10$/long_query_time\t= 5/' \
+-e 's/^#log_slow_rate_limit\t= 1000$/log_slow_rate_limit\t= 1000/' \
+-e 's/^#log_slow_verbosity\t= query_plan$/log_slow_verbosity\t= query_plan/' \
+-e 's/^#log-queries-not-using-indexes$/log-queries-not-using-indexes/' /etc/mysql/mariadb.conf.d/50-server.cnf
+
 # Secure mariadb installation (direct queries equivalent to mysql_secure_installation)
 mysql -e "UPDATE mysql.user SET Password=PASSWORD('${database_root_password}') WHERE User='root';"      # Define root password
 mysql -e "DELETE FROM mysql.user WHERE User='';"                                                        # Remove anonymous users
@@ -28,7 +36,20 @@ for ((i=${apache_ip_start};i<=${apache_ip_end};i++)); do
 done
 mysql -e "FLUSH PRIVILEGES;"
 
+# Configure unit to log to rsyslog
+mkdir -p /etc/systemd/system/mariadb.service.d
+cat << 'SYSTEMD' > /etc/systemd/system/mariadb.service.d/override.conf
+[Service]
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogFacility=daemon
+SyslogIdentifier=mariadb_wp_error
+SysLogLevel=err
+SYSTEMD
+
 # Restart mariadb to bind with 0.0.0.0
+systemctl daemon-reload
 systemctl restart mariadb
 
 # Display progress bar if command is in path and current progress in provisioning given

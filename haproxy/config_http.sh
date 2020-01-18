@@ -16,12 +16,20 @@ echo -e "\toption log-separate-errors" >> /etc/haproxy/haproxy.cfg
 # Appending the frontend, backend and stats config
 cat << HAPROXY >> /etc/haproxy/haproxy.cfg
 
-frontend wp-front
+frontend http-in
         bind *:80
+        acl wp-front hdr(host) -i ${domain_name}
+        acl kibana-front hdr(host) -i ${kibana_domain_name}
+        acl centreon-front hdr(host) -i ${centreon_domain_name}
+        acl cockpit-front hdr(host) -i ${cockpit_domain_name}
         reqadd X-Forwarded-Proto:\\ http
         mode http
         option http-server-close
         option forwardfor
+        use_backend wp-back if wp-front
+        use_backend kibana-back if kibana-front
+        use_backend centreon-back if centreon-front
+        use_backend cockpit-back if cockpit-front
         default_backend wp-back
   
 backend wp-back    
@@ -44,6 +52,27 @@ done
 cat << HAPROXY >> /etc/haproxy/haproxy.cfg
         http-request set-header X-Forwarded-Port %[dst_port]
         http-request add-header X-Forwarded-Proto http
+
+backend kibana-back
+        mode http
+        option forwardfor
+        server kibana ${elk_hostname}:5601 check
+        http-request set-header X-Forwarded-Port %[dst_port]
+        http-request add-header X-Forwarded-Proto http
+        
+backend centreon-back
+        mode http
+        option forwardfor
+        server centreon ${centreon_hostname}:80 check
+        http-request set-header X-Forwarded-Port %[dst_port]
+        http-request add-header X-Forwarded-Proto https if { ssl_fc }
+
+backend cockpit-back
+        mode http
+        option forwardfor
+        server cockpit ${cockpit_hostname}:9090 check ssl verify none
+        http-request set-header X-Forwarded-Port %[dst_port]
+        http-request add-header X-Forwarded-Proto https if { ssl_fc }
   
 listen stats
         bind *:1936
@@ -59,6 +88,12 @@ chmod 0400 /etc/haproxy/haproxy.lock
 
 # Restarting HAProxy to apply changes, if configuration is correct
 haproxy -f /etc/haproxy/haproxy.cfg -c && systemctl restart haproxy
+
+# Preventing stop for log file in default rsyslog haproxy conf
+sed -i.bak -e 's/^&~$//' /etc/rsyslog.d/49-haproxy.conf
+
+# Restarting rsyslog to apply changes, if configuration is correct
+rsyslogd -N1 && systemctl restart rsyslog
 
 # Display progress bar if command is in path and current progress in provisioning given
 which progressbar 2>&1>/dev/null && [ ${1} ] && progressbar ${1}

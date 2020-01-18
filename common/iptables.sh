@@ -38,7 +38,7 @@ iptables -A INPUT -p icmp --icmp-type 0  -m conntrack --ctstate NEW -j ACCEPT   
 iptables -A INPUT -p icmp --icmp-type 3  -m conntrack --ctstate NEW -j ACCEPT                          # ICMP type 3
 iptables -A INPUT -p icmp --icmp-type 8  -m conntrack --ctstate NEW -j ICMPRULES                       # ICMP type 8 rate limited
 iptables -A INPUT -p icmp --icmp-type 11 -m conntrack --ctstate NEW -j ACCEPT                          # ICMP type 11
-iptables -A INPUT -p tcp --dport ssh -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                  # New SSH
+iptables -A INPUT -i eth0 -p tcp --dport ssh -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT          # New SSH on Vagrant network card
 iptables -A INPUT -p tcp --sport domain -m conntrack --ctstate ESTABLISHED -j ACCEPT                   # DNS (TCP)
 iptables -A INPUT -p udp -m multiport --sports domain,ntp -m conntrack --ctstate ESTABLISHED -j ACCEPT # DNS and NTP (UDP)
 # IPv6
@@ -52,7 +52,7 @@ ip6tables -A INPUT -p icmpv6 --icmpv6-type 0  -m conntrack --ctstate NEW -j ACCE
 ip6tables -A INPUT -p icmpv6 --icmpv6-type 3  -m conntrack --ctstate NEW -j ACCEPT                      # ICMP type 3
 ip6tables -A INPUT -p icmpv6 --icmpv6-type 8  -m conntrack --ctstate NEW -j ICMPRULES                   # ICMP type 8 rate limited
 ip6tables -A INPUT -p icmpv6 --icmpv6-type 11 -m conntrack --ctstate NEW -j ACCEPT                      # ICMP type 11
-ip6tables -A INPUT -p tcp --dport ssh -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                  # New SSH
+ip6tables -A INPUT -i eth0 -p tcp --dport ssh -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                  # New SSH
 ip6tables -A INPUT -p tcp --sport domain -m conntrack --ctstate ESTABLISHED -j ACCEPT                   # DNS (TCP)
 ip6tables -A INPUT -p udp -m multiport --sports domain,ntp -m conntrack --ctstate ESTABLISHED -j ACCEPT # DNS and NTP (UDP)
 
@@ -60,13 +60,13 @@ ip6tables -A INPUT -p udp -m multiport --sports domain,ntp -m conntrack --ctstat
 # IPv4
 iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT                                     # Do not disrupt existing connections
 iptables -A OUTPUT -m conntrack --ctstate INVALID -j DROP                                                   # Drop TCP Invalid
-iptables -A OUTPUT -p tcp --sport ssh -m conntrack --ctstate ESTABLISHED -j ACCEPT                          # Established SSH
+iptables -A OUTPUT -o eth0 -p tcp --sport ssh -m conntrack --ctstate ESTABLISHED -j ACCEPT                          # Established SSH
 iptables -A OUTPUT -p tcp --dport domain -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                   # Allow DNS resolution (TCP)
 iptables -A OUTPUT -p udp -m multiport --dports domain,ntp -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow DNS resolution and NTP (UDP)
 # IPv6
 ip6tables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT                                     # Do not disrupt existing connections
 ip6tables -A OUTPUT -m conntrack --ctstate INVALID -j DROP                                                   # Drop TCP Invalid
-ip6tables -A OUTPUT -p tcp --sport ssh -m conntrack --ctstate ESTABLISHED -j ACCEPT                          # Established SSH
+ip6tables -A OUTPUT -o eth0 -p tcp --sport ssh -m conntrack --ctstate ESTABLISHED -j ACCEPT                  # Established SSH
 ip6tables -A OUTPUT -p tcp --dport domain -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT                   # Allow DNS resolution (TCP)
 ip6tables -A OUTPUT -p udp -m multiport --dports domain,ntp -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow DNS resolution and NTP (UDP)
 
