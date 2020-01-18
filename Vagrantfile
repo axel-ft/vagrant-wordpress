@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
     # Network configuration
     :range_ip_base           => "10.10.0.",                         # Cannot be wider than a 255.255.255.0 network (scripts won't work)
     :netmask                 => "255.255.255.0",                    # Cannot be wider that a 255.255.255.0 network (scripts won't work)
-    :guest_interface_name     => "eth1",                            # Name of the bridged interface in the guest. Mostly used for firewall configuration
+    :guest_interface_name    => "eth1",                             # Name of the bridged interface in the guest. Mostly used for firewall configuration
 
     # Proxy
     :squid_hostname          => "wp-proxy",                         # Hostname for the squid proxy server
@@ -80,11 +80,11 @@ Vagrant.configure("2") do |config|
     :centreon_hostname       => "wp-centreon",                      # Hostname for the centreon monitoring server
     :centreon_ip             => "10.10.0.19",                       # IP for the centreon monitoring server
     :centreon_root           => "/",                                # Root for the centreon server
-    :centreon_domain_name    => "centreon.opensource.axelfloquet.fr", # Domain name to access cockpit through HAProxy
+    :centreon_domain_name    => "centreon.opensource.axelfloquet.fr", # Domain name to access centreon through HAProxy
 
     # Cockpit server
     :cockpit_hostname       => "wp-cockpit",                        # Hostname for the SSH bastion server with cockpit
-    :cockpit_ip             => "10.20.0.11  ",                      # IP for the SSH bastion server with cockpit
+    :cockpit_ip             => "10.20.0.11",                        # IP for the SSH bastion server with cockpit
     :cockpit_domain_name    => "cockpit.opensource.axelfloquet.fr", # Domain name to access cockpit through HAProxy
     
     # OpenVPN server
@@ -125,7 +125,7 @@ Vagrant.configure("2") do |config|
       esxi.esxi_hostport = vm_params[:esxi_hostport]
       esxi.esxi_virtual_network = ['Vagrant Management','LAN']
       esxi.guest_numvcpus = 2
-      esxi.guest_memsize = 2048
+      esxi.guest_memsize = 1536
     end
 
     squid.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
@@ -151,7 +151,7 @@ Vagrant.configure("2") do |config|
       esxi.esxi_hostport = vm_params[:esxi_hostport]
       esxi.esxi_virtual_network = ['Vagrant Management','DMZ']
       esxi.guest_numvcpus = 2
-      esxi.guest_memsize = 2048
+      esxi.guest_memsize = 1536
     end
 
     haproxy.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.20.0.254"
@@ -187,7 +187,7 @@ Vagrant.configure("2") do |config|
       esxi.esxi_hostport = vm_params[:esxi_hostport]
       esxi.esxi_virtual_network = ['Vagrant Management','LAN']
       esxi.guest_numvcpus = 1
-      esxi.guest_memsize = 1536
+      esxi.guest_memsize = 1024
     end
 
     mariadb.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
@@ -214,7 +214,7 @@ Vagrant.configure("2") do |config|
         esxi.esxi_hostport = vm_params[:esxi_hostport]
       esxi.esxi_virtual_network = ['Vagrant Management','LAN']
       esxi.guest_numvcpus = 1
-        esxi.guest_memsize = 1536
+        esxi.guest_memsize = 1024
       end
 
       configure_cluster = (i == vm_params[:glusterfs_ip_end]) ? "--configure-cluster" : ""
@@ -244,7 +244,7 @@ Vagrant.configure("2") do |config|
         esxi.esxi_hostport = vm_params[:esxi_hostport]
       esxi.esxi_virtual_network = ['Vagrant Management','LAN']
       esxi.guest_numvcpus = 1
-        esxi.guest_memsize = 1536
+        esxi.guest_memsize = 1024
       end
 
       nginx.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
@@ -274,7 +274,7 @@ Vagrant.configure("2") do |config|
         esxi.esxi_hostport = vm_params[:esxi_hostport]
       esxi.esxi_virtual_network = ['Vagrant Management','LAN']
       esxi.guest_numvcpus = 1
-        esxi.guest_memsize = 1536
+        esxi.guest_memsize = 1024
       end
 
       apache.vm.provision :shell, run: "always", inline: "ip route delete default 2>&1 >/dev/null || true; ip route add default via 10.10.0.254"
