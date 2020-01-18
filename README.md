@@ -267,7 +267,7 @@ As with centreon, there is near to nothing to configure here except the hostname
 
 ## Remote access with OpenVPN
 
-Remote access can be useful whenever employees cannot come onsite. By this service they can connect from their home or some other place for them to work as if they were at the office. The configuration is mainly handled by script and the ovpn files for two users are ready to be gathered on the machine in the `/etc/openvpn-clients`. All the certificates and the certificate authority are created by the install script.
+Remote access can be useful whenever employees cannot come onsite. By this service they can connect from their home or some other place for them to work as if they were at the office. The configuration is mainly handled by script and the ovpn files for two users are ready to be gathered on the machine in the `/etc/clients-configs`. All the certificates and the certificate authority are created by the install script.
 
 Some parameters as the remote server may be changed to match the current VPN server, but it should be ready to use in a OpenVPN client.
 
