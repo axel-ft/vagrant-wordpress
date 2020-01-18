@@ -132,16 +132,20 @@ This project does not include a DNS server. So, in order to be able to use hostn
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
-192.168.43.10   wp-proxy
-192.168.43.11   wp-lb
-192.168.43.12   wp-db
-192.168.43.13   wp-file13
-192.168.43.14   wp-file14
-192.168.43.15   wp-web-n15
-192.168.43.16   wp-web-n16
-192.168.43.17   wp-web-a17
-192.168.43.18   wp-log
-192.168.43.19   wp-elk
+10.10.10.10   wp-proxy
+10.20.10.10   wp-lb
+10.10.10.11   wp-db
+10.10.10.12   wp-file13
+10.10.10.13   wp-file14
+10.10.10.14   wp-web-n15
+10.10.10.15   wp-web-n16
+10.10.10.16   wp-web-a17
+10.10.10.17   wp-log
+10.10.10.18   wp-elk
+10.10.10.18   wp-elk
+10.10.10.19   wp-centreon
+10.20.10.11   wp-cockpit
+10.20.10.12   wp-vpn
 ```
 
 ### APT
