@@ -4,16 +4,19 @@
 
 This project can be used to deploy a complete Wordpress install in less than an hour. Vagrant is used to deploy and provision all the virtual machines. The Vagrantfile included, and customizable, is used to deploy the following machines (defaults values are shown):
 
-|  Qty  | Scalable |                 Type                 |  Package  |  Hostname  |        IP        |  CPU  |  RAM  |
-| :---: | :------: | :----------------------------------: | :-------: | :--------: | :--------------: | :---: | :---: |
-|   1   |    ❌     |                Proxy                 |   squid   |  wp-proxy  |  192.168.43.10   |   2   |  2GB  |
-|   1   |    ❌     |   Load balancer and reverse proxy    |  haproxy  |   wp-lb    |  192.168.43.11   |   2   |  2GB  |
-|   1   |    ❌     |      Database (WordPress data)       |  mariadb  |   wp-db    |  192.168.43.12   |   1   | 1.5GB |
-|   2   |    ✔     |    File storage (WordPress files)    | glusterfs | wp-fileXX  | 192.168.43.13-14 |   1   | 1.5GB |
-|   2   |    ✔     |          Nginx web servers           |   nginx   | wp-web-nXX | 192.168.43.15-16 |   1   | 1.5GB |
-|   1   |    ✔     |          Apache web servers          |  apache2  | wp-web-aXX |  192.168.43.17   |   1   | 1.5GB |
-|   1   |    ❌     |        Centralized log server        |  rsyslog  |   wp-log   |  192.168.43.18   |   1   |  1GB  |
-|   1   |    ❌     | Elasticsearch Logstash Kibana server | ELK stack |   wp-elk   |  192.168.43.19   |   2   |  2GB  |
+|  Qty  | Scalable |                 Type                 |  Package  |  Hostname   |        IP        |  CPU  |  RAM  |
+| :---: | :------: | :----------------------------------: | :-------: | :---------: | :--------------: | :---: | :---: |
+|   1   |    ❌     |                Proxy                 |   squid   |  wp-proxy   |  192.168.43.10   |   2   |  GB   |
+|   1   |    ❌     |   Load balancer and reverse proxy    |  haproxy  |    wp-lb    |  192.168.43.11   |   2   |  2GB  |
+|   1   |    ❌     |      Database (WordPress data)       |  mariadb  |    wp-db    |  192.168.43.12   |   1   | 1.5GB |
+|   2   |    ✔     |    File storage (WordPress files)    | glusterfs |  wp-fileXX  | 192.168.43.13-14 |   1   | 1.5GB |
+|   2   |    ✔     |          Nginx web servers           |   nginx   | wp-web-nXX  | 192.168.43.15-16 |   1   | 1.5GB |
+|   1   |    ✔     |          Apache web servers          |  apache2  | wp-web-aXX  |  192.168.43.17   |   1   | 1.5GB |
+|   1   |    ❌     |        Centralized log server        |  rsyslog  |   wp-log    |  192.168.43.18   |   1   |  1GB  |
+|   1   |    ❌     | Elasticsearch Logstash Kibana server | ELK stack |   wp-elk    |  192.168.43.19   |   2   |  2GB  |
+|   1   |    ❌     |      Centreon monitoring server      | centreon  | wp-centreon |  192.168.43.20   |   2   |  1GB  |
+|   1   |    ❌     |             SSH Bastion              |  cockpit  | wp-cockpit  |  192.168.43.21   |   1   |  1GB  |
+|   1   |    ❌     |     OpenVPN remote access server     |  openvpn  |   wp-vpn    |  192.168.43.22   |   1   |  1GB  |
 
 > - ELK stands for Elasticsearch, Logstash, Kibana. They are the three main products of Elastic used to automate the log analysis.
 > - **`XX`** in the hostname is replaced by the last two digits of the IP address.
@@ -58,49 +61,58 @@ All those variables are transmitted as environment variables to the provisioning
 
 All these parameters are found at the begining of the `Vagrantfile` or in the `.env` file.
 
-|          Name           |  Type   |          Default value           |                 Usage                  |                            Constraints                             |
-| :---------------------: | :-----: | :------------------------------: | :------------------------------------: | :----------------------------------------------------------------: |
-|      range_ip_base      | String  |            192.168.43            |            Fixed part of IP            |                    /24 or less netword required                    |
-|         netmask         | String  |          255.255.255.0           |     Netmask used for all machines      |                    /24 or less network required                    |
-|        bridgeif         | String  | Intel(R) Wireless-AC 9560 160MHz |       Name of the host interface       |                  see`VBoxManage list bridgedifs`                   |
-|   bridgeif_guest_name   | String  |               eth1               |      Name of the guest interface       |                           See `ip -c a`                            |
-|     squid_hostname      | String  |             wp-proxy             |           Hostname of proxy            |                               Unique                               |
-|        squid_ip         | String  |          192.168.43.10           |              IP of proxy               |                               Unique                               |
-|    haproxy_hostname     | String  |              wp-lb               |       Hostname of load balancer        |                               Unique                               |
-|       haproxy_ip        | String  |          192.168.43.11           |          IP of load balancer           |                               Unique                               |
-|   haproxy_stats_user    | String  |              admin               |         Username of stats user         |                       No special characters                        |
-| haproxy_stats_password  | String  |  ENV['HAPROXY_STATS_PASSWORD']   |       Password of the stats user       |                       Defined in `.env` file                       |
-|    mariadb_hostname     | String  |              wp-db               |        Hostname of the database        |                               Unique                               |
-|       mariadb_ip        | String  |          192.168.43.12           |           IP of the database           |                               Unique                               |
-|      database_name      | String  |            wordpress             |          Name of the database          |           Unique, not equal to mysql, information_schema           |
-|    database_username    | String  |          wordpressuser           |     Username of the WordPress user     |                   Unique, no special characters                    |
-| database_root_password  | String  |     ENV['DB_ROOT_PASSWORD']      |  Password for the root database user   |                       Defined in `.env` file                       |
-| database_user_password  | String  |     ENV['DB_USER_PASSWORD']      |    Password for the wordpress user     |                       Defined in `.env` file                       |
-| glusterfs_hostname_base | String  |             wp-file              |     Hostname base for file storage     |            Unique, last digits of each IP are appended             |
-|   glusterfs_ip_start    | Number  |                13                |        First IP of file servers        |                 Unique, less than glusterfs_ip_end                 |
-|    glusterfs_ip_end     | Number  |                14                |        Last IP of file servers         |           Unique, more or equal than glusterfs_ip_start            |
-|     glusterfs_root      | String  |              /data               |  Root of the GlusterFS volume bricks   |                      Valid, non existing path                      |
-|   nginx_hostname_base   | String  |             wp-web-n             |    Hostname base for Nginx servers     |            Unique, last digits of each IP are appended             |
-|     nginx_ip_start      | Number  |                15                |       First IP of Nginx servers        |                  Unique, less than nginx_ip_start                  |
-|      nginx_ip_end       | Number  |                16                |        Last IP of Nginx servers        |              Unique, equal or more than nginx_ip_end               |
-|  apache_hostname_base   | String  |             wp-web-a             |    Hostname base for Apache servers    |            Unique, last digits of each IP are appended             |
-|     apache_ip_start     | Number  |                17                |       First IP of Apache servers       |                  Unique, less than apache_ip_end                   |
-|      apache_ip_end      | Number  |                17                |       Last IP of Apache servers        |             Unique, equal or more than apache_ip_start             |
-|      https_enabled      | Boolean |               true               |        Defines if HTTPS is used        |              If true, a valid certificate is required              |
-|       domain_name       | String  |    opensource.axelfloquet.fr     |              Domain name               |       Valid and resolved (in hosts or DNS) domain name or IP       |
-|        cert_root        | String  |          /vagrant/cert           |         Certificate files root         | Valid certificate for the above domain (Let's Encrypt for example) |
-|        web_root         | String  |          /var/www/html           |           Website files root           |           Valid existing path - Emptied on provisioning            |
-|    rsyslog_hostname     | String  |              wp-log              |  Hostname for centralized log server   |                               Unique                               |
-|       rsyslog_ip        | String  |          192.168.43.18           |    IP of the log centralized server    |                               Unique                               |
-|      elk_hostname       | String  |              wp-elk              |        Hostname for ELK server         |                               Unique                               |
-|         elk_ip          | String  |          192.168.43.19           |          IP of the ELK server          |                               Unique                               |
-|   kibana_domain_name    | String  | kibana.opensource.axelfloquet.fr | Domain name for kibana used in HAProxy |       Valid and resolved (in hosts or DNS) domain name or IP       |
-|     website_prefix      | String  |               os1_               |         Prefix for table names         |                  Short and no special characters                   |
-|      website_name       | String  |           Open Source            |          Title of the website          |      Can be omitted for GUI install - No special constraints       |
-|    website_username     | String  |              admin               |  Username of the admin WordPress user  |      Can be omitted for GUI install - No special constraints       |
-|    website_password     | String  |     ENV['WP_ADMIN_PASSWORD']     |      Password of this admin user       |  Can be omitted for GUI install - Strong passwords only in `.env`  |
-|      website_email      | String  |      contact@opensource.fr       |      Email for this admin account      |        Can be omitted for GUI install - valid mail address         |
-|         noindex         | Number  |                0                 |         Search engine indexing         |                            Only 0 or 1                             |
+|          Name           |  Type   |           Default value            |                Usage                 |                            Constraints                             |
+| :---------------------: | :-----: | :--------------------------------: | :----------------------------------: | :----------------------------------------------------------------: |
+|      range_ip_base      | String  |             192.168.43             |           Fixed part of IP           |                    /24 or less netword required                    |
+|         netmask         | String  |           255.255.255.0            |    Netmask used for all machines     |                    /24 or less network required                    |
+|        bridgeif         | String  |  Intel(R) Wireless-AC 9560 160MHz  |      Name of the host interface      |                  see`VBoxManage list bridgedifs`                   |
+|   bridgeif_guest_name   | String  |                eth1                |     Name of the guest interface      |                           See `ip -c a`                            |
+|     squid_hostname      | String  |              wp-proxy              |          Hostname of proxy           |                               Unique                               |
+|        squid_ip         | String  |           192.168.43.10            |             IP of proxy              |                               Unique                               |
+|    haproxy_hostname     | String  |               wp-lb                |      Hostname of load balancer       |                               Unique                               |
+|       haproxy_ip        | String  |           192.168.43.11            |         IP of load balancer          |                               Unique                               |
+|   haproxy_stats_user    | String  |               admin                |        Username of stats user        |                       No special characters                        |
+| haproxy_stats_password  | String  |   ENV['HAPROXY_STATS_PASSWORD']    |      Password of the stats user      |                       Defined in `.env` file                       |
+|    mariadb_hostname     | String  |               wp-db                |       Hostname of the database       |                               Unique                               |
+|       mariadb_ip        | String  |           192.168.43.12            |          IP of the database          |                               Unique                               |
+|      database_name      | String  |             wordpress              |         Name of the database         |           Unique, not equal to mysql, information_schema           |
+|    database_username    | String  |           wordpressuser            |    Username of the WordPress user    |                   Unique, no special characters                    |
+| database_root_password  | String  |      ENV['DB_ROOT_PASSWORD']       | Password for the root database user  |                       Defined in `.env` file                       |
+| database_user_password  | String  |      ENV['DB_USER_PASSWORD']       |   Password for the wordpress user    |                       Defined in `.env` file                       |
+| glusterfs_hostname_base | String  |              wp-file               |    Hostname base for file storage    |            Unique, last digits of each IP are appended             |
+|   glusterfs_ip_start    | Number  |                 13                 |       First IP of file servers       |                 Unique, less than glusterfs_ip_end                 |
+|    glusterfs_ip_end     | Number  |                 14                 |       Last IP of file servers        |           Unique, more or equal than glusterfs_ip_start            |
+|     glusterfs_root      | String  |               /data                | Root of the GlusterFS volume bricks  |                      Valid, non existing path                      |
+|   nginx_hostname_base   | String  |              wp-web-n              |   Hostname base for Nginx servers    |            Unique, last digits of each IP are appended             |
+|     nginx_ip_start      | Number  |                 15                 |      First IP of Nginx servers       |                  Unique, less than nginx_ip_start                  |
+|      nginx_ip_end       | Number  |                 16                 |       Last IP of Nginx servers       |              Unique, equal or more than nginx_ip_end               |
+|  apache_hostname_base   | String  |              wp-web-a              |   Hostname base for Apache servers   |            Unique, last digits of each IP are appended             |
+|     apache_ip_start     | Number  |                 17                 |      First IP of Apache servers      |                  Unique, less than apache_ip_end                   |
+|      apache_ip_end      | Number  |                 17                 |      Last IP of Apache servers       |             Unique, equal or more than apache_ip_start             |
+|      https_enabled      | Boolean |                true                |       Defines if HTTPS is used       |              If true, a valid certificate is required              |
+|       domain_name       | String  |     opensource.axelfloquet.fr      |             Domain name              |       Valid and resolved (in hosts or DNS) domain name or IP       |
+|        cert_root        | String  |           /vagrant/cert            |        Certificate files root        | Valid certificate for the above domain (Let's Encrypt for example) |
+|        web_root         | String  |           /var/www/html            |          Website files root          |           Valid existing path - Emptied on provisioning            |
+|    rsyslog_hostname     | String  |               wp-log               | Hostname for centralized log server  |                               Unique                               |
+|       rsyslog_ip        | String  |           192.168.43.18            |   IP of the log centralized server   |                               Unique                               |
+|      elk_hostname       | String  |               wp-elk               |       Hostname for ELK server        |                               Unique                               |
+|         elk_ip          | String  |           192.168.43.19            |         IP of the ELK server         |                               Unique                               |
+|   kibana_domain_name    | String  |  kibana.opensource.axelfloquet.fr  |        Domain name for kibana        |       Valid and resolved (in hosts or DNS) domain name or IP       |
+|    centreon_hostname    | String  |            wp-centreon             |  Hostname for the monitoring server  |                               Unique                               |
+|       centreon_ip       | String  |           192.168.43.20            |     IP for the monitoring server     |                               Unique                               |
+|      centreon_root      | String  |                 /                  |     Root for the centreon server     |                                None                                |
+|  centreon_domain_name   | String  | centreon.opensource.axelfloquet.fr |    Domain name to access centreon    |                 Unique, with valid cert for HTTPS                  |
+|    cockpit_hostname     | String  |             wp-cockpit             |     Hostname for the SSH bastion     |                               Unique                               |
+|       cockpit_ip        | String  |           192.168.43.21            |        IP for the SSH bastion        |                               Unique                               |
+|   cockpit_domain_name   | String  | cockpit.opensource.axelfloquet.fr  |    Domain name to access cockpit     |                 Unique, with valid cert for HTTPS                  |
+|    openvpn_hostname     | String  |               wp-vpn               |   Hostname for the OpenVPN server    |                               Unique                               |
+|       openvpn_ip        | String  |           192.168.43.22            |    IP for the SSH OpenVPN server     |                               Unique                               |
+|     website_prefix      | String  |                os1_                |        Prefix for table names        |                  Short and no special characters                   |
+|      website_name       | String  |            Open Source             |         Title of the website         |      Can be omitted for GUI install - No special constraints       |
+|    website_username     | String  |               admin                | Username of the admin WordPress user |      Can be omitted for GUI install - No special constraints       |
+|    website_password     | String  |      ENV['WP_ADMIN_PASSWORD']      |     Password of this admin user      |  Can be omitted for GUI install - Strong passwords only in `.env`  |
+|      website_email      | String  |       contact@opensource.fr        |     Email for this admin account     |        Can be omitted for GUI install - valid mail address         |
+|         noindex         | Number  |                 0                  |        Search engine indexing        |                            Only 0 or 1                             |
 
 > Omitted allowed parameters are just left empty
 
@@ -126,6 +138,9 @@ ff02::2 ip6-allrouters
 192.168.43.17   wp-web-a17
 192.168.43.18   wp-log
 192.168.43.19   wp-elk
+192.168.43.20   wp-centreon
+192.168.43.21   wp-cockpit
+192.168.43.22   wp-vpn
 ```
 
 ### APT
@@ -222,6 +237,34 @@ There are some visualizes and dashboards included with this repo in the elk fold
 These one only show some basic information on HAProxy and the web servers and works only if the *hostnames have not been modified*.
 
 Logs in the Kibana dashboard mainly contains HAProxy, Squid, Nginx, Apache, some MariaDB messages and the auth facility (containing itself many command lines as sudo, su, or useradd)at this point of the configuration.
+
+## Monitoring: centreon
+
+As the numbers of machines increases, it also becomes crucial to be able to monitor them easily and in a central interface. This is exactly the goal of centreon, an agentless software that can remotely monitor the servers health. The scripts included in this repo handles all the CLI compilation and installation part. The web install wizard then needs to be filled to complete the install and begin to monitor servers. There is near to nothing to configure for this machine apart its hostname, domain name and IP address. The local database root password has been copied from mariadb server for simplicity, but it can easily be changed in the machine or by adding a variable in the Vagrantfile.
+
+The database part is then filled this way :
+
+- Host: localhost
+- Port: 3306
+- User: root
+- Password: `same_password_as_mariadb_server`
+- Remaining fields as wanted
+
+> During the wizard, there will be an invalid path that just needs to be replaced by the following value : /usr/lib/centreon-broker/cbmod.so
+
+There is absolutely no constraints for the admin user creation.
+
+## SSH Bastion: cockpit
+
+In order to centralize the SSH access to the servers and be able to detect any malicious activity (from internal or external users), a server with cockpit is also installed. All the SSH connections must originate from this server. This can open the ability to save all the sessions and replay them and gives a central point to access machines of the network, instead of anyone connecting directly to any machine.
+
+As with centreon, there is near to nothing to configure here except the hostname, IP, and domain name.
+
+## Remote access with OpenVPN
+
+Remote access can be useful whenever employees cannot come onsite. By this service they can connect from their home or some other place for them to work as if they were at the office. The configuration is mainly handled by script and the ovpn files for two users are ready to be gathered on the machine in the `/etc/clients-configs`. All the certificates and the certificate authority are created by the install script.
+
+Some parameters as the remote server may be changed to match the current VPN server, but it should be ready to use in a OpenVPN client.
 
 ## Conclusion
 
