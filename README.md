@@ -30,6 +30,7 @@ Before executing any command, a `.env` file must be placed along with the `Vagra
 
 ```bash
 # A template for this .env file is placed at the root of this project. You can copy it under the .env name and modify it to your needs.
+ESXI_USER_PASSWORD="ESXI root password"
 HAPROXY_STATS_PASSWORD="Password for HAProxy stats"
 DB_ROOT_PASSWORD="Root password for the database"
 DB_USER_PASSWORD="Wordpress user password for the database"
