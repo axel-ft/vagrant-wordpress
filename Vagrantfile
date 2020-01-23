@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
     :range_ip_base           => "192.168.43.",                      # Cannot be wider than a 255.255.255.0 network (scripts won't work)
     :netmask                 => "255.255.255.0",                    # Cannot be wider that a 255.255.255.0 network (scripts won't work)
     :bridgeif                => "Intel(R) Wireless-AC 9560 160MHz", # Name of the interface to bridge. Command "VBoxManage list bridgedifs" is used to obtain the correct name
-    :bridgeif_guest_name     => "eth1",                             # Name of the bridged interface in the guest. Mostly used for firewall configuration
+    :guest_interface_name     => "eth1",                             # Name of the bridged interface in the guest. Mostly used for firewall configuration
 
     # Proxy
     :squid_hostname          => "wp-proxy",                         # Hostname for the squid proxy server

@@ -48,7 +48,7 @@ Some scripts in this projects are applied to all the machines, configuring some 
 - Define the base of IP for ranges with `range_ip_base`. By default, it is `192.168.43.` and is completed with a final number when a range of IP is used.
 - Define the `netmask` for all machines and defaulting to `255.255.255.0` which is high enough for this project.
 - Define which interface is bridged with `bridgedif`. This is the name of the interface as displayed as in the result of the `VBoxManage list bridgedifs` command, chosing the right interface with Internet access.
-- Define the name of the guest bridged interface with `bridgeif_guest_name`. In all the guests, the bridged interface is the second NIC and is named `eth1` by default.
+- Define the name of the guest bridged interface with `guest_interface_name`. In all the guests, the bridged interface is the second NIC and is named `eth1` by default.
 - Define the `domain_name` which is given to the vhost configuration and also should match the certificate name to prevent warnings in the browser when visiting the website. Also define the `kibana_domain_name`, which must be different from the first one and used to access Kibana through the HAProxy server.
 - Define the root of the certificates files. By default, the certificate files are placed in a `cert` directory right next to the `Vagrantfile` and the `cert_root` variables points towards them. Note that for simplicity, they are kept on a shared folder between the guests and the host machine. They are not pushed to any folder in the virtual machines. In my deployment, I have used a single certificate valid for the two domain names I have used.
 - Define the `web_root` for the GlusterFS mount point. It is the root folder for all the vhosts (in web servers), defaulting to `/var/www/html`. ⚠ Contents of the folder will be removed during deployment. Be cautious not to place the folder anywhere critical for the system.
@@ -66,7 +66,7 @@ All these parameters are found at the begining of the `Vagrantfile` or in the `.
 |      range_ip_base      | String  |             192.168.43             |           Fixed part of IP           |                    /24 or less netword required                    |
 |         netmask         | String  |           255.255.255.0            |    Netmask used for all machines     |                    /24 or less network required                    |
 |        bridgeif         | String  |  Intel(R) Wireless-AC 9560 160MHz  |      Name of the host interface      |                  see`VBoxManage list bridgedifs`                   |
-|   bridgeif_guest_name   | String  |                eth1                |     Name of the guest interface      |                           See `ip -c a`                            |
+|   guest_interface_name   | String  |                eth1                |     Name of the guest interface      |                           See `ip -c a`                            |
 |     squid_hostname      | String  |              wp-proxy              |          Hostname of proxy           |                               Unique                               |
 |        squid_ip         | String  |           192.168.43.10            |             IP of proxy              |                               Unique                               |
 |    haproxy_hostname     | String  |               wp-lb                |      Hostname of load balancer       |                               Unique                               |
